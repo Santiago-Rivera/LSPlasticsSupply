@@ -10,7 +10,7 @@ export default function TiendaPage() {
         <div style={{
             minHeight: '100vh',
             backgroundColor: '#f8f9fa',
-            fontFamily: 'Roboto, Arial, sans-serif',
+            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
             padding: '60px 40px'
         }}>
             <div style={{
@@ -23,10 +23,12 @@ export default function TiendaPage() {
                 }}>
                     <h1 style={{
                         fontSize: '48px',
-                        fontWeight: 'bold',
+                        fontWeight: '700',
                         color: '#2c3e50',
                         margin: '0 0 16px 0',
-                        lineHeight: '1.2'
+                        lineHeight: '1.2',
+                        fontFamily: 'Inter, system-ui, sans-serif',
+                        letterSpacing: '-0.02em'
                     }}>
                         TU CARRITO ESTÁ VACÍO
                     </h1>

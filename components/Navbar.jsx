@@ -2,9 +2,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useCart } from "../contexts/CartContext";
 
 export default function Navbar() {
     const router = useRouter();
+    const { getCartItemCount, getCartTotal, setIsOpen } = useCart();
 
     const handleAboutClick = (e) => {
         e.preventDefault();
@@ -22,6 +24,9 @@ export default function Navbar() {
             router.push('/#about-section');
         }
     };
+
+    const cartItemCount = getCartItemCount();
+    const cartTotal = getCartTotal();
 
     return (
         <nav style={{
@@ -49,8 +54,7 @@ export default function Navbar() {
                     <span style={{
                         fontSize: '20px',
                         fontWeight: 'bold',
-                        color: '#030303',
-                        fontFamily: 'Roboto, Arial, sans-serif'
+                        color: '#2c3e50'
                     }}>
                         L&S Plastics
                     </span>
@@ -58,51 +62,108 @@ export default function Navbar() {
             </div>
 
             {/* Navigation links */}
-            <div style={{display: 'flex', alignItems: 'center', gap: '32px'}}>
-                <Link href="/" style={{
-                    color: '#030303',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    fontFamily: 'Roboto, Arial, sans-serif',
-                    padding: '8px 16px',
-                    borderRadius: '4px',
-                    transition: 'background-color 0.2s'
-                }}>
-                    Home
-                </Link>
-                <button
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '24px'
+            }}>
+                <Link
+                    href="#"
                     onClick={handleAboutClick}
                     style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#030303',
                         textDecoration: 'none',
-                        fontSize: '14px',
+                        color: '#666',
                         fontWeight: '500',
-                        fontFamily: 'Roboto, Arial, sans-serif',
-                        padding: '8px 16px',
-                        borderRadius: '4px',
-                        transition: 'background-color 0.2s',
-                        cursor: 'pointer'
+                        transition: 'color 0.3s ease'
                     }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                >
+                    onMouseEnter={(e) => e.target.style.color = '#2c3e50'}
+                    onMouseLeave={(e) => e.target.style.color = '#666'}>
                     About
-                </button>
-                <Link href="/tienda" style={{
-                    color: '#030303',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    fontFamily: 'Roboto, Arial, sans-serif',
-                    padding: '8px 16px',
-                    borderRadius: '4px',
-                    transition: 'background-color 0.2s'
-                }}>
-                    Store
                 </Link>
+
+                <Link
+                    href="/tienda/categorias"
+                    style={{
+                        textDecoration: 'none',
+                        color: '#666',
+                        fontWeight: '500',
+                        transition: 'color 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.target.style.color = '#2c3e50'}
+                    onMouseLeave={(e) => e.target.style.color = '#666'}>
+                    Categories
+                </Link>
+
+                <Link
+                    href="/productos"
+                    style={{
+                        textDecoration: 'none',
+                        color: '#666',
+                        fontWeight: '500',
+                        transition: 'color 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.target.style.color = '#2c3e50'}
+                    onMouseLeave={(e) => e.target.style.color = '#666'}>
+                    Products
+                </Link>
+
+                {/* Cart Button */}
+                <button
+                    onClick={() => router.push('/cart')}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        backgroundColor: '#4a5568',
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        transition: 'all 0.3s ease',
+                        position: 'relative'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = '#2d3748';
+                        e.target.style.transform = 'translateY(-1px)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = '#4a5568';
+                        e.target.style.transform = 'translateY(0)';
+                    }}>
+                    🛒 Cart
+                    {cartItemCount > 0 && (
+                        <span style={{
+                            backgroundColor: '#dc3545',
+                            color: 'white',
+                            fontSize: '12px',
+                            fontWeight: 'bold',
+                            padding: '2px 6px',
+                            borderRadius: '50%',
+                            minWidth: '18px',
+                            height: '18px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'absolute',
+                            top: '-8px',
+                            right: '-8px'
+                        }}>
+                            {cartItemCount}
+                        </span>
+                    )}
+                    {cartTotal > 0 && (
+                        <span style={{
+                            fontSize: '12px',
+                            opacity: 0.9,
+                            marginLeft: '4px'
+                        }}>
+                            ${cartTotal.toFixed(2)}
+                        </span>
+                    )}
+                </button>
             </div>
         </nav>
     );

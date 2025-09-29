@@ -20,8 +20,8 @@ export default function Page() {
         <div style={{
             minHeight: '100vh',
             backgroundColor: '#f8f9fa',
-            fontFamily: 'Roboto, Arial, sans-serif',
-            padding: '40px 20px'
+            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+            padding: '60px 40px'
         }}>
             <div style={{
                 maxWidth: '800px',
@@ -34,12 +34,14 @@ export default function Page() {
                 }}>
                     <h1 style={{
                         fontSize: '36px',
-                        fontWeight: 'bold',
+                        fontWeight: '600',
                         color: '#2c3e50',
-                        marginBottom: '16px',
-                        fontFamily: 'Roboto, Arial, sans-serif'
+                        textAlign: 'center',
+                        marginBottom: '40px',
+                        fontFamily: 'Inter, system-ui, sans-serif',
+                        letterSpacing: '-0.01em'
                     }}>
-                        Product Categories
+                        Categories
                     </h1>
                     <p style={{
                         fontSize: '16px',

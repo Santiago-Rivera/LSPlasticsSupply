@@ -13,7 +13,7 @@ export default function HomePage() {
         <div style={{
             minHeight: '100vh',
             backgroundColor: '#f8f9fa',
-            fontFamily: 'Roboto, Arial, sans-serif'
+            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif'
         }}>
             {/* Hero Section */}
             <div style={{
@@ -72,10 +72,11 @@ export default function HomePage() {
 
                     <h1 style={{
                         fontSize: '48px',
-                        fontWeight: 'bold',
+                        fontWeight: '700',
                         color: '#2c3e50',
                         margin: '0 0 32px 0',
-                        lineHeight: '1.2'
+                        lineHeight: '1.2',
+                        letterSpacing: '-0.02em'
                     }}>
                         L&S Plastics
                     </h1>
@@ -107,7 +108,8 @@ export default function HomePage() {
                             transition: 'all 0.3s ease',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '8px'
+                            gap: '8px',
+                            marginBottom: '16px'
                         }}
                         onMouseEnter={(e) => {
                             e.target.style.backgroundColor = '#2d3748';
@@ -136,11 +138,12 @@ export default function HomePage() {
                 }}>
                     <h2 style={{
                         fontSize: '36px',
-                        fontWeight: 'bold',
+                        fontWeight: '600',
                         color: '#2c3e50',
                         textAlign: 'center',
                         marginBottom: '24px',
-                        fontFamily: 'Roboto, Arial, sans-serif'
+                        fontFamily: 'Inter, system-ui, sans-serif',
+                        letterSpacing: '-0.01em'
                     }}>
                         PACKAGING
                     </h2>
@@ -440,10 +443,11 @@ export default function HomePage() {
 
                             <h3 style={{
                                 fontSize: '28px',
-                                fontWeight: 'bold',
+                                fontWeight: '600',
                                 color: '#2c3e50',
                                 marginBottom: '24px',
-                                fontFamily: 'Roboto, Arial, sans-serif'
+                                fontFamily: 'Inter, system-ui, sans-serif',
+                                letterSpacing: '-0.01em'
                             }}>
                                 Mission
                             </h3>
@@ -478,10 +482,11 @@ export default function HomePage() {
 
                             <h3 style={{
                                 fontSize: '28px',
-                                fontWeight: 'bold',
+                                fontWeight: '600',
                                 color: '#2c3e50',
                                 marginBottom: '24px',
-                                fontFamily: 'Roboto, Arial, sans-serif'
+                                fontFamily: 'Inter, system-ui, sans-serif',
+                                letterSpacing: '-0.01em'
                             }}>
                                 Vision
                             </h3>
@@ -511,11 +516,12 @@ export default function HomePage() {
                 }}>
                     <h2 style={{
                         fontSize: '36px',
-                        fontWeight: 'bold',
+                        fontWeight: '600',
                         color: '#2c3e50',
                         textAlign: 'center',
                         marginBottom: '60px',
-                        fontFamily: 'Roboto, Arial, sans-serif'
+                        fontFamily: 'Inter, system-ui, sans-serif',
+                        letterSpacing: '-0.01em'
                     }}>
                         Testimonials
                     </h2>

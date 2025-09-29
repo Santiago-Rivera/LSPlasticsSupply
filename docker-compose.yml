@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  # Balanceador de carga principal con Nginx
+  nginx-load-balancer:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - app1
+      - app2
+      - app3
+    restart: unless-stopped
+    networks:
+      - load-balance-network
+
+  # Instancia 1 de tu aplicación Next.js
+  app1:
+    build: .
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - INSTANCE_ID=app1
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://admin:secure_password@postgres:5432/lsplastics
+    networks:
+      - load-balance-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Instancia 2 de tu aplicación Next.js
+  app2:
+    build: .
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - INSTANCE_ID=app2
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://admin:secure_password@postgres:5432/lsplastics
+    networks:
+      - load-balance-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Instancia 3 de tu aplicación Next.js
+  app3:
+    build: .
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - INSTANCE_ID=app3
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://admin:secure_password@postgres:5432/lsplastics
+    networks:
+      - load-balance-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis para cache distribuido y sesiones
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - load-balance-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # PostgreSQL para datos compartidos
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: lsplastics
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - load-balance-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d lsplastics"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # Prometheus para monitoreo
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - load-balance-network
+    restart: unless-stopped
+
+  # Grafana para dashboards
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - load-balance-network
+    restart: unless-stopped
+
+networks:
+  load-balance-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  postgres-data:
+  prometheus-data:
+  grafana-data:

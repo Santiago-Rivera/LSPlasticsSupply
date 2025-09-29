@@ -5,27 +5,58 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/productos/route.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/ProductTable.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layout.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/computadoras/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/layout.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Navbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Navbar.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/L&amp;S.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/extensions.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LOAD_BALANCER_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PAYMENT_SETUP_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/health/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/metrics/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/paypal/capture-order/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/paypal/create-order/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/stripe/confirm-payment/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/cart/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/catalogo/page.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/checkout/cancel/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/checkout/success/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/productos/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/accessories/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/aluminum-containers/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/disposable-containers/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/napkins-paper-towels/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/paper-bags/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/plastic-containers/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/plastic/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/soup-containers/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autoscale.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/CardValidator.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/CartNotification.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/CategoryPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/LoadBalancerMonitor.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/PaymentProcessor.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ProductTable.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/RealPaymentProcessor.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/StripeCardForm.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contexts/CartContext.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/ClientCache.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/load-test.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prometheus.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/productos.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/productos/route.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tienda/categorias/computadoras/page.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tienda/categorias/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/categorias/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tienda/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
@@ -53,27 +84,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHELLCHECK.PATH": "C:\\Users\\santi\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\santi\Downloads\mynextproyect\app\tienda\categorias\computadoras" />
@@ -114,7 +146,7 @@
       <option name="presentableId" value="Default" />
       <updated>1759104682300</updated>
       <workItem from="1759104685421" duration="7094000" />
-      <workItem from="1759121592012" duration="3147000" />
+      <workItem from="1759121592012" duration="31916000" />
     </task>
     <servers />
   </component>

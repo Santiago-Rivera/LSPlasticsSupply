@@ -1,0 +1,46 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Monitoreo de las instancias de la aplicación
+  - job_name: 'lsplastics-apps'
+    static_configs:
+      - targets: ['app1:3000', 'app2:3000', 'app3:3000']
+    scrape_interval: 10s
+    metrics_path: '/api/health'
+
+  # Monitoreo del balanceador Nginx
+  - job_name: 'nginx-load-balancer'
+    static_configs:
+      - targets: ['nginx-load-balancer:80']
+    scrape_interval: 30s
+    metrics_path: '/nginx-status'
+
+  # Monitoreo de Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+
+  # Monitoreo de PostgreSQL
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    scrape_interval: 30s
+
+  # Auto-monitoreo de Prometheus
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+# Configuración de alertas
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
