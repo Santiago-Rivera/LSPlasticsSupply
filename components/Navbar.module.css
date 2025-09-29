@@ -1,0 +1,74 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+  background-color: #e2d436;
+  border-bottom: 1px solid #e2d436;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoImage {
+  margin-right: 8px;
+  border-radius: 4px;
+}
+
+.brandName {
+  font-size: 20px;
+  font-weight: bold;
+  color: #030303;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.navLink {
+  color: #030303;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.navLink:hover {
+  background-color: #e2d436;
+}
+
+.navLink:active {
+  background-color: #e2d436;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 16px;
+  }
+
+  .navLinks {
+    gap: 16px;
+  }
+
+  .brandName {
+    display: none;
+  }
+}

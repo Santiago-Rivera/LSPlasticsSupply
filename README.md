@@ -1,36 +1,187 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# L&S Plastics - E-commerce con Pasarelas de Pago
 
-## Getting Started
+Este proyecto de Next.js incluye integración completa con múltiples pasarelas de pago: **Stripe**, **PayPal** y **Transferencias Bancarias**.
 
-First, run the development server:
+## 🚀 Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- ✅ **Stripe**: Pagos con tarjetas de crédito/débito
+- ✅ **PayPal**: Pagos con cuenta PayPal
+- ✅ **Transferencias Bancarias**: Pagos offline con instrucciones automáticas
+- ✅ **Interfaz moderna**: Componentes responsivos y atractivos
+- ✅ **Validación de pagos**: Manejo de errores y confirmaciones
+- ✅ **API Routes**: Endpoints seguros para procesar pagos
+
+## 📦 Dependencias Incluidas
+
+```json
+{
+  "@stripe/stripe-js": "^7.9.0",
+  "@stripe/react-stripe-js": "^4.0.2",
+  "stripe": "^18.5.0",
+  "@paypal/react-paypal-js": "^8.9.1"
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Configuración
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 1. Variables de Entorno
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Crea un archivo `.env.local` basado en `.env.example`:
 
-## Learn More
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Configurar Stripe
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Ve a [Stripe Dashboard](https://dashboard.stripe.com/)
+2. Obtén tus claves API (test o producción)
+3. Actualiza en `.env.local`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+```
 
-## Deploy on Vercel
+### 3. Configurar PayPal
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Ve a [PayPal Developer](https://developer.paypal.com/)
+2. Crea una aplicación y obtén las credenciales
+3. Actualiza en `.env.local`:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=tu_client_id
+PAYPAL_CLIENT_SECRET=tu_client_secret
+```
+
+### 4. Configurar Transferencias Bancarias
+
+Edita los datos bancarios en `components/BankTransferCheckout.jsx`:
+
+```javascript
+const bankAccounts = [
+  {
+    bank: 'Tu Banco',
+    accountType: 'Cuenta Corriente',
+    accountNumber: 'Tu número de cuenta',
+    accountHolder: 'Titular de la cuenta',
+    identification: 'CUIT/CUIL'
+  }
+];
+```
+
+## 🚀 Instalación y Ejecución
+
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
+
+# Ejecutar en producción
+npm start
+```
+
+## 📁 Estructura del Proyecto
+
+```
+├── app/
+│   ├── api/
+│   │   ├── create-payment-intent/     # API para Stripe
+│   │   ├── paypal/capture/            # API para PayPal
+│   │   └── bank-transfer/create-order/ # API para transferencias
+│   └── tienda/
+│       └── checkout/                  # Página de checkout
+├── components/
+│   ├── PaymentGateway.jsx             # Componente principal
+│   ├── StripeCheckout.jsx             # Checkout de Stripe
+│   ├── PayPalCheckout.jsx             # Checkout de PayPal
+│   └── BankTransferCheckout.jsx       # Checkout de transferencias
+└── lib/
+    ├── stripe.js                      # Configuración Stripe
+    └── paypal.js                      # Configuración PayPal
+```
+
+## 🔄 Flujo de Pago
+
+### Stripe (Tarjetas)
+1. Usuario ingresa datos de tarjeta
+2. Se crea Payment Intent en el servidor
+3. Stripe procesa el pago
+4. Confirmación inmediata
+
+### PayPal
+1. Usuario hace clic en botón PayPal
+2. Redirige a PayPal para autenticación
+3. PayPal procesa el pago
+4. Retorna con confirmación
+
+### Transferencia Bancaria
+1. Usuario llena formulario con datos
+2. Sistema muestra instrucciones de transferencia
+3. Cliente realiza transferencia offline
+4. Verificación manual del pago
+
+## 🧪 Testing
+
+Para probar los pagos en modo desarrollo:
+
+### Stripe Test Cards
+```
+Visa: 4242 4242 4242 4242
+Mastercard: 5555 5555 5555 4444
+Error: 4000 0000 0000 0002
+```
+
+### PayPal Sandbox
+- Usa el entorno sandbox de PayPal
+- Crea cuentas de prueba en PayPal Developer
+
+## 🔒 Seguridad
+
+- ✅ Las claves secretas están en el servidor
+- ✅ Validación de datos en el backend
+- ✅ HTTPS requerido para producción
+- ✅ Tokens temporales para pagos
+
+## 📱 Responsive Design
+
+El checkout es completamente responsive y funciona en:
+- 📱 Móviles
+- 📱 Tablets  
+- 💻 Desktop
+
+## 🎨 Personalización
+
+Puedes personalizar los estilos editando:
+- `components/PaymentGateway.jsx` - Estilos principales
+- `components/StripeCheckout.jsx` - Estilos de Stripe
+- `components/PayPalCheckout.jsx` - Estilos de PayPal
+- `lib/paypal.js` - Configuración de botones PayPal
+
+## 🚀 Deployment
+
+### Vercel (Recomendado)
+```bash
+npm run build
+vercel --prod
+```
+
+### Otros servicios
+- Asegúrate de configurar las variables de entorno
+- Configura los webhooks de Stripe y PayPal
+- Usa HTTPS en producción
+
+## 📞 Soporte
+
+Si necesitas ayuda, contacta a:
+- **Email**: info@lsplastics.com  
+- **Teléfono**: +1 234-567-8900
+
+## 📄 Licencia
+
+MIT License - Libre para uso comercial y personal.
