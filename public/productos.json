@@ -1,389 +1,569 @@
 [
     {
       "nombre": "Half size shallow",
-      "descripcion": "Bandeja de aluminio de tamaño medio, de poca profundidad, ideal para raciones individuales o guarniciones.",
-      "precio": 37.00,
-      "categoria": "Contenedores de Aluminio",
+      "descripcion": "Medium-sized aluminum tray, shallow depth, ideal for individual portions or side dishes.",
+      "precio": 37.0,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_half_shallow.jpg",
+      "imagen_url": "images/productos/Half_size_shallow.jpeg",
       "codigo_producto": "AL-BS-HS"
     },
     {
       "nombre": "Half size deep",
-      "descripcion": "Bandeja de aluminio de tamaño medio, con mayor profundidad, perfecta para comidas con salsas o porciones grandes.",
-      "precio": 40.00,
-      "categoria": "Contenedores de Aluminio",
+      "descripcion": "Medium-sized aluminum tray with greater depth, perfect for meals with sauces or large portions.",
+      "precio": 40.0,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_half_deep.jpg",
+      "imagen_url": "images/productos/Half_size_deep.jpg",
       "codigo_producto": "AL-BS-HD"
     },
     {
       "nombre": "Half size medium",
-      "descripcion": "Bandeja de aluminio de tamaño medio, de profundidad estándar, versátil para diversos platos.",
-      "precio": 38.00,
-      "categoria": "Contenedores de Aluminio",
+      "descripcion": "Medium-sized aluminum tray with standard depth, versatile for various dishes.",
+      "precio": 38.0,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_half_medium.jpg",
+      "imagen_url": "images/productos/half_medium.jpg",
       "codigo_producto": "AL-BS-HM"
     },
     {
       "nombre": "Half size Lid",
-      "descripcion": "Tapa para las bandejas de aluminio de tamaño medio (Half size).",
-      "precio": 26.00,
-      "categoria": "Contenedores de Aluminio",
+      "descripcion": "Lid for medium-sized aluminum trays (Half size).",
+      "precio": 26.0,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_tapa_half.jpg",
+      "imagen_url": "images/productos/Half-size-Lid.jpg",
       "codigo_producto": "AL-TA-HS"
     },
     {
-      "nombre": "Aluminun rouds 8",
-      "descripcion": "Contenedor redondo de aluminio de 8 pulgadas, de uso general para platos circulares.",
-      "precio": 59.00,
-      "categoria": "Contenedores de Aluminio",
+      "nombre": "Aluminum rounds 8",
+      "descripcion": "8-inch round aluminum container, general use for circular dishes.",
+      "precio": 59.0,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_redondo_8.jpg",
+      "imagen_url": "images/productos/Aluminun-rouds-8.jpg",
       "codigo_producto": "AL-RD-08"
     },
     {
-      "nombre": "Rouds aluminun 9",
-      "descripcion": "Contenedor redondo de aluminio de 9 pulgadas, de mayor tamaño que el anterior.",
-      "precio": 69.00,
-      "categoria": "Contenedores de Aluminio",
+      "nombre": "Aluminum rounds 9",
+      "descripcion": "9-inch round aluminum container, larger size than the previous one.",
+      "precio": 69.0,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_redondo_9.jpg",
+      "imagen_url": "images/productos/Aluminun-rouds-9.jpg",
       "codigo_producto": "AL-RD-09"
     },
     {
-      "nombre": "Rouds aluminun",
-      "descripcion": "Contenedor redondo de aluminio sin especificación de tamaño, de uso básico.",
-      "precio": 39.00,
-      "categoria": "Contenedores de Aluminio",
+      "nombre": "Aluminum rounds",
+      "descripcion": "Round aluminum container without size specification, for basic use.",
+      "precio": 39.0,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_redondo_std.jpg",
+      "imagen_url": "images/productos/Rouds-aluminun.jpg",
       "codigo_producto": "AL-RD-ST"
     },
     {
-      "nombre": "Rounds aluminun Lid 9 box of 500 pcs",
-      "descripcion": "Caja de 500 tapas para el contenedor redondo de aluminio de 9 pulgadas.",
+      "nombre": "9in Round Aluminum Foil Container",
+      "descripcion": "Box of 500 lids for 9-inch round aluminum container.",
       "precio": 26.99,
-      "categoria": "Contenedores de Aluminio",
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_tapa_rd9_500.jpg",
+      "imagen_url": "images/productos/9in-Round-Aluminum-Foil-Container-Side.jpg",
       "codigo_producto": "AL-TR9-500"
     },
     {
-      "nombre": "Roud aluminun Lid 8 box of 500 pcs",
-      "descripcion": "Caja de 500 tapas para el contenedor redondo de aluminio de 8 pulgadas.",
+      "nombre": "Round Aluminum Lid 8 - Box of 500 pcs",
+      "descripcion": "Box of 500 lids for 8-inch round aluminum container.",
       "precio": 25.99,
-      "categoria": "Contenedores de Aluminio",
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_tapa_rd8_500.jpg",
+      "imagen_url": "images/productos/Roud-aluminun-Lid-8-box-of-500-pcs.jpg",
       "codigo_producto": "AL-TR8-500"
     },
     {
-      "nombre": "Roud auminun Lid 7 box of 500pcs",
-      "descripcion": "Caja de 500 tapas para el contenedor redondo de aluminio de 7 pulgadas.",
+      "nombre": "Round Aluminum Lid 7 - Box of 500 pcs",
+      "descripcion": "Box of 500 lids for 7-inch round aluminum container.",
       "precio": 23.99,
-      "categoria": "Contenedores de Aluminio",
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_tapa_rd7_500.jpg",
+      "imagen_url": "images/productos/image.png",
       "codigo_producto": "AL-TR7-500"
     },
     {
-      "nombre": "Rollo aluminum",
-      "descripcion": "Rollo estándar de papel de aluminio, multiuso para envolver y conservar alimentos.",
+      "nombre": "Aluminum Roll",
+      "descripcion": "Standard aluminum foil roll, multipurpose for wrapping and preserving food.",
       "precio": 26.99,
-      "categoria": "Contenedores de Aluminio",
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_rollo_std.jpg",
+      "imagen_url": "images/productos/aluminio_rollo_std.jpg",
       "codigo_producto": "AL-RO-ST"
     },
     {
-      "nombre": "18×500 Rollo aluminum",
-      "descripcion": "Rollo de papel de aluminio de 18 pulgadas de ancho por 500 pies de largo, para uso intensivo.",
-      "precio": 29.99,
-      "categoria": "Contenedores de Aluminio",
+      "nombre": "Aluminum Roll 18x500",
+      "descripcion": "Heavy-duty aluminum foil roll, 18 inches wide by 500 feet long.",
+      "precio": 45.99,
+      "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "aluminio_rollo_18x500.jpg",
+      "imagen_url": "images/productos/aluminio_rollo_18x500.jpg",
       "codigo_producto": "AL-RO-18500"
     },
     {
-      "nombre": "8x8x3 box of 150pcs",
-      "descripcion": "Caja desechable de 8x8 pulgadas con 3 pulgadas de alto, para comida para llevar con buen volumen. (Caja de 150 unidades).",
-      "precio": 32.99,
-      "categoria": "Contenedores Desechables (Cajas)",
+      "nombre": "Disposable Box 6x6",
+      "descripcion": "6x6 inch disposable cardboard box, perfect for individual meals or desserts.",
+      "precio": 12.99,
+      "categoria": "Disposable Containers (Boxes)",
       "categoria_id": 2,
-      "imagen_url": "caja_des_8x8x3.jpg",
-      "codigo_producto": "CJ-D883-150"
+      "imagen_url": "images/productos/caja_des_6x6.jpg",
+      "codigo_producto": "DIS-BX-6X6"
     },
     {
-      "nombre": "6x6 box of 250pcs",
-      "descripcion": "Caja desechable pequeña de 6x6 pulgadas, ideal para postres, guarniciones o raciones pequeñas. (Caja de 250 unidades).",
-      "precio": 28.99,
-      "categoria": "Contenedores Desechables (Cajas)",
-      "categoria_id": 2,
-      "imagen_url": "caja_des_6x6.jpg",
-      "codigo_producto": "CJ-D66-250"
-    },
-    {
-      "nombre": "9x9x1 box of 150pcs",
-      "descripcion": "Caja desechable de 9x9 pulgadas con poca profundidad (1 pulgada), para platos llanos o sándwiches. (Caja de 150 unidades).",
-      "precio": 34.99,
-      "categoria": "Contenedores Desechables (Cajas)",
-      "categoria_id": 2,
-      "imagen_url": "caja_des_9x9x1.jpg",
-      "codigo_producto": "CJ-D991-150"
-    },
-    {
-      "nombre": "9x9x3 box of 150pcs",
-      "descripcion": "Caja desechable de 9x9 pulgadas con 3 pulgadas de alto, adecuada para platos grandes o con varios componentes. (Caja de 150 unidades).",
-      "precio": 34.99,
-      "categoria": "Contenedores Desechables (Cajas)",
-      "categoria_id": 2,
-      "imagen_url": "caja_des_9x9x3.jpg",
-      "codigo_producto": "CJ-D993-150"
-    },
-    {
-      "nombre": "8x8x1 box of 150pcs",
-      "descripcion": "Caja desechable de 8x8 pulgadas con poca profundidad (1 pulgada), para raciones estándar planas. (Caja de 150 unidades).",
-      "precio": 32.99,
-      "categoria": "Contenedores Desechables (Cajas)",
-      "categoria_id": 2,
-      "imagen_url": "caja_des_8x8x1.jpg",
-      "codigo_producto": "CJ-D881-150"
-    },
-    {
-      "nombre": "9×6 box of 150pcs",
-      "descripcion": "Caja desechable rectangular de 9x6 pulgadas, perfecta para bandejas o raciones alargadas. (Caja de 150 unidades).",
-      "precio": 24.99,
-      "categoria": "Contenedores Desechables (Cajas)",
-      "categoria_id": 2,
-      "imagen_url": "caja_des_9x6.jpg",
-      "codigo_producto": "CJ-D96-150"
-    },
-    {
-      "nombre": "Combo de sopa heavy de 32oz box of 240 sets (A)",
-      "descripcion": "Envase y tapa resistente (heavy duty) de 32 onzas para grandes porciones de sopa. (Caja de 240 juegos).",
-      "precio": 45.00,
-      "categoria": "Contenedores para Sopa",
-      "categoria_id": 3,
-      "imagen_url": "sopa_heavy_32oz_a.jpg",
-      "codigo_producto": "SO-H32-240A"
-    },
-    {
-      "nombre": "Combo de sopa heavy de 32oz box of 240 sets (B)",
-      "descripcion": "Envase y tapa resistente (heavy duty) de 32 onzas, alternativa con un precio diferente. (Caja de 240 juegos).",
-      "precio": 31.99,
-      "categoria": "Contenedores para Sopa",
-      "categoria_id": 3,
-      "imagen_url": "sopa_heavy_32oz_b.jpg",
-      "codigo_producto": "SO-H32-240B"
-    },
-    {
-      "nombre": "combo de sopa de 8oz box of 240 sets",
-      "descripcion": "Envase y tapa para porción pequeña de sopa o muestras (8 onzas). (Caja de 240 juegos).",
-      "precio": 28.00,
-      "categoria": "Contenedores para Sopa",
-      "categoria_id": 3,
-      "imagen_url": "sopa_std_8oz.jpg",
-      "codigo_producto": "SO-ST08-240"
-    },
-    {
-      "nombre": "Combo de sopa de 12oz box of 240 sets",
-      "descripcion": "Envase y tapa para porción personal de sopa (12 onzas). (Caja de 240 juegos).",
-      "precio": 28.50,
-      "categoria": "Contenedores para Sopa",
-      "categoria_id": 3,
-      "imagen_url": "sopa_std_12oz.jpg",
-      "codigo_producto": "SO-ST12-240"
-    },
-    {
-      "nombre": "Combo de sopa de 24oz box 240 sets",
-      "descripcion": "Envase y tapa para una porción grande o media de sopa (24 onzas). (Caja de 240 juegos).",
-      "precio": 37.99,
-      "categoria": "Contenedores para Sopa",
-      "categoria_id": 3,
-      "imagen_url": "sopa_std_24oz.jpg",
-      "codigo_producto": "SO-ST24-240"
-    },
-    {
-      "nombre": "Container rectagular negro de 28oz caja de 150sets",
-      "descripcion": "Contenedor rectangular negro apto para microondas de 28 onzas. (Caja de 150 juegos de envase y tapa).",
-      "precio": 31.99,
-      "categoria": "Contenedores de Plástico (Microondas)",
-      "categoria_id": 4,
-      "imagen_url": "plastico_micro_28oz.jpg",
-      "codigo_producto": "PL-MW28-150"
-    },
-    {
-      "nombre": "Containers rectangular macrowe de 38oz caja de 150 sets",
-      "descripcion": "Contenedor rectangular negro apto para microondas de 38 onzas, de tamaño considerable. (Caja de 150 juegos).",
-      "precio": 34.99,
-      "categoria": "Contenedores de Plástico (Microondas)",
-      "categoria_id": 4,
-      "imagen_url": "plastico_micro_38oz.jpg",
-      "codigo_producto": "PL-MW38-150"
-    },
-    {
-      "nombre": "Container maicrowe color negro caja de 150sets",
-      "descripcion": "Contenedor de plástico negro genérico apto para microondas (sin especificar onzas). (Caja de 150 juegos).",
-      "precio": 32.99,
-      "categoria": "Contenedores de Plástico (Microondas)",
-      "categoria_id": 4,
-      "imagen_url": "plastico_micro_std.jpg",
-      "codigo_producto": "PL-MWST-150"
-    },
-    {
-      "nombre": "Containers maicrowe color negro de 24oz caja de 150sets",
-      "descripcion": "Contenedor rectangular negro apto para microondas de 24 onzas, para porciones medianas. (Caja de 150 juegos).",
-      "precio": 26.99,
-      "categoria": "Contenedores de Plástico (Microondas)",
-      "categoria_id": 4,
-      "imagen_url": "plastico_micro_24oz.jpg",
-      "codigo_producto": "PL-MW24-150"
-    },
-    {
-      "nombre": "Containers maicrowe color negro de 48oz caja de 150sets",
-      "descripcion": "Contenedor rectangular negro apto para microondas de 48 onzas, el más grande. (Caja de 150 juegos).",
-      "precio": 46.99,
-      "categoria": "Contenedores de Plástico (Microondas)",
-      "categoria_id": 4,
-      "imagen_url": "plastico_micro_48oz.jpg",
-      "codigo_producto": "PL-MW48-150"
-    },
-    {
-      "nombre": "Bolsa # 4 paquete de 500pzas",
-      "descripcion": "Bolsa de papel pequeña (tamaño #4), comúnmente para artículos individuales o pan. (Paquete de 500 unidades).",
+      "nombre": "Disposable Box 8x8x1",
+      "descripcion": "8x8x1 inch disposable cardboard box, shallow for light meals.",
       "precio": 15.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_04.jpg",
-      "codigo_producto": "BP-T04-500"
+      "categoria": "Disposable Containers (Boxes)",
+      "categoria_id": 2,
+      "imagen_url": "images/productos/caja_des_8x8x1.jpg",
+      "codigo_producto": "DIS-BX-8X8X1"
     },
     {
-      "nombre": "Bolsa de papel # 6 paquete 500 pzas",
-      "descripcion": "Bolsa de papel de tamaño mediano (tamaño #6). (Paquete de 500 unidades).",
+      "nombre": "Disposable Box 8x8x3",
+      "descripcion": "8x8x3 inch disposable cardboard box, deeper for complete meals.",
       "precio": 18.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_06.jpg",
-      "codigo_producto": "BP-T06-500"
+      "categoria": "Disposable Containers (Boxes)",
+      "categoria_id": 2,
+      "imagen_url": "images/productos/caja_des_8x8x3.jpg",
+      "codigo_producto": "DIS-BX-8X8X3"
     },
     {
-      "nombre": "Bolsa #8 paquete 500pz",
-      "descripcion": "Bolsa de papel de tamaño ligeramente más grande (tamaño #8). (Paquete de 500 unidades).",
-      "precio": 21.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_08.jpg",
-      "codigo_producto": "BP-T08-500"
+      "nombre": "Disposable Box 9x6",
+      "descripcion": "9x6 inch disposable cardboard box, rectangular for varied meals.",
+      "precio": 16.99,
+      "categoria": "Disposable Containers (Boxes)",
+      "categoria_id": 2,
+      "imagen_url": "images/productos/caja_des_9x6.jpg",
+      "codigo_producto": "DIS-BX-9X6"
     },
     {
-      "nombre": "Bolsa# 12 paquete 500pz",
-      "descripcion": "Bolsa de papel de tamaño grande (tamaño #12). (Paquete de 500 unidades).",
-      "precio": 22.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_12.jpg",
-      "codigo_producto": "BP-T12-500"
+      "nombre": "Disposable Box 9x9x1",
+      "descripcion": "9x9x1 inch disposable cardboard box, large and shallow.",
+      "precio": 19.99,
+      "categoria": "Disposable Containers (Boxes)",
+      "categoria_id": 2,
+      "imagen_url": "images/productos/caja_des_9x9x1.jpg",
+      "codigo_producto": "DIS-BX-9X9X1"
     },
     {
-      "nombre": "Bolsa # 16 paquete 500pz",
-      "descripcion": "Bolsa de papel de tamaño extra grande (tamaño #16), para compras voluminosas. (Paquete de 500 unidades).",
-      "precio": 24.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_16.jpg",
-      "codigo_producto": "BP-T16-500"
+      "nombre": "Container 10x5x12 - Pack of 250pcs",
+      "descripcion": "Pack of 250 disposable containers measuring 10x5x12 inches, ideal for bulk orders.",
+      "precio": 89.99,
+      "categoria": "Disposable Containers (Boxes)",
+      "categoria_id": 2,
+      "imagen_url": "images/productos/10\u00d75\u00d712-paquete-de-250pz.jpg",
+      "codigo_producto": "DIS-BX-10X5X12-250"
     },
     {
-      "nombre": "Bolsa papel #1/6 paquete 500pz",
-      "descripcion": "Bolsa de papel muy grande (Grocery Bag o similar, tamaño 1/6). (Paquete de 500 unidades).",
-      "precio": 49.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_1-6.jpg",
-      "codigo_producto": "BP-1-6-500"
-    },
-    {
-      "nombre": "Bolsa papel #1/8 paquete de 500pz",
-      "descripcion": "Bolsa de papel grande (tamaño 1/8). (Paquete de 500 unidades).",
-      "precio": 44.90,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_1-8.jpg",
-      "codigo_producto": "BP-1-8-500"
-    },
-    {
-      "nombre": "10 ×7 ×12 caja de 250 pzas",
-      "descripcion": "Bolsa de papel con dimensiones específicas (10x7x12 pulgadas), tipo *take out*. (Caja de 250 unidades).",
-      "precio": 39.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_10x7x12.jpg",
-      "codigo_producto": "BP-D10712-250"
-    },
-    {
-      "nombre": "13 ×7×17 paquete de 250 pzas",
-      "descripcion": "Bolsa de papel de gran tamaño (13x7x17 pulgadas), ideal para pedidos grandes. (Paquete de 250 unidades).",
-      "precio": 44.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_13x7x17.jpg",
-      "codigo_producto": "BP-D13717-250"
-    },
-    {
-      "nombre": "10×5×12 paquete de 250pz",
-      "descripcion": "Bolsa de papel con dimensiones específicas (10x5x12 pulgadas), para envases más altos y menos anchos. (Paquete de 250 unidades).",
+      "nombre": "Container 9x9x3 with 3 divisions",
+      "descripcion": "9x9x3 inch container with 3 compartments, perfect for organized meals.",
       "precio": 34.99,
-      "categoria": "Bolsas de Papel",
-      "categoria_id": 5,
-      "imagen_url": "bolsa_papel_10x5x12.jpg",
-      "codigo_producto": "BP-D10512-250"
+      "categoria": "Disposable Containers (Boxes)",
+      "categoria_id": 2,
+      "imagen_url": "images/productos/Contenedor-9x9x3-c-3-div-cana-cenital-400x400.png",
+      "codigo_producto": "DIS-BX-9X9X3-3DIV"
     },
     {
-      "nombre": "Dinners napkin 2plyn caja de 3000",
-      "descripcion": "Servilletas de cena de 2 capas, para un servicio de mayor calidad y absorción. (Caja de 3000 unidades).",
-      "precio": 36.99,
-      "categoria": "Servilletas y Toallas de Papel",
-      "categoria_id": 6,
-      "imagen_url": "servilleta_cena_2ply.jpg",
-      "codigo_producto": "SV-CE-3000"
-    },
-    {
-      "nombre": "Tall fold napkin caja 10000",
-      "descripcion": "Servilletas de pliegue alto, adecuadas para dispensadores de mesa. (Caja de 10,000 unidades).",
-      "precio": 33.99,
-      "categoria": "Servilletas y Toallas de Papel",
-      "categoria_id": 6,
-      "imagen_url": "servilleta_tallfold.jpg",
-      "codigo_producto": "SV-TF-10K"
-    },
-    {
-      "nombre": "Hardwound Paper towell Roll kraf caja de 12 rollos",
-      "descripcion": "Rollos de toalla de papel de rebobinado duro, de color *kraft* (marrón), para secado de manos. (Caja de 12 rollos).",
-      "precio": 28.99,
-      "categoria": "Servilletas y Toallas de Papel",
-      "categoria_id": 6,
-      "imagen_url": "toalla_rollo_kraft.jpg",
-      "codigo_producto": "TP-RK-12"
-    },
-    {
-      "nombre": "Cup holders 2 with handle 200 pcs",
-      "descripcion": "Portavasos desechables para dos bebidas, con asa para facilitar el transporte. (Paquete de 200 unidades).",
-      "precio": 34.99,
-      "categoria": "Accesorios",
+      "nombre": "Empty Tips Box for 100 units",
+      "descripcion": "Empty box designed to hold 100 disposable tips or small accessories.",
+      "precio": 8.99,
+      "categoria": "Accessories",
       "categoria_id": 7,
-      "imagen_url": "accesorio_portavasos.jpg",
-      "codigo_producto": "AC-PV-200"
+      "imagen_url": "images/productos/caja-vacia-tips-para-100-unds.jpg",
+      "codigo_producto": "ACC-BOX-TIPS-100"
     },
     {
-      "nombre": "Box of 300 pcs",
-      "descripcion": "Caja genérica de 300 unidades de un producto no especificado. (Se requiere más información para categorizar).",
-      "precio": 44.99,
-      "categoria": "Plastics",
+      "nombre": "Soup Container Standard 8oz",
+      "descripcion": "Standard 8oz soup container, perfect for appetizers or small portions.",
+      "precio": 19.99,
+      "categoria": "Soup Containers",
+      "categoria_id": 3,
+      "imagen_url": "images/productos/sopa_std_8oz.webp",
+      "codigo_producto": "SOP-STD-8OZ"
+    },
+    {
+      "nombre": "Soup Container Standard 12oz",
+      "descripcion": "Standard 12oz soup container, ideal for regular soup portions.",
+      "precio": 22.99,
+      "categoria": "Soup Containers",
+      "categoria_id": 3,
+      "imagen_url": "images/productos/sopa_std_12oz.webp",
+      "codigo_producto": "SOP-STD-12OZ"
+    },
+    {
+      "nombre": "Soup Container Standard 24oz",
+      "descripcion": "Standard 24oz soup container, perfect for large portions or family servings.",
+      "precio": 28.99,
+      "categoria": "Soup Containers",
+      "categoria_id": 3,
+      "imagen_url": "images/productos/sopa_std_24oz.webp",
+      "codigo_producto": "SOP-STD-24OZ"
+    },
+    {
+      "nombre": "Soup Container Heavy Duty 32oz A",
+      "descripcion": "Heavy-duty 32oz soup container, extra resistant for hot foods and heavy use.",
+      "precio": 35.99,
+      "categoria": "Soup Containers",
+      "categoria_id": 3,
+      "imagen_url": "images/productos/sopa_heavy_32oz_a.webp",
+      "codigo_producto": "SOP-HD-32OZ-A"
+    },
+    {
+      "nombre": "Soup Container Heavy Duty 32oz B",
+      "descripcion": "Heavy-duty 32oz soup container, alternative design with enhanced durability.",
+      "precio": 37.99,
+      "categoria": "Soup Containers",
+      "categoria_id": 3,
+      "imagen_url": "images/productos/sopa_heavy_32oz_b.webp",
+      "codigo_producto": "SOP-HD-32OZ-B"
+    },
+    {
+      "nombre": "Microwave Plastic Container 24oz",
+      "descripcion": "24oz microwave-safe plastic container, perfect for reheating meals.",
+      "precio": 29.99,
+      "categoria": "Plastic Containers (Microwave)",
+      "categoria_id": 4,
+      "imagen_url": "images/productos/plastico_micro_24oz.png",
+      "codigo_producto": "PL-MIC-24OZ"
+    },
+    {
+      "nombre": "Microwave Plastic Container 28oz",
+      "descripcion": "28oz microwave-safe plastic container, ideal for medium-sized meals.",
+      "precio": 32.99,
+      "categoria": "Plastic Containers (Microwave)",
+      "categoria_id": 4,
+      "imagen_url": "images/productos/plastico_micro_28oz.jpg",
+      "codigo_producto": "PL-MIC-28OZ"
+    },
+    {
+      "nombre": "Microwave Plastic Container 38oz",
+      "descripcion": "38oz microwave-safe plastic container, perfect for large portions or family meals.",
+      "precio": 39.99,
+      "categoria": "Plastic Containers (Microwave)",
+      "categoria_id": 4,
+      "imagen_url": "images/productos/plastico_micro_38oz.png",
+      "codigo_producto": "PL-MIC-38OZ"
+    },
+    {
+      "nombre": "Microwave Plastic Container 48oz",
+      "descripcion": "48oz microwave-safe plastic container, extra large for bulk servings.",
+      "precio": 45.99,
+      "categoria": "Plastic Containers (Microwave)",
+      "categoria_id": 4,
+      "imagen_url": "images/productos/plastico_micro_48oz.jpg",
+      "codigo_producto": "PL-MIC-48OZ"
+    },
+    {
+      "nombre": "Microwave Plastic Container Standard",
+      "descripcion": "Standard microwave-safe plastic container, versatile size for everyday use.",
+      "precio": 24.99,
+      "categoria": "Plastic Containers (Microwave)",
+      "categoria_id": 4,
+      "imagen_url": "images/productos/plastico_micro_std.webp",
+      "codigo_producto": "PL-MIC-STD"
+    },
+    {
+      "nombre": "Paper Bag 04",
+      "descripcion": "Size 04 paper bag, small and practical for snacks or small purchases.",
+      "precio": 8.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_04.webp",
+      "codigo_producto": "PB-04"
+    },
+    {
+      "nombre": "Paper Bag 06",
+      "descripcion": "Size 06 paper bag, medium size for regular purchases and takeout orders.",
+      "precio": 10.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_06.jpg",
+      "codigo_producto": "PB-06"
+    },
+    {
+      "nombre": "Paper Bag 08",
+      "descripcion": "Size 08 paper bag, larger for multiple items or bigger purchases.",
+      "precio": 12.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_08.jpg",
+      "codigo_producto": "PB-08"
+    },
+    {
+      "nombre": "Paper Bag 1/6",
+      "descripcion": "1/6 size paper bag, compact and economical for small items.",
+      "precio": 6.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_1-6.webp",
+      "codigo_producto": "PB-1-6"
+    },
+    {
+      "nombre": "Paper Bag 1/8",
+      "descripcion": "1/8 size paper bag, very small for individual items or samples.",
+      "precio": 5.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_1-8.webp",
+      "codigo_producto": "PB-1-8"
+    },
+    {
+      "nombre": "Paper Bag 10x7x12",
+      "descripcion": "10x7x12 inch paper bag, custom size for specific packaging needs.",
+      "precio": 15.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_10x7x12.png",
+      "codigo_producto": "PB-10X7X12"
+    },
+    {
+      "nombre": "Paper Bag 12",
+      "descripcion": "Size 12 paper bag, large capacity for bulk purchases or catering orders.",
+      "precio": 18.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_12.jpg",
+      "codigo_producto": "PB-12"
+    },
+    {
+      "nombre": "Paper Bag 13x7x17",
+      "descripcion": "13x7x17 inch paper bag, extra large for shopping or delivery services.",
+      "precio": 21.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_13x7x17.webp",
+      "codigo_producto": "PB-13X7X17"
+    },
+    {
+      "nombre": "Paper Bag 16",
+      "descripcion": "Size 16 paper bag, maximum size for large orders and bulk items.",
+      "precio": 24.99,
+      "categoria": "Paper Bags",
+      "categoria_id": 5,
+      "imagen_url": "images/productos/bolsa_papel_16.png",
+      "codigo_producto": "PB-16"
+    },
+    {
+      "nombre": "Dinner Napkin 2-ply",
+      "descripcion": "2-ply dinner napkin, soft and absorbent for elegant dining experiences.",
+      "precio": 14.99,
+      "categoria": "Napkins & Paper Towels",
+      "categoria_id": 6,
+      "imagen_url": "images/productos/servilleta_cena_2ply.webp",
+      "codigo_producto": "NAP-DIN-2PLY"
+    },
+    {
+      "nombre": "Tall-fold Napkin",
+      "descripcion": "Tall-fold napkin, convenient dispenser format for restaurants and cafeterias.",
+      "precio": 16.99,
+      "categoria": "Napkins & Paper Towels",
+      "categoria_id": 6,
+      "imagen_url": "images/productos/servilleta_tallfold.webp",
+      "codigo_producto": "NAP-TF"
+    },
+    {
+      "nombre": "Kraft Paper Towel Roll",
+      "descripcion": "Kraft paper towel roll, strong and absorbent for kitchen and cleaning use.",
+      "precio": 22.99,
+      "categoria": "Napkins & Paper Towels",
+      "categoria_id": 6,
+      "imagen_url": "images/productos/toalla_rollo_kraft.webp",
+      "codigo_producto": "TOW-KR-ROLL"
+    },
+    {
+      "nombre": "Cup Holder Accessory",
+      "descripcion": "Cup holder accessory, practical for organizing and transporting beverages.",
+      "precio": 9.99,
+      "categoria": "Accessories",
+      "categoria_id": 7,
+      "imagen_url": "images/productos/accesorio_portavasos.webp",
+      "codigo_producto": "ACC-CUP-HOLDER"
+    },
+    {
+      "nombre": "Strow Size 7 3/4 350*24",
+      "descripcion": "Product: Strow Size 7 3/4 350*24. Belongs to the Straws category.",
+      "precio": 49.99,
+      "categoria": "Straws",
       "categoria_id": 8,
-      "imagen_url": "generico_box300.jpg",
-      "codigo_producto": "SC-B300"
+      "imagen_url": "images/productos/straws/strow_size_7_3_4_350_24.jpg",
+      "codigo_producto": "ACC-STR"
+    },
+    {
+      "nombre": "10oz coffe cups 1000pcs",
+      "descripcion": "10oz oz hot coffee cups, 1000pcs.",
+      "precio": 49.99,
+      "categoria": "Coffee Cups & Lids",
+      "categoria_id": 9,
+      "imagen_url": "images/productos/coffe_cups/10oz_coffe_cups_1000pcs.webp",
+      "codigo_producto": "CUP-CFE-10"
+    },
+    {
+      "nombre": "12oz coffe cups 1000pcs",
+      "descripcion": "12oz oz hot coffee cups, 1000pcs.",
+      "precio": 55.99,
+      "categoria": "Coffee Cups & Lids",
+      "categoria_id": 9,
+      "imagen_url": "images/productos/coffe_cups/12oz_coffe_cups_1000pcs.webp",
+      "codigo_producto": "CUP-CFE-12"
+    },
+    {
+      "nombre": "16oz coffe cups 1000pcs",
+      "descripcion": "16oz oz hot coffee cups, 1000pcs.",
+      "precio": 59.99,
+      "categoria": "Coffee Cups & Lids",
+      "categoria_id": 9,
+      "imagen_url": "images/productos/coffe_cups/16oz_coffe_cups_1000pcs.jpeg",
+      "codigo_producto": "CUP-CFE-16"
+    },
+    {
+      "nombre": "20oz coffe cups 1000pcs",
+      "descripcion": "20oz oz hot coffee cups, 1000pcs.",
+      "precio": 48.99,
+      "categoria": "Coffee Cups & Lids",
+      "categoria_id": 9,
+      "imagen_url": "images/productos/coffe_cups/20oz_coffe_cups_1000pcs.jpg",
+      "codigo_producto": "CUP-CFE-20"
+    },
+    {
+      "nombre": "Lids 10-24 oz coffe cups 1000pcs",
+      "descripcion": "Lids 10-24 oz oz hot coffee cups, 1000pcs.",
+      "precio": 34.99,
+      "categoria": "Coffee Cups & Lids",
+      "categoria_id": 9,
+      "imagen_url": "images/productos/coffe_cups/lids_10_24_oz_coffe_cups_1000pcs.webp",
+      "codigo_producto": "LID-CFE-1024"
+    },
+    {
+      "nombre": "L Black Nitrili Gloves xl 1000pcs",
+      "descripcion": "Black Nitrile Gloves, size XL, 1000pcs.",
+      "precio": 42.99,
+      "categoria": "Cutlery & Accessories",
+      "categoria_id": 12,
+      "imagen_url": "images/productos/cutlery/l_black_nitrili_gloves_xl_1000pcs.jpg",
+      "codigo_producto": "ACC-GLV-XL"
+    },
+    {
+      "nombre": "Cutlery kits box 420pcs",
+      "descripcion": "Complete disposable cutlery kits, box of 420 pieces.",
+      "precio": 0.0,
+      "categoria": "Cutlery & Accessories",
+      "categoria_id": 12,
+      "imagen_url": "images/productos/cutlery/cutlery_kits_box_420pcs.webp",
+      "codigo_producto": "ACC-KIT-420"
+    },
+    {
+      "nombre": "Full size heavy spoon white box of 1000pcs",
+      "descripcion": "Full size heavy-duty white disposable spoon.",
+      "precio": 19.99,
+      "categoria": "Cutlery & Accessories",
+      "categoria_id": 12,
+      "imagen_url": "images/productos/cutlery/full_size_heavy_spoon_white_box_of_1000pcs.png",
+      "codigo_producto": "CUT-SPN-HD"
+    },
+    {
+      "nombre": "Full size heavy forks white box of 1000pcs",
+      "descripcion": "Full size heavy-duty white disposable forks.",
+      "precio": 19.99,
+      "categoria": "Cutlery & Accessories",
+      "categoria_id": 12,
+      "imagen_url": "images/productos/cutlery/full_size_heavy_forks_white_box_of_1000pcs.webp",
+      "codigo_producto": "CUT-FRK-HD"
+    },
+    {
+      "nombre": "Full size heavy knife white box of 1000pcs",
+      "descripcion": "Full size heavy-duty white disposable knife.",
+      "precio": 19.99,
+      "categoria": "Cutlery & Accessories",
+      "categoria_id": 12,
+      "imagen_url": "images/productos/cutlery/full_size_heavy_knife_white_box_of_1000pcs.webp",
+      "codigo_producto": "CUT-KNF-HD"
+    },
+    {
+      "nombre": "46 Garbage bags 100pcs 2XHD",
+      "descripcion": "Product: 46 Garbage bags 100pcs 2XHD. Belongs to the Miscellaneous category.",
+      "precio": 19.99,
+      "categoria": "Miscellaneous",
+      "categoria_id": 13,
+      "imagen_url": "images/productos/misc/46_garbage_bags_100pcs_2xhd.webp",
+      "codigo_producto": "MIS-BAG-46"
+    },
+    {
+      "nombre": "Dart clear 500pcs",
+      "descripcion": "Product: Dart clear 500pcs. Belongs to the Cold Cups & Lids category.",
+      "precio": 55.99,
+      "categoria": "Cold Cups & Lids",
+      "categoria_id": 10,
+      "imagen_url": "images/productos/cold_cups/dart_clear_500pcs.jpg",
+      "codigo_producto": "CUP-CLD-DRT"
+    },
+    {
+      "nombre": "20oz clear plastic pet cold cups 1000pcs",
+      "descripcion": "20oz oz clear PET cold cups.",
+      "precio": 48.99,
+      "categoria": "Cold Cups & Lids",
+      "categoria_id": 10,
+      "imagen_url": "images/productos/cold_cups/20oz_clear_plastic_pet_cold_cups_1000pcs.webp",
+      "codigo_producto": "CUP-CLD-20"
+    },
+    {
+      "nombre": "16oz clear plastic pet cold cups 1000pcs",
+      "descripcion": "16oz oz clear PET cold cups.",
+      "precio": 56.99,
+      "categoria": "Cold Cups & Lids",
+      "categoria_id": 10,
+      "imagen_url": "images/productos/cold_cups/16oz_clear_plastic_pet_cold_cups_1000pcs.webp",
+      "codigo_producto": "CUP-CLD-16"
+    },
+    {
+      "nombre": "12 oz clear plastic SQUAT pet cold cups 1000pcs",
+      "descripcion": "Product: 12 oz clear plastic SQUAT pet cold cups 1000pcs. Belongs to the Cold Cups & Lids category.",
+      "precio": 55.99,
+      "categoria": "Cold Cups & Lids",
+      "categoria_id": 10,
+      "imagen_url": "images/productos/cold_cups/12_oz_clear_plastic_squat_pet_cold_cups_1000pcs.webp",
+      "codigo_producto": "CUP-CLD-12S"
+    },
+    {
+      "nombre": "Clear plastic pet straw lid 12oz - 24oz box 1000pcs",
+      "descripcion": "Product: Clear plastic pet straw lid 12oz - 24oz box 1000pcs. Belongs to the Cold Cups & Lids category.",
+      "precio": 32.99,
+      "categoria": "Cold Cups & Lids",
+      "categoria_id": 10,
+      "imagen_url": "images/productos/cold_cups/clear_plastic_pet_straw_lid_12oz___24oz_box_1000pcs.webp",
+      "codigo_producto": "LID-CLD-STR"
+    },
+    {
+      "nombre": "Dome lids 12-24 oz cold cup",
+      "descripcion": "Product: Dome lids 12-24 oz cold cup. Belongs to the Cold Cups & Lids category.",
+      "precio": 39.99,
+      "categoria": "Cold Cups & Lids",
+      "categoria_id": 10,
+      "imagen_url": "images/productos/cold_cups/dome_lids_12_24_oz_cold_cup.webp",
+      "codigo_producto": "LID-CLD-DME"
+    },
+    {
+      "nombre": "2oz clear souflee cup box of 2500 pcs",
+      "descripcion": "2 oz clear plastic soufflé cup.",
+      "precio": 26.99,
+      "categoria": "Soufflé Cups & Lids",
+      "categoria_id": 11,
+      "imagen_url": "images/productos/souffle_cups/2oz_clear_souflee_cup_box_of_2500_pcs.webp",
+      "codigo_producto": "CUP-SFL-02"
+    },
+    {
+      "nombre": "1.5 - 2.0 clear plastic souflee lid box of 2500 pcs",
+      "descripcion": "Lid for 1.5 - 2.0 clear plastic souflee oz soufflé cups.",
+      "precio": 24.99,
+      "categoria": "Soufflé Cups & Lids",
+      "categoria_id": 11,
+      "imagen_url": "images/productos/souffle_cups/1_5___2_0_clear_plastic_souflee_lid_box_of_2500_pcs.webp",
+      "codigo_producto": "LID-SFL-1520"
     }
   ]

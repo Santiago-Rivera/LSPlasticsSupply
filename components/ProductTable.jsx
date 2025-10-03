@@ -6,21 +6,32 @@ export default function ProductTable({ products }) {
             <div style={{
                 textAlign: 'center',
                 padding: '40px',
-                backgroundColor: '#f8f9fa',
-                borderRadius: '8px',
-                border: '1px solid #e9ecef'
+                background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+                borderRadius: '16px',
+                border: '3px solid var(--accent-yellow)',
+                boxShadow: '0 10px 30px rgba(30, 58, 138, 0.1)'
             }}>
-                <p>No hay productos para mostrar</p>
+                <div style={{
+                    fontSize: '48px',
+                    marginBottom: '16px'
+                }}>📦</div>
+                <p style={{
+                    margin: 0,
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: 'var(--light-black)'
+                }}>No hay productos para mostrar</p>
             </div>
         );
     }
 
     return (
         <div style={{
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            overflow: 'hidden'
+            background: 'var(--pure-white)',
+            borderRadius: '16px',
+            boxShadow: '0 15px 35px rgba(30, 58, 138, 0.15)',
+            overflow: 'hidden',
+            border: '2px solid var(--border-gray)'
         }}>
             <div style={{
                 overflowX: 'auto'
@@ -31,103 +42,93 @@ export default function ProductTable({ products }) {
                 }}>
                     <thead>
                         <tr style={{
-                            backgroundColor: '#4a5568',
-                            color: 'white'
+                            background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
+                            color: 'var(--pure-white)'
                         }}>
                             <th style={{
-                                padding: '16px',
+                                padding: '20px',
                                 textAlign: 'left',
-                                fontWeight: '600',
+                                fontWeight: '700',
                                 fontSize: '14px',
-                                letterSpacing: '0.5px'
+                                letterSpacing: '1px',
+                                textTransform: 'uppercase',
+                                borderBottom: '3px solid var(--accent-yellow)'
                             }}>
-                                CATEGORÍA
+                                📂 CATEGORÍA
                             </th>
                             <th style={{
-                                padding: '16px',
+                                padding: '20px',
                                 textAlign: 'left',
-                                fontWeight: '600',
+                                fontWeight: '700',
                                 fontSize: '14px',
-                                letterSpacing: '0.5px'
+                                letterSpacing: '1px',
+                                textTransform: 'uppercase',
+                                borderBottom: '3px solid var(--accent-yellow)'
                             }}>
-                                PRODUCTO
+                                📦 PRODUCTO
                             </th>
                             <th style={{
-                                padding: '16px',
+                                padding: '20px',
                                 textAlign: 'right',
-                                fontWeight: '600',
+                                fontWeight: '700',
                                 fontSize: '14px',
-                                letterSpacing: '0.5px'
+                                letterSpacing: '1px',
+                                textTransform: 'uppercase',
+                                borderBottom: '3px solid var(--accent-yellow)'
                             }}>
-                                PRECIO
+                                💰 PRECIO
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {products.map((product, index) => (
                             <tr key={index} style={{
-                                backgroundColor: index % 2 === 0 ? '#f8f9fa' : 'white',
-                                transition: 'background-color 0.2s ease'
+                                backgroundColor: index % 2 === 0 ? 'var(--off-white)' : 'var(--pure-white)',
+                                transition: 'all 0.3s ease',
+                                borderLeft: index % 2 === 0 ? '4px solid var(--accent-yellow)' : '4px solid var(--primary-blue)'
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = '#e3f2fd';
+                                e.currentTarget.style.backgroundColor = 'var(--accent-yellow)';
+                                e.currentTarget.style.transform = 'scale(1.02)';
+                                e.currentTarget.style.boxShadow = '0 8px 20px rgba(251, 191, 36, 0.3)';
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = index % 2 === 0 ? '#f8f9fa' : 'white';
+                                e.currentTarget.style.backgroundColor = index % 2 === 0 ? 'var(--off-white)' : 'var(--pure-white)';
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.boxShadow = 'none';
                             }}>
                                 <td style={{
-                                    padding: '16px',
-                                    borderBottom: '1px solid #e9ecef'
+                                    padding: '20px',
+                                    borderBottom: '2px solid var(--border-gray)',
+                                    fontSize: '15px',
+                                    fontWeight: '600',
+                                    color: 'var(--primary-blue)'
                                 }}>
-                                    <span style={{
-                                        backgroundColor: '#e8f4fd',
-                                        color: '#1976d2',
-                                        padding: '4px 12px',
-                                        borderRadius: '12px',
-                                        fontSize: '12px',
-                                        fontWeight: '500'
-                                    }}>
-                                        {product.categoria}
-                                    </span>
+                                    {product.categoria || product.category}
                                 </td>
                                 <td style={{
-                                    padding: '16px',
-                                    borderBottom: '1px solid #e9ecef',
-                                    fontWeight: '500',
-                                    color: '#2c3e50'
+                                    padding: '20px',
+                                    borderBottom: '2px solid var(--border-gray)',
+                                    fontSize: '16px',
+                                    fontWeight: '600',
+                                    color: 'var(--dark-black)'
                                 }}>
-                                    {product.producto}
+                                    {product.producto || product.product || product.nombre}
                                 </td>
                                 <td style={{
-                                    padding: '16px',
-                                    borderBottom: '1px solid #e9ecef',
+                                    padding: '20px',
+                                    borderBottom: '2px solid var(--border-gray)',
                                     textAlign: 'right',
-                                    fontWeight: 'bold',
-                                    color: '#28a745',
-                                    fontSize: '16px'
+                                    fontSize: '18px',
+                                    fontWeight: '700',
+                                    color: 'var(--primary-dark-blue)'
                                 }}>
-                                    ${parseFloat(product.precio || 0).toFixed(2)}
+                                    ${product.precio || product.price}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </div>
-            
-            {/* Footer with product count */}
-            <div style={{
-                padding: '16px',
-                backgroundColor: '#f8f9fa',
-                borderTop: '1px solid #e9ecef',
-                textAlign: 'center'
-            }}>
-                <span style={{
-                    fontSize: '14px',
-                    color: '#666',
-                    fontWeight: '500'
-                }}>
-                    📊 Total de productos: {products.length}
-                </span>
             </div>
         </div>
     );

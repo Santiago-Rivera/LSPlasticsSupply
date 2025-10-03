@@ -1,124 +1,48 @@
 "use client";
-import { useRouter } from 'next/navigation';
-import { useCart } from '../../../contexts/CartContext';
-import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
-function PayPalSuccessContent() {
+export default function PaymentSuccess() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { clearCart } = useCart();
-    const [orderNumber, setOrderNumber] = useState('');
-    const [orderDetails, setOrderDetails] = useState(null);
+    const [paymentDetails, setPaymentDetails] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        handlePayPalReturn();
-    }, []);
+        const sessionId = searchParams.get('session_id');
+        const paymentIntentId = searchParams.get('payment_intent');
 
-    const handlePayPalReturn = async () => {
-        try {
-            // Obtener parámetros de PayPal
-            const token = searchParams.get('token');
-            const payerId = searchParams.get('PayerID');
-
-            if (token && payerId) {
-                // Recuperar orden pendiente
-                const pendingOrder = localStorage.getItem('ls-pending-paypal-order');
-
-                if (pendingOrder) {
-                    const orderData = JSON.parse(pendingOrder);
-
-                    // Capturar el pago real en PayPal
-                    const captureResponse = await fetch('/api/paypal/capture-order', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            orderID: orderData.orderID
-                        }),
-                    });
-
-                    const captureData = await captureResponse.json();
-
-                    if (captureData.success) {
-                        // Pago capturado exitosamente
-                        const timestamp = Date.now().toString();
-                        const random = Math.random().toString(36).substr(2, 5).toUpperCase();
-                        const orderNum = `LS-PP-${timestamp.slice(-6)}-${random}`;
-
-                        setOrderNumber(orderNum);
-                        setOrderDetails({
-                            transactionId: captureData.transactionID,
-                            amount: captureData.amount,
-                            currency: captureData.currency,
-                            payer: captureData.payer
-                        });
-
-                        // Limpiar carrito y pedido pendiente
-                        clearCart();
-                        localStorage.removeItem('ls-pending-paypal-order');
-                    } else {
-                        throw new Error(captureData.error || 'Error capturando el pago');
-                    }
-                } else {
-                    throw new Error('No se encontró información del pedido');
-                }
-            } else {
-                // Generar orden genérica si no hay parámetros específicos
-                const timestamp = Date.now().toString();
-                const random = Math.random().toString(36).substr(2, 5).toUpperCase();
-                const orderNum = `LS-PP-${timestamp.slice(-6)}-${random}`;
-                setOrderNumber(orderNum);
-                clearCart();
-            }
-        } catch (error) {
-            console.error('Error procesando retorno de PayPal:', error);
-            // Continuar con orden genérica en caso de error
-            const timestamp = Date.now().toString();
-            const random = Math.random().toString(36).substr(2, 5).toUpperCase();
-            setOrderNumber(`LS-PP-${timestamp.slice(-6)}-${random}`);
-            clearCart();
-        } finally {
-            setLoading(false);
+        if (sessionId || paymentIntentId) {
+            setPaymentDetails({
+                sessionId,
+                paymentIntentId,
+                timestamp: new Date().toLocaleString()
+            });
         }
-    };
+        setLoading(false);
+    }, [searchParams]);
 
     if (loading) {
         return (
             <div style={{
                 minHeight: '100vh',
-                backgroundColor: '#f8f9fa',
-                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
-                padding: '40px 20px',
                 display: 'flex',
+                alignItems: 'center',
                 justifyContent: 'center',
-                alignItems: 'center'
+                background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+                padding: '20px'
             }}>
                 <div style={{
-                    backgroundColor: 'white',
+                    background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
+                    color: 'var(--pure-white)',
                     padding: '40px',
-                    borderRadius: '16px',
-                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '20px',
+                    border: '3px solid var(--accent-yellow)',
                     textAlign: 'center'
                 }}>
-                    <div style={{
-                        width: '40px',
-                        height: '40px',
-                        border: '4px solid #0070ba',
-                        borderTop: '4px solid transparent',
-                        borderRadius: '50%',
-                        animation: 'spin 1s linear infinite',
-                        margin: '0 auto 16px'
-                    }} />
-                    <div style={{
-                        fontSize: '18px',
-                        color: '#0070ba',
-                        fontWeight: '600'
-                    }}>
-                        Procesando retorno de PayPal real...
-                    </div>
+                    <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
+                    <h2>Processing payment confirmation...</h2>
                 </div>
             </div>
         );
@@ -127,205 +51,158 @@ function PayPalSuccessContent() {
     return (
         <div style={{
             minHeight: '100vh',
-            backgroundColor: '#f8f9fa',
-            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
-            padding: '40px 20px'
+            background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+            padding: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
         }}>
             <div style={{
                 maxWidth: '600px',
-                margin: '0 auto',
-                textAlign: 'center'
+                width: '100%',
+                background: 'var(--pure-white)',
+                borderRadius: '20px',
+                border: '3px solid var(--accent-yellow)',
+                boxShadow: '0 20px 40px rgba(30, 58, 138, 0.2)',
+                overflow: 'hidden'
             }}>
+                {/* Success Header */}
                 <div style={{
-                    backgroundColor: 'white',
-                    padding: '60px 40px',
-                    borderRadius: '16px',
-                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.1)'
+                    background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                    color: 'var(--pure-white)',
+                    padding: '40px',
+                    textAlign: 'center'
                 }}>
-                    <div style={{ fontSize: '80px', marginBottom: '24px' }}>✅</div>
+                    <div style={{ fontSize: '80px', marginBottom: '20px' }}>✅</div>
                     <h1 style={{
                         fontSize: '32px',
-                        fontWeight: '600',
-                        color: '#28a745',
-                        marginBottom: '16px',
-                        letterSpacing: '-0.01em'
+                        fontWeight: '800',
+                        margin: '0 0 16px 0',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px'
                     }}>
-                        ¡Pago Real Exitoso con PayPal!
+                        Payment Successful!
                     </h1>
                     <p style={{
                         fontSize: '18px',
-                        color: '#666',
-                        marginBottom: '24px'
+                        margin: 0,
+                        opacity: 0.9
                     }}>
-                        Tu pago ha sido procesado correctamente a través de PayPal real
+                        Your order has been processed successfully
                     </p>
-                    
+                </div>
+
+                {/* Payment Details */}
+                <div style={{ padding: '40px' }}>
                     <div style={{
-                        backgroundColor: '#f0f8ff',
+                        background: 'var(--off-white)',
                         padding: '24px',
                         borderRadius: '12px',
-                        marginBottom: '24px',
-                        border: '1px solid #0070ba'
+                        border: '2px solid var(--border-gray)',
+                        marginBottom: '24px'
                     }}>
-                        <div style={{
-                            fontSize: '14px',
-                            color: '#0070ba',
-                            marginBottom: '8px',
-                            fontWeight: '600'
+                        <h3 style={{
+                            color: 'var(--primary-blue)',
+                            margin: '0 0 16px 0',
+                            fontSize: '20px',
+                            fontWeight: '700'
                         }}>
-                            💳 Número de orden PayPal Real
-                        </div>
-                        <div style={{
-                            fontSize: '24px',
-                            fontWeight: 'bold',
-                            color: '#2c3e50',
-                            fontFamily: 'monospace'
-                        }}>
-                            {orderNumber}
-                        </div>
+                            📋 Payment Details
+                        </h3>
+
+                        {paymentDetails && (
+                            <div style={{ fontSize: '14px', color: 'var(--light-black)' }}>
+                                <p style={{ margin: '8px 0' }}>
+                                    <strong>💳 Payment Method:</strong> Google Pay
+                                </p>
+                                {paymentDetails.paymentIntentId && (
+                                    <p style={{ margin: '8px 0' }}>
+                                        <strong>🔗 Transaction ID:</strong> {paymentDetails.paymentIntentId}
+                                    </p>
+                                )}
+                                <p style={{ margin: '8px 0' }}>
+                                    <strong>⏰ Processed at:</strong> {paymentDetails.timestamp}
+                                </p>
+                                <p style={{ margin: '8px 0' }}>
+                                    <strong>✉️ Confirmation:</strong> A receipt has been sent to your email
+                                </p>
+                            </div>
+                        )}
                     </div>
 
-                    {orderDetails && (
-                        <div style={{
-                            backgroundColor: '#d4edda',
-                            padding: '20px',
-                            borderRadius: '12px',
-                            marginBottom: '24px',
-                            border: '1px solid #28a745'
-                        }}>
-                            <div style={{
-                                fontSize: '14px',
-                                color: '#155724',
-                                fontWeight: '600',
-                                marginBottom: '12px'
-                            }}>
-                                📄 Detalles del Pago Real
-                            </div>
-                            <div style={{
-                                fontSize: '12px',
-                                color: '#155724',
-                                lineHeight: '1.5',
-                                textAlign: 'left'
-                            }}>
-                                • ID de Transacción: {orderDetails.transactionId}<br/>
-                                • Monto: ${orderDetails.amount} {orderDetails.currency}<br/>
-                                • Pagador: {orderDetails.payer?.name?.given_name} {orderDetails.payer?.name?.surname}<br/>
-                                • Email: {orderDetails.payer?.email_address}
-                            </div>
-                        </div>
-                    )}
-
+                    {/* Next Steps */}
                     <div style={{
-                        backgroundColor: '#f8f9fa',
-                        padding: '20px',
+                        background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
+                        color: 'var(--pure-white)',
+                        padding: '24px',
                         borderRadius: '12px',
-                        marginBottom: '32px'
+                        marginBottom: '24px'
                     }}>
-                        <div style={{
+                        <h3 style={{
+                            margin: '0 0 16px 0',
+                            fontSize: '18px',
+                            fontWeight: '700'
+                        }}>
+                            📦 What happens next?
+                        </h3>
+                        <ul style={{
+                            margin: 0,
+                            paddingLeft: '20px',
                             fontSize: '14px',
-                            color: '#666',
-                            marginBottom: '12px'
+                            lineHeight: '1.6'
                         }}>
-                            <strong>📧 Confirmaciones por Email</strong>
-                        </div>
-                        <div style={{
-                            fontSize: '12px',
-                            color: '#999',
-                            lineHeight: '1.5'
-                        }}>
-                            • Comprobante de pago real de PayPal<br/>
-                            • Detalles de envío y seguimiento<br/>
-                            • Factura electrónica de L&S Plastics<br/>
-                            • Información de garantía y soporte
-                        </div>
+                            <li>You'll receive an email confirmation shortly</li>
+                            <li>Your order will be prepared for shipment</li>
+                            <li>We'll send tracking information once shipped</li>
+                            <li>Expected delivery: 3-5 business days</li>
+                        </ul>
                     </div>
 
+                    {/* Action Buttons */}
                     <div style={{
-                        display: 'flex',
-                        gap: '16px',
-                        justifyContent: 'center',
-                        flexWrap: 'wrap'
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '16px'
                     }}>
+                        <Link href="/" style={{
+                            background: 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)',
+                            color: 'var(--dark-black)',
+                            padding: '16px 24px',
+                            borderRadius: '12px',
+                            textDecoration: 'none',
+                            textAlign: 'center',
+                            fontWeight: '700',
+                            fontSize: '14px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                            border: '2px solid var(--bright-yellow)',
+                            transition: 'all 0.3s ease',
+                            display: 'block'
+                        }}>
+                            🏠 Continue Shopping
+                        </Link>
+
                         <button
-                            onClick={() => router.push('/')}
+                            onClick={() => window.print()}
                             style={{
-                                backgroundColor: '#4a5568',
-                                color: 'white',
-                                padding: '16px 32px',
-                                border: 'none',
-                                borderRadius: '8px',
-                                fontSize: '16px',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                transition: 'background-color 0.3s ease'
-                            }}
-                            onMouseEnter={(e) => e.target.style.backgroundColor = '#2d3748'}
-                            onMouseLeave={(e) => e.target.style.backgroundColor = '#4a5568'}>
-                            🏠 Volver al Inicio
-                        </button>
-                        
-                        <button
-                            onClick={() => router.push('/tienda/categorias')}
-                            style={{
-                                backgroundColor: 'transparent',
-                                color: '#4a5568',
-                                padding: '16px 32px',
-                                border: '2px solid #4a5568',
-                                borderRadius: '8px',
-                                fontSize: '16px',
-                                fontWeight: '600',
+                                background: 'linear-gradient(135deg, var(--light-black) 0%, var(--dark-black) 100%)',
+                                color: 'var(--pure-white)',
+                                padding: '16px 24px',
+                                borderRadius: '12px',
+                                border: '2px solid var(--accent-yellow)',
+                                fontWeight: '700',
+                                fontSize: '14px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease'
                             }}
-                            onMouseEnter={(e) => {
-                                e.target.style.backgroundColor = '#4a5568';
-                                e.target.style.color = 'white';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.backgroundColor = 'transparent';
-                                e.target.style.color = '#4a5568';
-                            }}>
-                            🛒 Seguir Comprando
+                        >
+                            🖨️ Print Receipt
                         </button>
                     </div>
                 </div>
-
-                <style jsx>{`
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                `}</style>
             </div>
         </div>
-    );
-}
-
-export default function PayPalSuccessPage() {
-    return (
-        <Suspense fallback={
-            <div style={{
-                minHeight: '100vh',
-                backgroundColor: '#f8f9fa',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-                <div style={{
-                    backgroundColor: 'white',
-                    padding: '40px',
-                    borderRadius: '16px',
-                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.1)',
-                    textAlign: 'center'
-                }}>
-                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>⏳</div>
-                    <div style={{ fontSize: '18px', color: '#666' }}>
-                        Cargando confirmación de pago real...
-                    </div>
-                </div>
-            </div>
-        }>
-            <PayPalSuccessContent />
-        </Suspense>
     );
 }

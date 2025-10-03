@@ -41,7 +41,9 @@ function CardPaymentForm({ amount, cartItems, onSuccess, onError, onLoading }) {
         }
 
         setIsProcessing(true);
-        onLoading(true);
+        if (onLoading) {
+            onLoading(true);
+        }
 
         try {
             // Crear Payment Intent real
@@ -95,173 +97,186 @@ function CardPaymentForm({ amount, cartItems, onSuccess, onError, onLoading }) {
             onError(`Error procesando el pago: ${error.message}`);
         } finally {
             setIsProcessing(false);
-            onLoading(false);
+            if (onLoading) {
+                onLoading(false);
+            }
         }
     };
 
-    const cardElementOptions = {
-        style: {
-            base: {
-                fontSize: '16px',
-                fontFamily: 'Inter, system-ui, sans-serif',
-                color: '#2c3e50',
-                '::placeholder': {
-                    color: '#aab7c4',
-                },
-                iconColor: '#666',
-            },
-            invalid: {
-                color: '#dc3545',
-                iconColor: '#dc3545',
-            },
-        },
-        hidePostalCode: false,
-    };
-
     return (
-        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <form onSubmit={handleSubmit} style={{
+            background: 'var(--pure-white)',
+            padding: '30px',
+            borderRadius: '16px',
+            border: '2px solid var(--primary-blue)',
+            boxShadow: '0 10px 25px rgba(30, 58, 138, 0.1)'
+        }}>
+            <h3 style={{
+                fontSize: '24px',
+                fontWeight: '700',
+                color: 'var(--dark-black)',
+                margin: '0 0 24px 0',
+                textAlign: 'center',
+                textTransform: 'uppercase',
+                borderBottom: '3px solid var(--accent-yellow)',
+                paddingBottom: '12px'
+            }}>
+                💳 Información de Pago
+            </h3>
+
             {/* Información del cliente */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
+                gridTemplateColumns: '1fr',
                 gap: '16px',
-                marginBottom: '20px'
+                marginBottom: '24px'
             }}>
-                <div style={{ gridColumn: '1 / -1' }}>
-                    <label style={{
-                        display: 'block',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#2c3e50',
-                        marginBottom: '8px'
+                <div className="form-group">
+                    <label className="form-label" style={{
+                        color: 'var(--dark-black)',
+                        fontWeight: '600',
+                        textTransform: 'uppercase',
+                        fontSize: '12px',
+                        letterSpacing: '0.5px'
                     }}>
                         Nombre Completo *
                     </label>
                     <input
                         type="text"
-                        required
-                        placeholder="Juan Pérez"
+                        className="form-input"
                         value={customerInfo.name}
-                        onChange={(e) => setCustomerInfo(prev => ({ ...prev, name: e.target.value }))}
+                        onChange={(e) => setCustomerInfo(prev => ({...prev, name: e.target.value}))}
+                        required
                         style={{
-                            width: '100%',
-                            padding: '12px',
-                            border: '2px solid #e9ecef',
+                            border: '2px solid var(--border-gray)',
                             borderRadius: '8px',
-                            fontSize: '16px',
-                            outline: 'none',
-                            fontFamily: 'Inter, system-ui, sans-serif'
+                            padding: '12px 16px',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: 'var(--dark-black)',
+                            background: 'var(--off-white)',
+                            transition: 'all 0.3s ease'
+                        }}
+                        onFocus={(e) => {
+                            e.target.style.borderColor = 'var(--primary-blue)';
+                            e.target.style.backgroundColor = 'var(--pure-white)';
+                            e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)';
+                        }}
+                        onBlur={(e) => {
+                            e.target.style.borderColor = 'var(--border-gray)';
+                            e.target.style.backgroundColor = 'var(--off-white)';
+                            e.target.style.boxShadow = 'none';
                         }}
                     />
                 </div>
 
-                <div style={{ gridColumn: '1 / -1' }}>
-                    <label style={{
-                        display: 'block',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#2c3e50',
-                        marginBottom: '8px'
+                <div className="form-group">
+                    <label className="form-label" style={{
+                        color: 'var(--dark-black)',
+                        fontWeight: '600',
+                        textTransform: 'uppercase',
+                        fontSize: '12px',
+                        letterSpacing: '0.5px'
                     }}>
                         Email *
                     </label>
                     <input
                         type="email"
-                        required
-                        placeholder="juan@ejemplo.com"
+                        className="form-input"
                         value={customerInfo.email}
-                        onChange={(e) => setCustomerInfo(prev => ({ ...prev, email: e.target.value }))}
+                        onChange={(e) => setCustomerInfo(prev => ({...prev, email: e.target.value}))}
+                        required
                         style={{
-                            width: '100%',
-                            padding: '12px',
-                            border: '2px solid #e9ecef',
+                            border: '2px solid var(--border-gray)',
                             borderRadius: '8px',
-                            fontSize: '16px',
-                            outline: 'none',
-                            fontFamily: 'Inter, system-ui, sans-serif'
+                            padding: '12px 16px',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: 'var(--dark-black)',
+                            background: 'var(--off-white)',
+                            transition: 'all 0.3s ease'
                         }}
-                    />
-                </div>
-
-                <div>
-                    <label style={{
-                        display: 'block',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#2c3e50',
-                        marginBottom: '8px'
-                    }}>
-                        Dirección
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Calle 123 #45-67"
-                        value={customerInfo.address}
-                        onChange={(e) => setCustomerInfo(prev => ({ ...prev, address: e.target.value }))}
-                        style={{
-                            width: '100%',
-                            padding: '12px',
-                            border: '2px solid #e9ecef',
-                            borderRadius: '8px',
-                            fontSize: '16px',
-                            outline: 'none',
-                            fontFamily: 'Inter, system-ui, sans-serif'
+                        onFocus={(e) => {
+                            e.target.style.borderColor = 'var(--primary-blue)';
+                            e.target.style.backgroundColor = 'var(--pure-white)';
+                            e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)';
                         }}
-                    />
-                </div>
-
-                <div>
-                    <label style={{
-                        display: 'block',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        color: '#2c3e50',
-                        marginBottom: '8px'
-                    }}>
-                        Ciudad
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Ciudad"
-                        value={customerInfo.city}
-                        onChange={(e) => setCustomerInfo(prev => ({ ...prev, city: e.target.value }))}
-                        style={{
-                            width: '100%',
-                            padding: '12px',
-                            border: '2px solid #e9ecef',
-                            borderRadius: '8px',
-                            fontSize: '16px',
-                            outline: 'none',
-                            fontFamily: 'Inter, system-ui, sans-serif'
+                        onBlur={(e) => {
+                            e.target.style.borderColor = 'var(--border-gray)';
+                            e.target.style.backgroundColor = 'var(--off-white)';
+                            e.target.style.boxShadow = 'none';
                         }}
                     />
                 </div>
             </div>
 
             {/* Elemento de tarjeta de Stripe */}
-            <div style={{
-                backgroundColor: '#f8f9fa',
-                padding: '20px',
-                borderRadius: '8px',
-                marginBottom: '20px'
-            }}>
-                <label style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    color: '#2c3e50',
-                    marginBottom: '12px'
+            <div className="form-group">
+                <label className="form-label" style={{
+                    color: 'var(--dark-black)',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    fontSize: '12px',
+                    letterSpacing: '0.5px'
                 }}>
-                    💳 Información de la Tarjeta (Stripe Real)
+                    Información de Tarjeta *
                 </label>
                 <div style={{
-                    padding: '16px',
-                    backgroundColor: 'white',
+                    border: '2px solid var(--border-gray)',
                     borderRadius: '8px',
-                    border: '2px solid #e9ecef'
+                    padding: '16px',
+                    backgroundColor: 'var(--off-white)',
+                    transition: 'all 0.3s ease'
                 }}>
-                    <CardElement options={cardElementOptions} />
+                    <CardElement
+                        options={{
+                            style: {
+                                base: {
+                                    fontSize: '16px',
+                                    color: '#111827',
+                                    fontWeight: '500',
+                                    fontFamily: 'Inter, system-ui, sans-serif',
+                                    '::placeholder': {
+                                        color: '#6b7280'
+                                    }
+                                },
+                                invalid: {
+                                    color: '#dc2626'
+                                }
+                            }
+                        }}
+                    />
                 </div>
+            </div>
+
+            {/* Resumen del pago */}
+            <div style={{
+                background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
+                padding: '20px',
+                borderRadius: '12px',
+                margin: '24px 0',
+                border: '2px solid var(--accent-yellow)'
+            }}>
+                <h4 style={{
+                    color: 'var(--pure-white)',
+                    fontSize: '18px',
+                    fontWeight: '700',
+                    margin: '0 0 8px 0',
+                    textAlign: 'center',
+                    textTransform: 'uppercase'
+                }}>
+                    💰 Total a Pagar
+                </h4>
+                <p style={{
+                    color: 'var(--accent-yellow)',
+                    fontSize: '24px',
+                    fontWeight: '800',
+                    margin: 0,
+                    textAlign: 'center',
+                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
+                }}>
+                    ${(amount || 0).toFixed(2)}
+                </p>
             </div>
 
             {/* Botón de pago */}
@@ -269,41 +284,58 @@ function CardPaymentForm({ amount, cartItems, onSuccess, onError, onLoading }) {
                 type="submit"
                 disabled={!stripe || isProcessing}
                 style={{
-                    backgroundColor: isProcessing ? '#6c757d' : '#28a745',
-                    color: 'white',
-                    padding: '16px',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    cursor: isProcessing ? 'not-allowed' : 'pointer',
                     width: '100%',
-                    transition: 'background-color 0.3s ease',
-                    opacity: !stripe ? 0.5 : 1
-                }}>
-                {isProcessing ? (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                        <div style={{
-                            width: '16px',
-                            height: '16px',
-                            border: '2px solid #fff',
-                            borderTop: '2px solid transparent',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite'
-                        }} />
-                        Procesando Cobro Real...
-                    </div>
-                ) : (
-                    `🔴 COBRAR ${amount.toFixed(2)} USD AHORA`
-                )}
+                    background: isProcessing
+                        ? 'var(--border-gray)'
+                        : 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)',
+                    color: isProcessing ? 'var(--gray-text)' : 'var(--dark-black)',
+                    border: '3px solid var(--bright-yellow)',
+                    padding: '18px 32px',
+                    borderRadius: '12px',
+                    fontSize: '18px',
+                    fontWeight: '700',
+                    cursor: isProcessing ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.3s ease',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    opacity: isProcessing ? 0.7 : 1
+                }}
+                onMouseEnter={(e) => {
+                    if (!isProcessing) {
+                        e.target.style.background = 'linear-gradient(135deg, var(--bright-yellow) 0%, var(--accent-yellow) 100%)';
+                        e.target.style.transform = 'translateY(-3px)';
+                        e.target.style.boxShadow = '0 15px 30px rgba(251, 191, 36, 0.4)';
+                    }
+                }}
+                onMouseLeave={(e) => {
+                    if (!isProcessing) {
+                        e.target.style.background = 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)';
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = 'none';
+                    }
+                }}
+            >
+                {isProcessing ? '⏳ Procesando Pago...' : '🚀 Pagar Ahora'}
             </button>
 
-            <style jsx>{`
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
-            `}</style>
+            {/* Información de seguridad */}
+            <div style={{
+                background: 'var(--off-white)',
+                border: '2px solid var(--border-gray)',
+                borderRadius: '8px',
+                padding: '16px',
+                marginTop: '20px',
+                textAlign: 'center'
+            }}>
+                <p style={{
+                    fontSize: '12px',
+                    color: 'var(--light-black)',
+                    margin: 0,
+                    fontWeight: '500'
+                }}>
+                    🔒 Tu información está protegida con encriptación SSL de 256 bits
+                </p>
+            </div>
         </form>
     );
 }

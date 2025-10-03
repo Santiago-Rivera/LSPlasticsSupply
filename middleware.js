@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // Sistema de rate limiting en memoria por IP
 const rateLimitMap = new Map();
@@ -69,6 +69,39 @@ export function middleware(request) {
         }
     }
 
+    const { pathname } = request.nextUrl;
+
+    // Rutas que requieren protección especial
+    const protectedRoutes = [
+        '/api/admin',
+        '/api/modify',
+        '/api/delete',
+        '/admin',
+        '/_next/static',
+        '/edit'
+    ];
+
+    // Verificar si es una ruta protegida
+    const isProtectedRoute = protectedRoutes.some(route =>
+        pathname.startsWith(route)
+    );
+
+    // Verificar métodos de modificación
+    const isModificationMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(
+        request.method
+    );
+
+    if (isProtectedRoute || isModificationMethod) {
+        // Verificar autorización
+        const authToken = request.headers.get('x-auth-token');
+        const sessionToken = request.cookies.get('ls-auth-session')?.value;
+
+        if (!authToken && !sessionToken) {
+            // Redirigir a página de autenticación
+            return NextResponse.redirect(new URL('/auth/protection', request.url));
+        }
+    }
+
     return response;
 }
 
@@ -77,6 +110,7 @@ export const config = {
         '/api/:path*',
         '/checkout/:path*',
         '/cart/:path*',
-        '/productos/:path*'
+        '/productos/:path*',
+        '/((?!_next/static|_next/image|favicon.ico).*)',
     ],
 };
