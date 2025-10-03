@@ -22,11 +22,14 @@ El error "Failed to fetch" en Vercel ocurre cuando el build intenta hacer solici
 
 ### 3. **Configuración de Vercel (`vercel.json`)**
 
+```json
 {
   "framework": "nextjs",
-  "buildCommand": "npm install --legacy-peer-deps && npm run build",
   "installCommand": "npm install --legacy-peer-deps"
 }
+```
+
+**Importante**: Se eliminó el `buildCommand` personalizado porque causaba el error "next: command not found" al ejecutar `npm install` dos veces.
 
 ### 4. **Helper de Carga de Productos**
 
@@ -81,6 +84,12 @@ Install Command: (detectado automáticamente)
 - ✅ `.vercelignore` - Archivos a ignorar
 
 ## 🐛 Troubleshooting
+
+### Error: "next: command not found"
+
+**Causa**: El `buildCommand` en `vercel.json` estaba ejecutando `npm install` dos veces, lo que causaba que las dependencias se sobrescribieran.
+
+**Solución**: Eliminar el `buildCommand` y dejar solo el `installCommand`. Vercel automáticamente ejecutará `npm run build` después de la instalación.
 
 ### Si aún falla el deploy
 
