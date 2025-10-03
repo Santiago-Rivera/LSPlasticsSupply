@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function PaymentSuccess() {
+function PaymentSuccessContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [paymentDetails, setPaymentDetails] = useState(null);
@@ -42,7 +42,7 @@ export default function PaymentSuccess() {
                     textAlign: 'center'
                 }}>
                     <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
-                    <h2>Processing payment confirmation...</h2>
+                    <h2>Loading payment details...</h2>
                 </div>
             </div>
         );
@@ -204,5 +204,38 @@ export default function PaymentSuccess() {
                 </div>
             </div>
         </div>
+    );
+}
+
+function LoadingFallback() {
+    return (
+        <div style={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+            padding: '20px'
+        }}>
+            <div style={{
+                background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
+                color: 'var(--pure-white)',
+                padding: '40px',
+                borderRadius: '20px',
+                border: '3px solid var(--accent-yellow)',
+                textAlign: 'center'
+            }}>
+                <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
+                <h2>Loading payment details...</h2>
+            </div>
+        </div>
+    );
+}
+
+export default function PaymentSuccess() {
+    return (
+        <Suspense fallback={<LoadingFallback />}>
+            <PaymentSuccessContent />
+        </Suspense>
     );
 }
