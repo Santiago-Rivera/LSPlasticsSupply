@@ -16,12 +16,26 @@ const nextConfig = {
     ],
   },
   // Optimizaciones para Vercel
-  reactStrictMode: true,
-  // Evitar problemas de fetch durante el build
+  reactStrictMode: false, // Desactivado para evitar doble renderizado
+  // Configuración para evitar fetch durante build
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
+  },
+  // Deshabilitar generación estática para páginas dinámicas
+  outputFileTracing: true,
+  // Configuración de webpack para ignorar warnings
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
   },
 };
 
