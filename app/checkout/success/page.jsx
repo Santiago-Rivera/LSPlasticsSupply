@@ -42,7 +42,7 @@ function PaymentSuccessContent() {
                     textAlign: 'center'
                 }}>
                     <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
-                    <h2>Loading payment details...</h2>
+                    <h2>Processing payment confirmation...</h2>
                 </div>
             </div>
         );
@@ -113,7 +113,7 @@ function PaymentSuccessContent() {
                         {paymentDetails && (
                             <div style={{ fontSize: '14px', color: 'var(--light-black)' }}>
                                 <p style={{ margin: '8px 0' }}>
-                                    <strong>💳 Payment Method:</strong> Google Pay
+                                    <strong>💳 Payment Method:</strong> Stripe
                                 </p>
                                 {paymentDetails.paymentIntentId && (
                                     <p style={{ margin: '8px 0' }}>

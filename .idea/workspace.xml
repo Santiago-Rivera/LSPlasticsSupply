@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: implement code protection system and authentication middleware">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: update Next.js configuration and enhance payment success page with loading state">
       <change beforePath="$PROJECT_DIR$/app/checkout/success/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/success/page.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +119,7 @@
       <workItem from="1759427487778" duration="91000" />
       <workItem from="1759427648317" duration="11526000" />
       <workItem from="1759520858252" duration="526000" />
-      <workItem from="1759522068155" duration="576000" />
+      <workItem from="1759522068155" duration="1245000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -131,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759520924418</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: update Next.js configuration and enhance payment success page with loading state">
+      <option name="closed" value="true" />
+      <created>1759522691314</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759522691314</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,7 +145,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: implement code protection system and authentication middleware" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: implement code protection system and authentication middleware" />
+    <MESSAGE value="feat: update Next.js configuration and enhance payment success page with loading state" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: update Next.js configuration and enhance payment success page with loading state" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
