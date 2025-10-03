@@ -23,8 +23,6 @@ const nextConfig = {
       bodySizeLimit: '2mb',
     },
   },
-  // Deshabilitar generación estática para páginas dinámicas
-  outputFileTracing: true,
   // Configuración de webpack para ignorar warnings
   webpack: (config, { isServer }) => {
     if (!isServer) {
