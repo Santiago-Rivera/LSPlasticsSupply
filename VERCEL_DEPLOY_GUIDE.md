@@ -20,12 +20,10 @@
 
 Asegúrate de configurar estas variables en el dashboard de Vercel:
 
-```
 NEXT_PUBLIC_APP_URL=plasticssupplyls.com
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_XXXXXXXXXXXXXXXXXX
 STRIPE_SECRET_KEY=sk_live_XXXXXXXXXXXXXXXXXX
 INSTANCE_ID=vercel_production
-```
 
 **Nota:** Reemplaza los valores `XXXXXXXXXX` con tus claves reales de Stripe desde tu archivo `.env.local`
 
