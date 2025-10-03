@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: update Next.js configuration and enhance payment success page with loading state">
-      <change beforePath="$PROJECT_DIR$/app/checkout/success/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/success/page.jsx" afterDir="false" />
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: refactor payment processing route and enhance error handling">
+      <change beforePath="$PROJECT_DIR$/app/api/stripe/confirm-payment/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/stripe/confirm-payment/route.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ClientCache.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ClientCache.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +40,9 @@
     &quot;accountId&quot;: &quot;ed581ba4-07e0-4acf-ac4c-4d41ed961158&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -119,7 +126,7 @@
       <workItem from="1759427487778" duration="91000" />
       <workItem from="1759427648317" duration="11526000" />
       <workItem from="1759520858252" duration="526000" />
-      <workItem from="1759522068155" duration="1245000" />
+      <workItem from="1759522068155" duration="2153000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -137,7 +144,23 @@
       <option name="project" value="LOCAL" />
       <updated>1759522691314</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: refine Next.js configuration and update payment confirmation messaging">
+      <option name="closed" value="true" />
+      <created>1759523349445</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1759523349445</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: simplify useRouter call in PaymentSuccessContent component">
+      <option name="closed" value="true" />
+      <created>1759523465839</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1759523465839</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,7 +169,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: implement code protection system and authentication middleware" />
     <MESSAGE value="feat: update Next.js configuration and enhance payment success page with loading state" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: update Next.js configuration and enhance payment success page with loading state" />
+    <MESSAGE value="feat: refine Next.js configuration and update payment confirmation messaging" />
+    <MESSAGE value="feat: simplify useRouter call in PaymentSuccessContent component" />
+    <MESSAGE value="feat: refactor payment processing route and enhance error handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: refactor payment processing route and enhance error handling" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

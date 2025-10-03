@@ -122,8 +122,8 @@ export default function HomePage() {
                 <div className="products-container">
                     <h2 className="products-title">Our Products</h2>
                     <div className="products-grid">
-                        {productCategories.map((category, index) => (
-                            <div key={index} className="product-card" onClick={() => router.push(category.link)}>
+                        {productCategories.map((category) => (
+                            <div key={category.title} className="product-card" onClick={() => router.push(category.link)}>
                                 <div className="product-image-container">
                                     <Image
                                         src={category.image}

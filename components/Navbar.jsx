@@ -14,7 +14,7 @@ export default function Navbar() {
     const handleAboutClick = (e) => {
         e.preventDefault();
         // If we're already on the main page, scroll to the section
-        if (window.location.pathname === '/') {
+        if (typeof window !== 'undefined' && window.location.pathname === '/') {
             const aboutSection = document.getElementById('about-section');
             if (aboutSection) {
                 aboutSection.scrollIntoView({
@@ -43,7 +43,7 @@ export default function Navbar() {
             switch (index) {
                 case 0: // Mission
                 case 1: // Vision
-                    if (window.location.pathname === '/') {
+                    if (typeof window !== 'undefined' && window.location.pathname === '/') {
                         const aboutSection = document.getElementById('about-section');
                         if (aboutSection) {
                             aboutSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -53,10 +53,12 @@ export default function Navbar() {
                     }
                     break;
                 case 2: // Contact
-                    window.location.href = 'tel:908-708-5425';
+                    if (typeof window !== 'undefined') {
+                        window.location.href = 'tel:908-708-5425';
+                    }
                     break;
                 case 3: // Trusted services
-                    if (window.location.pathname === '/') {
+                    if (typeof window !== 'undefined' && window.location.pathname === '/') {
                         const testimonialsSection = document.querySelector('.testimonials-section');
                         if (testimonialsSection) {
                             testimonialsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
