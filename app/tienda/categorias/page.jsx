@@ -91,7 +91,7 @@ export default function CategoriasPage() {
         const specificMappings = {
             'Souffle Cups & Lids': 'souffle-cups-lids',
             'Aluminum Containers': 'aluminum-containers',
-            'Plastic Containers (Microwave)': 'plastic-containers',
+            'Plastic Containers (Microwave)': 'plastic-containers-microwave',
             'Plastic Containers': 'plastic-containers',
             'Paper Bags': 'paper-bags',
             'Napkins & Paper Towels': 'napkins-paper-towels',
