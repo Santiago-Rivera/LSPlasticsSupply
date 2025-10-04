@@ -1,10 +1,11 @@
 "use client";
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useCart } from '../../contexts/CartContext';
 
-export default function AllProductsPage() {
+// Componente separado para manejar los parámetros de búsqueda
+function ProductsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { addToCart } = useCart();
@@ -505,5 +506,25 @@ export default function AllProductsPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+// Componente principal con Suspense boundary
+export default function AllProductsPage() {
+    return (
+        <Suspense fallback={
+            <div style={{
+                minHeight: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '18px',
+                color: '#6b7280'
+            }}>
+                Loading products...
+            </div>
+        }>
+            <ProductsContent />
+        </Suspense>
     );
 }

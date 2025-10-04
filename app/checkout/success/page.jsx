@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 function PaymentSuccessContent() {
-    useRouter();
+    const router = useRouter();
     const searchParams = useSearchParams();
     const [paymentDetails, setPaymentDetails] = useState(null);
     const [loading, setLoading] = useState(true);
