@@ -4,12 +4,26 @@ import { useEffect, useState } from 'react';
 
 export default function CategoriasPage() {
     const router = useRouter();
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [windowWidth, setWindowWidth] = useState(768);
 
     useEffect(() => {
         loadCategoriesFromJSON();
+
+        // Handle window resize
+        const handleResize = () => {
+            if (typeof window !== 'undefined') {
+                setWindowWidth(window.innerWidth);
+            }
+        };
+
+        if (typeof window !== 'undefined') {
+            setWindowWidth(window.innerWidth);
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
     }, []);
 
     // Load categories and products from JSON
@@ -40,11 +54,14 @@ export default function CategoriasPage() {
                         name: categoryName,
                         slug: generateSlug(categoryName),
                         products: [],
-                        icon: getCategoryIcon(categoryName)
+                        icon: getCategoryIcon(categoryName),
+                        description: getCategoryDescription(categoryName),
+                        count: 0
                     });
                 }
                 
                 categoryMap.get(categoryId).products.push(product);
+                categoryMap.get(categoryId).count++;
             });
 
             const categoriesArray = Array.from(categoryMap.values());
@@ -62,12 +79,38 @@ export default function CategoriasPage() {
 
     // Generar slug URL-friendly
     function generateSlug(name) {
+        // Mapeo específico para categorías conocidas
+        const specificMappings = {
+            'Souffle Cups & Lids': 'souffle-cups-lids',
+            'Aluminum Containers': 'aluminum-containers',
+            'Plastic Containers (Microwave)': 'plastic-containers',
+            'Plastic Containers': 'plastic-containers',
+            'Paper Bags': 'paper-bags',
+            'Napkins & Paper Towels': 'napkins-paper-towels',
+            'Soup Containers': 'soup-containers',
+            'Accessories': 'accessories',
+            'Disposable Containers (Boxes)': 'disposable-containers',
+            'Coffee Cups & Lids': 'coffee-cups-lids',
+            'Cold Cups & Lids': 'cold-cups-lids',
+            'Cutlery & Accessories': 'cutlery-accessories',
+            'Straws': 'straws',
+            'Miscellaneous': 'miscellaneous'
+        };
+
+        // Si hay un mapeo específico, usarlo
+        if (specificMappings[name]) {
+            return specificMappings[name];
+        }
+
+        // Función genérica para otros casos
         return name
             .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remover acentos
             .replace(/\s+/g, '-')
             .replace(/[^a-z0-9-]/g, '')
             .replace(/-+/g, '-')
-            .trim('-');
+            .replace(/^-+|-+$/g, ''); // Limpiar guiones al inicio y final
     }
 
     // Obtener icono para categoría
@@ -79,7 +122,34 @@ export default function CategoriasPage() {
         if (name.includes('napkin') || name.includes('servilleta')) return '📋';
         if (name.includes('accessory') || name.includes('accesorio')) return '🔧';
         if (name.includes('soup') || name.includes('sopa')) return '🍲';
+        if (name.includes('soufflé') || name.includes('souffle') || name.includes('cups') || name.includes('lids')) return '🥤';
+        if (name.includes('coffee')) return '☕';
+        if (name.includes('cold')) return '🧊';
+        if (name.includes('cutlery')) return '🍴';
+        if (name.includes('straw')) return '🥤';
         return '📦';
+    }
+
+    // Obtener descripción para categoría
+    function getCategoryDescription(categoryName) {
+        const descriptions = {
+            'Aluminum Containers': 'Durable aluminum containers for food storage and takeout',
+            'Plastic Containers (Microwave)': 'Microwave-safe plastic containers for reheating',
+            'Plastic Containers': 'Versatile plastic containers for food storage',
+            'Paper Bags': 'Eco-friendly paper bags for packaging',
+            'Napkins & Paper Towels': 'Essential paper products for dining',
+            'Soup Containers': 'Leak-proof containers perfect for liquids',
+            'Accessories': 'Additional items to complete your setup',
+            'Disposable Containers (Boxes)': 'Convenient disposable food boxes',
+            'Souffle Cups & Lids': 'Small portion containers with matching lids',
+            'Coffee Cups & Lids': 'Hot beverage cups with secure lids',
+            'Cold Cups & Lids': 'Clear cups perfect for cold beverages',
+            'Cutlery & Accessories': 'Disposable utensils and serving accessories',
+            'Straws': 'Drinking straws in various sizes',
+            'Miscellaneous': 'Other useful food service items'
+        };
+
+        return descriptions[categoryName] || 'Quality food service products';
     }
 
     // Manejar click en categoría
@@ -197,8 +267,7 @@ export default function CategoriasPage() {
 
                     <div style={{
                         fontSize: 'clamp(40px, 8vw, 64px)',
-                        marginBottom: 'clamp(16px, 3vw, 20px)',
-                        animation: 'bounce 2s infinite'
+                        marginBottom: 'clamp(16px, 3vw, 20px)'
                     }}>📂</div>
 
                     <h1 style={{
@@ -235,7 +304,7 @@ export default function CategoriasPage() {
                     {categories.map((category) => (
                         <div
                             key={category.slug}
-                            onClick={() => router.push(`/tienda/categorias/${category.slug}`)}
+                            onClick={() => handleCategoryClick(category)}
                             style={{
                                 background: 'var(--pure-white)',
                                 borderRadius: 'clamp(12px, 2.5vw, 20px)',
@@ -326,7 +395,7 @@ export default function CategoriasPage() {
                 {/* Navigation Buttons - Responsive */}
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: window.innerWidth < 768 ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gridTemplateColumns: windowWidth < 768 ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
                     gap: 'clamp(12px, 3vw, 20px)',
                     maxWidth: '800px',
                     margin: '0 auto'
@@ -402,4 +471,4 @@ export default function CategoriasPage() {
             </div>
         </div>
     );
-}
+};

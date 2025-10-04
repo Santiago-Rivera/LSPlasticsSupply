@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const CartContext = createContext();
 
@@ -10,71 +10,91 @@ export function CartProvider({ children }) {
 
     // Generar ID de sesión único para el balanceador de carga
     useEffect(() => {
-        let sid = localStorage.getItem('ls-session-id');
-        if (!sid) {
-            sid = `sess_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            localStorage.setItem('ls-session-id', sid);
+        if (typeof window !== 'undefined') {
+            let sid = localStorage.getItem('ls-session-id');
+            if (!sid) {
+                sid = `sess_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                localStorage.setItem('ls-session-id', sid);
+            }
+            setSessionId(sid);
         }
-        setSessionId(sid);
     }, []);
+
+    // Calcular total del carrito (memoizado para rendimiento)
+    const getCartTotal = useCallback(() => {
+        return cartItems.reduce((total, item) => {
+            return total + (parseFloat(item.precio || 0) * (item.quantity || 0));
+        }, 0);
+    }, [cartItems]);
+
+    // Obtener cantidad total de productos (memoizado)
+    const getCartItemCount = useCallback(() => {
+        return cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
+    }, [cartItems]);
 
     // Cargar carrito desde localStorage al inicio (optimizado para alta concurrencia)
     useEffect(() => {
-        try {
-            const savedCart = localStorage.getItem('ls-plastics-cart');
-            const cartTimestamp = localStorage.getItem('ls-plastics-cart-timestamp');
+        if (typeof window !== 'undefined') {
+            try {
+                const savedCart = localStorage.getItem('ls-plastics-cart');
+                const cartTimestamp = localStorage.getItem('ls-plastics-cart-timestamp');
 
-            if (savedCart && cartTimestamp) {
-                // Verificar que el cache no sea muy antiguo (24 horas)
-                const age = Date.now() - parseInt(cartTimestamp);
-                if (age < 86400000) { // 24 horas
-                    const parsedCart = JSON.parse(savedCart);
-                    setCartItems(parsedCart);
-                    console.log('🛒 Carrito cargado desde cache:', parsedCart.length, 'items');
-                } else {
-                    // Cache expirado, limpiar
+                if (savedCart && cartTimestamp) {
+                    // Verificar que el cache no sea muy antiguo (24 horas)
+                    const age = Date.now() - parseInt(cartTimestamp);
+                    if (age < 86400000) { // 24 horas
+                        const parsedCart = JSON.parse(savedCart);
+                        setCartItems(parsedCart);
+                        console.log('🛒 Carrito cargado desde cache:', parsedCart.length, 'items');
+                    } else {
+                        // Cache expirado, limpiar
+                        localStorage.removeItem('ls-plastics-cart');
+                        localStorage.removeItem('ls-plastics-cart-timestamp');
+                    }
+                }
+            } catch (error) {
+                console.error('Error cargando carrito desde cache:', error);
+                // En caso de error, limpiar cache corrupto
+                if (typeof window !== 'undefined') {
                     localStorage.removeItem('ls-plastics-cart');
                     localStorage.removeItem('ls-plastics-cart-timestamp');
                 }
             }
-        } catch (error) {
-            console.error('Error cargando carrito desde cache:', error);
-            // En caso de error, limpiar cache corrupto
-            localStorage.removeItem('ls-plastics-cart');
-            localStorage.removeItem('ls-plastics-cart-timestamp');
         }
     }, []);
 
     // Guardar carrito en localStorage cuando cambie (con debounce para rendimiento)
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            try {
-                localStorage.setItem('ls-plastics-cart', JSON.stringify(cartItems));
-                localStorage.setItem('ls-plastics-cart-timestamp', Date.now().toString());
+            if (typeof window !== 'undefined') {
+                try {
+                    localStorage.setItem('ls-plastics-cart', JSON.stringify(cartItems));
+                    localStorage.setItem('ls-plastics-cart-timestamp', Date.now().toString());
 
-                // Enviar métricas del carrito al balanceador (opcional)
-                if (cartItems.length > 0) {
-                    fetch('/api/metrics', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            cartItems: cartItems.length,
-                            cartValue: getCartTotal(),
-                            sessionId: sessionId,
-                            timestamp: Date.now()
-                        })
-                    }).catch(() => {}); // Silently fail si no es crítico
+                    // Enviar métricas del carrito al balanceador (opcional)
+                    if (cartItems.length > 0 && sessionId) {
+                        fetch('/api/metrics', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                cartItems: cartItems.length,
+                                cartValue: getCartTotal(),
+                                sessionId: sessionId,
+                                timestamp: Date.now()
+                            })
+                        }).catch(() => {}); // Silently fail si no es crítico
+                    }
+                } catch (error) {
+                    console.error('Error guardando carrito:', error);
                 }
-            } catch (error) {
-                console.error('Error guardando carrito:', error);
             }
         }, 500); // Debounce de 500ms para evitar writes excesivos
 
         return () => clearTimeout(timeoutId);
-    }, [cartItems, sessionId]);
+    }, [cartItems, sessionId, getCartTotal]);
 
     // Agregar producto al carrito (optimizado)
-    const addToCart = (product) => {
+    const addToCart = useCallback((product) => {
         setCartItems(prevItems => {
             // Usar codigo_producto como identificador único si no hay id
             const productId = product.id || product.codigo_producto || product.nombre;
@@ -104,15 +124,15 @@ export function CartProvider({ children }) {
                 return [...prevItems, newProduct];
             }
         });
-    };
+    }, [sessionId]);
 
     // Remover producto del carrito (optimizado)
-    const removeFromCart = (productId) => {
+    const removeFromCart = useCallback((productId) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
-    };
+    }, []);
 
     // Actualizar cantidad de un producto (optimizado)
-    const updateQuantity = (productId, newQuantity) => {
+    const updateQuantity = useCallback((productId, newQuantity) => {
         if (newQuantity <= 0) {
             removeFromCart(productId);
             return;
@@ -125,22 +145,10 @@ export function CartProvider({ children }) {
                     : item
             )
         );
-    };
-
-    // Calcular total del carrito (memoizado para rendimiento)
-    const getCartTotal = () => {
-        return cartItems.reduce((total, item) => {
-            return total + (parseFloat(item.precio || 0) * (item.quantity || 0));
-        }, 0);
-    };
-
-    // Obtener cantidad total de productos (memoizado)
-    const getCartItemCount = () => {
-        return cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
-    };
+    }, [removeFromCart]);
 
     // Limpiar carrito (con logging para métricas)
-    const clearCart = () => {
+    const clearCart = useCallback(() => {
         const itemCount = cartItems.length;
         const totalValue = getCartTotal();
 
@@ -149,50 +157,23 @@ export function CartProvider({ children }) {
         // Log para métricas del balanceador
         console.log(`🗑️ Carrito limpiado: ${itemCount} items, valor: $${totalValue.toFixed(2)}`);
 
-        // Notificar al sistema de métricas
-        fetch('/api/metrics', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'cart_cleared',
-                itemCount,
-                totalValue,
-                sessionId: sessionId,
-                timestamp: Date.now()
-            })
-        }).catch(() => {});
-    };
-
-    // Función para sincronizar carrito entre instancias (futuro uso con Redis)
-    const syncCart = async () => {
-        if (!sessionId) return;
-
-        try {
-            // En el futuro, esto se conectaría con Redis para sincronización
-            // entre instancias del balanceador de carga
-            const response = await fetch(`/api/cart/sync/${sessionId}`);
-            if (response.ok) {
-                const syncedCart = await response.json();
-                if (syncedCart.items) {
-                    setCartItems(syncedCart.items);
-                }
-            }
-        } catch (error) {
-            console.error('Error sincronizando carrito:', error);
+        // Limpiar también del localStorage
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('ls-plastics-cart');
+            localStorage.removeItem('ls-plastics-cart-timestamp');
         }
-    };
+    }, [cartItems, getCartTotal]);
 
     const value = {
         cartItems,
+        isOpen,
+        setIsOpen,
         addToCart,
         removeFromCart,
         updateQuantity,
+        clearCart,
         getCartTotal,
         getCartItemCount,
-        clearCart,
-        syncCart,
-        isOpen,
-        setIsOpen,
         sessionId
     };
 
@@ -205,7 +186,7 @@ export function CartProvider({ children }) {
 
 export function useCart() {
     const context = useContext(CartContext);
-    if (!context) {
+    if (context === undefined) {
         throw new Error('useCart must be used within a CartProvider');
     }
     return context;

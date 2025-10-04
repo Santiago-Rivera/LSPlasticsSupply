@@ -2,12 +2,9 @@
 import { useCart } from '../contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useState } from 'react';
 
 export default function CartModal() {
     const router = useRouter();
-    const [paymentProcessing, setPaymentProcessing] = useState(false);
-    const [paymentMessage, setPaymentMessage] = useState('');
     const {
         cartItems,
         removeFromCart,
@@ -24,223 +21,416 @@ export default function CartModal() {
     const total = getCartTotal();
     const itemCount = getCartItemCount();
 
+    const handleCheckout = () => {
+        setIsOpen(false);
+        router.push('/checkout');
+    };
+
+    const handleContinueShopping = () => {
+        setIsOpen(false);
+        router.push('/tienda/categorias');
+    };
+
     return (
-        <div className="cart-modal-overlay" onClick={() => setIsOpen(false)}>
-
+        <div
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0, 0, 0, 0.5)',
+                zIndex: 1000,
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'stretch'
+            }}
+            onClick={() => setIsOpen(false)}
+        >
             {/* Cart Modal Panel */}
-            <div className="cart-modal-content" onClick={(e) => e.stopPropagation()}>
-
+            <div
+                style={{
+                    background: '#ffffff',
+                    width: 'clamp(320px, 40vw, 500px)',
+                    height: '100vh',
+                    overflowY: 'auto',
+                    boxShadow: '-4px 0 20px rgba(0, 0, 0, 0.3)',
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}
+                onClick={(e) => e.stopPropagation()}
+            >
                 {/* Header */}
-                <div className="cart-modal-header">
-                    <h2 className="cart-modal-title">
-                        🛒 Shopping Cart ({itemCount})
+                <div style={{
+                    background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+                    color: '#ffffff',
+                    padding: '20px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottom: '3px solid #fbbf24'
+                }}>
+                    <h2 style={{
+                        margin: 0,
+                        fontSize: 'clamp(18px, 4vw, 22px)',
+                        fontWeight: '800',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                    }}>
+                        🛒 Cart ({itemCount})
                     </h2>
                     <button
-                        className="cart-modal-close"
+                        style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: '#ffffff',
+                            fontSize: '24px',
+                            cursor: 'pointer',
+                            padding: '5px',
+                            borderRadius: '50%',
+                            transition: 'all 0.3s ease'
+                        }}
                         onClick={() => setIsOpen(false)}
+                        onMouseEnter={(e) => {
+                            e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.background = 'transparent';
+                        }}
                     >
                         ✕
                     </button>
                 </div>
 
                 {/* Cart Items */}
-                <div className="cart-modal-body">
-                    {/* Payment Processing Message */}
-                    {paymentMessage && (
-                        <div style={{
-                            background: paymentMessage.includes('✅')
-                                ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
-                                : 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)',
-                            color: 'white',
-                            padding: '16px',
-                            borderRadius: '12px',
-                            marginBottom: '16px',
-                            textAlign: 'center',
-                            fontWeight: '600',
-                            border: '2px solid var(--accent-yellow)'
-                        }}>
-                            {paymentMessage}
-                        </div>
-                    )}
-
+                <div style={{
+                    flex: 1,
+                    padding: '20px',
+                    overflowY: 'auto'
+                }}>
                     {cartItems.length === 0 ? (
-                        <div className="cart-empty">
-                            <div className="cart-empty-icon">🛒</div>
-                            <p className="cart-empty-text">Your cart is empty</p>
+                        <div style={{
+                            textAlign: 'center',
+                            padding: '40px 20px',
+                            color: '#6b7280'
+                        }}>
+                            <div style={{ fontSize: '64px', marginBottom: '16px' }}>🛒</div>
+                            <h3 style={{
+                                fontSize: '18px',
+                                fontWeight: '600',
+                                margin: '0 0 8px 0',
+                                color: '#374151'
+                            }}>
+                                Your cart is empty
+                            </h3>
+                            <p style={{
+                                fontSize: '14px',
+                                margin: '0 0 20px 0'
+                            }}>
+                                Add some products to get started!
+                            </p>
+                            <button
+                                onClick={handleContinueShopping}
+                                style={{
+                                    background: 'linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%)',
+                                    color: '#ffffff',
+                                    border: 'none',
+                                    padding: '12px 20px',
+                                    borderRadius: '8px',
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px'
+                                }}
+                            >
+                                🛍️ Start Shopping
+                            </button>
                         </div>
                     ) : (
-                        <>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '16px'
+                        }}>
                             {cartItems.map((item) => (
-                                <div key={item.id} className="cart-item">
-                                    {/* Product Image with real images */}
-                                    <div className="cart-item-image" style={{
-                                        width: 'clamp(50px, 12vw, 70px)',
-                                        height: 'clamp(50px, 12vw, 70px)',
-                                        borderRadius: '8px',
-                                        border: '2px solid var(--accent-yellow)',
-                                        overflow: 'hidden',
-                                        position: 'relative',
-                                        background: 'var(--off-white)',
+                                <div
+                                    key={item.id}
+                                    style={{
+                                        background: '#f8fafc',
+                                        border: '2px solid #e5e7eb',
+                                        borderRadius: '12px',
+                                        padding: '16px',
+                                        position: 'relative'
+                                    }}
+                                >
+                                    {/* Product Image and Info */}
+                                    <div style={{
                                         display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
+                                        gap: '12px',
+                                        marginBottom: '12px'
                                     }}>
-                                        {item.imagen_url ? (
+                                        <div style={{
+                                            width: '60px',
+                                            height: '60px',
+                                            position: 'relative',
+                                            borderRadius: '8px',
+                                            overflow: 'hidden',
+                                            background: '#ffffff',
+                                            flexShrink: 0
+                                        }}>
                                             <Image
-                                                src={`/${item.imagen_url}`}
+                                                src={item.imagen_url}
                                                 alt={item.nombre}
-                                                width={70}
-                                                height={70}
+                                                fill
                                                 style={{
-                                                    width: '100%',
-                                                    height: '100%',
                                                     objectFit: 'contain',
-                                                    background: 'var(--pure-white)',
                                                     padding: '4px'
                                                 }}
                                                 onError={(e) => {
                                                     e.target.style.display = 'none';
-                                                    e.target.nextSibling.style.display = 'flex';
                                                 }}
                                             />
-                                        ) : null}
-                                        <div style={{
-                                            fontSize: 'clamp(20px, 5vw, 28px)',
-                                            color: 'var(--primary-blue)',
-                                            display: item.imagen_url ? 'none' : 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            width: '100%',
-                                            height: '100%'
-                                        }}>
-                                            📦
                                         </div>
-                                    </div>
 
-                                    {/* Product Details */}
-                                    <div className="cart-item-details">
-                                        <h4 className="cart-item-name">{item.nombre}</h4>
-                                        <p className="cart-item-price">${item.precio}</p>
+                                        <div style={{ flex: 1, minWidth: 0 }}>
+                                            <h4 style={{
+                                                fontSize: '14px',
+                                                fontWeight: '600',
+                                                color: '#1e3a8a',
+                                                margin: '0 0 4px 0',
+                                                lineHeight: 1.3,
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                whiteSpace: 'nowrap'
+                                            }}>
+                                                {item.nombre}
+                                            </h4>
+                                            <p style={{
+                                                fontSize: '12px',
+                                                color: '#6b7280',
+                                                margin: '0 0 8px 0',
+                                                lineHeight: 1.3
+                                            }}>
+                                                {item.descripcion?.substring(0, 50)}...
+                                            </p>
+                                            <div style={{
+                                                fontSize: '16px',
+                                                fontWeight: '700',
+                                                color: '#1e3a8a'
+                                            }}>
+                                                ${item.precio}
+                                            </div>
+                                        </div>
+
+                                        {/* Remove Button */}
+                                        <button
+                                            onClick={() => removeFromCart(item.id)}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '8px',
+                                                right: '8px',
+                                                background: '#ef4444',
+                                                color: '#ffffff',
+                                                border: 'none',
+                                                borderRadius: '50%',
+                                                width: '24px',
+                                                height: '24px',
+                                                fontSize: '12px',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                transition: 'all 0.3s ease'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.target.style.background = '#dc2626';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.target.style.background = '#ef4444';
+                                            }}
+                                        >
+                                            ✕
+                                        </button>
                                     </div>
 
                                     {/* Quantity Controls */}
-                                    <div className="cart-item-quantity">
-                                        <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>
-                                            -
-                                        </button>
-                                        <span>{item.quantity}</span>
-                                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
-                                            +
-                                        </button>
-                                    </div>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center'
+                                    }}>
+                                        <div style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '8px'
+                                        }}>
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                style={{
+                                                    background: '#6b7280',
+                                                    color: '#ffffff',
+                                                    border: 'none',
+                                                    borderRadius: '4px',
+                                                    width: '28px',
+                                                    height: '28px',
+                                                    fontSize: '14px',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                -
+                                            </button>
 
-                                    {/* Remove Button */}
-                                    <button
-                                        onClick={() => removeFromCart(item.id)}
-                                        style={{
-                                            background: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)',
-                                            color: 'var(--pure-white)',
-                                            border: 'none',
-                                            borderRadius: '6px',
-                                            padding: '6px 12px',
-                                            cursor: 'pointer',
-                                            fontSize: '12px',
-                                            fontWeight: '600',
-                                            transition: 'all 0.3s ease'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.target.style.transform = 'scale(1.05)';
-                                            e.target.style.boxShadow = '0 4px 12px rgba(220, 38, 38, 0.4)';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.target.style.transform = 'scale(1)';
-                                            e.target.style.boxShadow = 'none';
-                                        }}
-                                    >
-                                        🗑️
-                                    </button>
+                                            <span style={{
+                                                fontSize: '14px',
+                                                fontWeight: '600',
+                                                minWidth: '20px',
+                                                textAlign: 'center'
+                                            }}>
+                                                {item.quantity}
+                                            </span>
+
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                style={{
+                                                    background: '#3b82f6',
+                                                    color: '#ffffff',
+                                                    border: 'none',
+                                                    borderRadius: '4px',
+                                                    width: '28px',
+                                                    height: '28px',
+                                                    fontSize: '14px',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+
+                                        <div style={{
+                                            fontSize: '16px',
+                                            fontWeight: '700',
+                                            color: '#1e3a8a'
+                                        }}>
+                                            ${(item.precio * item.quantity).toFixed(2)}
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
+                        </div>
+                    )}
+                </div>
 
-                            {/* Cart Total & Payment Options */}
-                            <div className="cart-total">
-                                <p className="cart-total-text">
-                                    Total: ${total.toFixed(2)}
-                                </p>
+                {/* Footer - Total and Actions */}
+                {cartItems.length > 0 && (
+                    <div style={{
+                        borderTop: '2px solid #e5e7eb',
+                        padding: '20px',
+                        background: '#f8fafc'
+                    }}>
+                        {/* Total */}
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '20px',
+                            padding: '16px',
+                            background: '#ffffff',
+                            borderRadius: '12px',
+                            border: '2px solid #fbbf24'
+                        }}>
+                            <span style={{
+                                fontSize: '18px',
+                                fontWeight: '700',
+                                color: '#1e3a8a',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                            }}>
+                                Total:
+                            </span>
+                            <span style={{
+                                fontSize: '24px',
+                                fontWeight: '800',
+                                color: '#1e3a8a'
+                            }}>
+                                ${total.toFixed(2)}
+                            </span>
+                        </div>
 
-                                {/* Processing Indicator */}
-                                {paymentProcessing && (
-                                    <div style={{
-                                        width: '100%',
-                                        padding: '16px',
-                                        background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
-                                        color: 'white',
-                                        borderRadius: '12px',
-                                        textAlign: 'center',
-                                        marginBottom: '12px',
-                                        border: '2px solid var(--accent-yellow)'
-                                    }}>
-                                        <div style={{ fontSize: '20px', marginBottom: '8px' }}>⏳</div>
-                                        Processing your payment...
-                                    </div>
-                                )}
+                        {/* Action Buttons */}
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px'
+                        }}>
+                            <button
+                                onClick={handleCheckout}
+                                style={{
+                                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                    color: '#ffffff',
+                                    border: 'none',
+                                    padding: '16px',
+                                    borderRadius: '12px',
+                                    fontSize: '16px',
+                                    fontWeight: '700',
+                                    cursor: 'pointer',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    transition: 'all 0.3s ease'
+                                }}
+                            >
+                                💳 Checkout
+                            </button>
 
-                                {/* Traditional Checkout Button */}
+                            <div style={{
+                                display: 'flex',
+                                gap: '8px'
+                            }}>
                                 <button
-                                    className="cart-checkout-button"
-                                    onClick={() => {
-                                        setIsOpen(false);
-                                        router.push('/checkout');
-                                    }}
-                                    disabled={paymentProcessing}
+                                    onClick={handleContinueShopping}
                                     style={{
-                                        opacity: paymentProcessing ? 0.6 : 1,
-                                        cursor: paymentProcessing ? 'not-allowed' : 'pointer'
-                                    }}
-                                >
-                                    💳 Proceed to Secure Payment
-                                </button>
-                                
-                                <button
-                                    onClick={clearCart}
-                                    disabled={paymentProcessing}
-                                    style={{
-                                        width: '100%',
-                                        background: 'linear-gradient(135deg, var(--light-black) 0%, var(--dark-black) 100%)',
-                                        color: 'var(--pure-white)',
-                                        border: '2px solid var(--accent-yellow)',
-                                        padding: '12px 24px',
+                                        flex: 1,
+                                        background: 'linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%)',
+                                        color: '#ffffff',
+                                        border: 'none',
+                                        padding: '12px',
                                         borderRadius: '8px',
                                         fontSize: '14px',
                                         fontWeight: '600',
-                                        cursor: paymentProcessing ? 'not-allowed' : 'pointer',
-                                        transition: 'all 0.3s ease',
-                                        marginTop: '12px',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.5px',
-                                        opacity: paymentProcessing ? 0.6 : 1
+                                        cursor: 'pointer',
+                                        textTransform: 'uppercase'
                                     }}
-                                    onMouseEnter={(e) => {
-                                        if (!paymentProcessing) {
-                                            e.target.style.transform = 'translateY(-2px)';
-                                            e.target.style.boxShadow = '0 8px 20px rgba(17, 24, 39, 0.4)';
-                                            e.target.style.borderColor = 'var(--bright-yellow)';
-                                        }
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        if (!paymentProcessing) {
-                                            e.target.style.transform = 'translateY(0)';
-                                            e.target.style.boxShadow = 'none';
-                                            e.target.style.borderColor = 'var(--accent-yellow)';
-                                        }
+                                >
+                                    🛍️ Continue Shopping
+                                </button>
+
+                                <button
+                                    onClick={clearCart}
+                                    style={{
+                                        flex: 1,
+                                        background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                        color: '#ffffff',
+                                        border: 'none',
+                                        padding: '12px',
+                                        borderRadius: '8px',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        textTransform: 'uppercase'
                                     }}
                                 >
                                     🗑️ Clear Cart
                                 </button>
                             </div>
-                        </>
-                    )}
-                </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

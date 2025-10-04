@@ -452,7 +452,7 @@
     {
       "nombre": "Cutlery kits box 420pcs",
       "descripcion": "Complete disposable cutlery kits, box of 420 pieces.",
-      "precio": 0.0,
+      "precio": 23.99,
       "categoria": "Cutlery & Accessories",
       "categoria_id": 12,
       "imagen_url": "images/productos/cutlery/cutlery_kits_box_420pcs.webp",
@@ -565,5 +565,32 @@
       "categoria_id": 11,
       "imagen_url": "images/productos/souffle_cups/1_5___2_0_clear_plastic_souflee_lid_box_of_2500_pcs.webp",
       "codigo_producto": "LID-SFL-1520"
+    },
+    {
+      "nombre": "Clip Food Containers",
+      "descripcion": "Secure and durable containers for all your food storage needs.",
+      "precio": 32.99,
+      "categoria": "Plastic Containers",
+      "categoria_id": 14,
+      "imagen_url": "images/productos/Clip-Container-Copia.png",
+      "codigo_producto": "PL-CLIP-STD"
+    },
+    {
+      "nombre": "Premium Plastic Tubs",
+      "descripcion": "Versatile tubs for storage, catering, and food service.",
+      "precio": 28.99,
+      "categoria": "Plastic Containers",
+      "categoria_id": 14,
+      "imagen_url": "images/productos/Plastic-Tubs.png",
+      "codigo_producto": "PL-TUBS-PREM"
+    },
+    {
+      "nombre": "Multi-Use Containers",
+      "descripcion": "Ideal for delivery services and organizing food items.",
+      "precio": 35.99,
+      "categoria": "Plastic Containers",
+      "categoria_id": 14,
+      "imagen_url": "images/productos/Multi-Use-Containers-Copia.png",
+      "codigo_producto": "PL-MULTI-USE"
     }
   ]

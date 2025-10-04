@@ -1,19 +1,19 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCart } from '../contexts/CartContext';
+import { useCart } from '@/contexts/CartContext';
+import Image from 'next/image';
 
-export default function CategoryPage({
+const CategoryPage = ({
     categoryName,
     categoryTitle,
     categoryDescription,
     categoryIcon,
     categorySlug
-}) {
+}) => {
     const router = useRouter();
     const { addToCart } = useCart();
     const [products, setProducts] = useState([]);
-    const [categoryInfo, setCategoryInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [addedProducts, setAddedProducts] = useState(new Set());
@@ -42,22 +42,21 @@ export default function CategoryPage({
                 );
             } else if (categorySlug) {
                 const categoryMappings = {
-                    'contenedores-de-aluminio': 'Contenedores de Aluminio',
-                    'aluminum-containers': 'Contenedores de Aluminio',
-                    'contenedores-desechables-cajas': 'Contenedores Desechables (Cajas)',
-                    'disposable-containers': 'Contenedores Desechables (Cajas)',
-                    'contenedores-para-sopa': 'Contenedores para Sopa',
-                    'soup-containers': 'Contenedores para Sopa',
-                    'contenedores-de-plastico-microondas': 'Contenedores de Plástico (Microondas)',
-                    'plastic-containers': 'Contenedores de Plástico (Microondas)',
-                    'bolsas-de-papel': 'Bolsas de Papel',
-                    'paper-bags': 'Bolsas de Papel',
-                    'servilletas-y-toallas-de-papel': 'Servilletas y Toallas de Papel',
-                    'napkins-paper-towels': 'Servilletas y Toallas de Papel',
-                    'accesorios': 'Accesorios',
-                    'accessories': 'Accesorios',
-                    'plastics': 'Plastics',
-                    'plastic': 'Plastics'
+                    'contenedores-de-aluminio': 'Aluminum Containers',
+                    'aluminum-containers': 'Aluminum Containers',
+                    'contenedores-desechables-cajas': 'Disposable Containers (Boxes)',
+                    'disposable-containers': 'Disposable Containers (Boxes)',
+                    'contenedores-para-sopa': 'Soup Containers',
+                    'soup-containers': 'Soup Containers',
+                    'contenedores-de-plastico-microondas': 'Plastic Containers (Microwave)',
+                    'plastic-containers': 'Plastic Containers',
+                    'bolsas-de-papel': 'Paper Bags',
+                    'paper-bags': 'Paper Bags',
+                    'servilletas-y-toallas-de-papel': 'Napkins & Paper Towels',
+                    'napkins-paper-towels': 'Napkins & Paper Towels',
+                    'accesorios': 'Accessories',
+                    'accessories': 'Accessories',
+                    'souffle-cups-lids': 'Soufflé Cups & Lids'
                 };
 
                 const mappedCategory = categoryMappings[categorySlug];
@@ -66,13 +65,6 @@ export default function CategoryPage({
                         product.categoria === mappedCategory
                     );
                 }
-            }
-
-            if (categoryProducts.length > 0) {
-                setCategoryInfo({
-                    name: categoryProducts[0].categoria,
-                    count: categoryProducts.length
-                });
             }
 
             setProducts(categoryProducts);
@@ -87,12 +79,12 @@ export default function CategoryPage({
 
     const handleAddToCart = (product) => {
         addToCart(product);
-        setAddedProducts(prev => new Set([...prev, product.id]));
+        setAddedProducts(prev => new Set([...prev, product.codigo_producto]));
 
         setTimeout(() => {
             setAddedProducts(prev => {
                 const newSet = new Set(prev);
-                newSet.delete(product.id);
+                newSet.delete(product.codigo_producto);
                 return newSet;
             });
         }, 2000);
@@ -229,7 +221,7 @@ export default function CategoryPage({
                     fontWeight: '500',
                     opacity: 0.9
                 }}>
-                    📦 {products.length} Productos Disponibles
+                    {products.length} Productos Disponibles
                 </p>
             </div>
 
@@ -247,33 +239,52 @@ export default function CategoryPage({
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     marginBottom: '30px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
                 }}
-                onMouseEnter={(e) => {
+                onMouseOver={(e) => {
                     e.target.style.transform = 'translateY(-2px)';
-                    e.target.style.boxShadow = '0 8px 20px rgba(17, 24, 39, 0.4)';
-                    e.target.style.borderColor = 'var(--bright-yellow)';
+                    e.target.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
                 }}
-                onMouseLeave={(e) => {
+                onMouseOut={(e) => {
                     e.target.style.transform = 'translateY(0)';
                     e.target.style.boxShadow = 'none';
-                    e.target.style.borderColor = 'var(--accent-yellow)';
                 }}
             >
-                ← Volver a Categorías
+                ← VOLVER A CATEGORÍAS
             </button>
 
             {/* Products Grid */}
             {products.length > 0 ? (
-                <div className="category-grid">
-                    {products.map((product, index) => (
-                        <div key={product.codigo_producto || product.id || `product-${index}`} className="category-card" style={{
-                            background: 'var(--pure-white)',
-                            border: '3px solid var(--border-gray)',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '30px',
+                    padding: '20px 0'
+                }}>
+                    {products.map((product) => (
+                        <div
+                            key={product.codigo_producto}
+                            style={{
+                                background: 'var(--pure-white)',
+                                borderRadius: '20px',
+                                border: '3px solid var(--accent-yellow)',
+                                padding: '24px',
+                                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                                transition: 'all 0.3s ease',
+                                position: 'relative',
+                                overflow: 'hidden'
+                            }}
+                            onMouseOver={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-8px)';
+                                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
+                            }}
+                            onMouseOut={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
+                            }}
+                        >
                             {/* Product accent line */}
                             <div style={{
                                 position: 'absolute',
@@ -285,134 +296,142 @@ export default function CategoryPage({
                             }}></div>
 
                             {/* Product Image */}
-                            <div className="category-product-image" style={{
-                                background: 'linear-gradient(135deg, var(--off-white) 0%, var(--border-gray) 100%)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '48px',
-                                color: 'var(--primary-blue)',
-                                border: '2px solid var(--accent-yellow)'
+                            <div style={{
+                                width: '100%',
+                                height: '200px',
+                                position: 'relative',
+                                marginBottom: '20px',
+                                borderRadius: '15px',
+                                overflow: 'hidden',
+                                background: 'var(--off-white)'
                             }}>
-                                {categoryIcon || '📦'}
+                                <Image
+                                    src={product.imagen_url}
+                                    alt={product.nombre}
+                                    fill
+                                    style={{
+                                        objectFit: 'contain',
+                                        padding: '10px'
+                                    }}
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                    }}
+                                />
+                                <div style={{
+                                    display: 'none',
+                                    width: '100%',
+                                    height: '100%',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '48px',
+                                    color: 'var(--light-gray)'
+                                }}>
+                                    📦
+                                </div>
                             </div>
 
-                            {/* Product Name */}
-                            <h3 className="category-product-name" style={{
-                                color: 'var(--dark-black)',
-                                fontWeight: '700'
+                            {/* Product Info */}
+                            <h3 style={{
+                                color: 'var(--primary-dark-blue)',
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                margin: '0 0 12px 0',
+                                lineHeight: '1.3'
                             }}>
                                 {product.nombre}
                             </h3>
 
-                            {/* Product Description */}
                             <p style={{
-                                fontSize: '14px',
                                 color: 'var(--light-black)',
-                                margin: '0 0 12px 0',
-                                lineHeight: '1.4',
+                                fontSize: '14px',
+                                lineHeight: '1.5',
+                                margin: '0 0 20px 0',
                                 fontWeight: '500'
                             }}>
                                 {product.descripcion}
                             </p>
 
-                            {/* Product Code */}
-                            <p style={{
-                                fontSize: '12px',
-                                color: 'var(--gray-text)',
-                                margin: '0 0 12px 0',
-                                fontWeight: '600',
-                                textTransform: 'uppercase',
-                                background: 'var(--off-white)',
-                                padding: '4px 8px',
-                                borderRadius: '4px',
-                                display: 'inline-block'
+                            {/* Price and Add to Cart */}
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '20px'
                             }}>
-                                📋 {product.codigo_producto}
-                            </p>
+                                <span style={{
+                                    fontSize: '24px',
+                                    fontWeight: '800',
+                                    color: 'var(--primary-dark-blue)'
+                                }}>
+                                    ${product.precio}
+                                </span>
 
-                            {/* Product Price */}
-                            <div className="category-product-price" style={{
-                                color: 'var(--primary-blue)',
-                                background: 'var(--accent-yellow)',
-                                padding: '10px 16px',
-                                borderRadius: '10px',
-                                display: 'inline-block',
-                                border: '2px solid var(--bright-yellow)',
-                                fontWeight: '800',
-                                marginBottom: '16px',
-                                fontSize: '18px'
-                            }}>
-                                💰 ${product.precio}
+                                <button
+                                    onClick={() => handleAddToCart(product)}
+                                    disabled={addedProducts.has(product.codigo_producto)}
+                                    style={{
+                                        background: addedProducts.has(product.codigo_producto)
+                                            ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                            : 'linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark-blue) 100%)',
+                                        color: 'var(--pure-white)',
+                                        border: 'none',
+                                        padding: '12px 20px',
+                                        borderRadius: '10px',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        cursor: addedProducts.has(product.codigo_producto) ? 'default' : 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        minWidth: '140px',
+                                        justifyContent: 'center'
+                                    }}
+                                    onMouseOver={(e) => {
+                                        if (!addedProducts.has(product.codigo_producto)) {
+                                            e.target.style.transform = 'translateY(-2px)';
+                                            e.target.style.boxShadow = '0 8px 16px rgba(59, 130, 246, 0.3)';
+                                        }
+                                    }}
+                                    onMouseOut={(e) => {
+                                        if (!addedProducts.has(product.codigo_producto)) {
+                                            e.target.style.transform = 'translateY(0)';
+                                            e.target.style.boxShadow = 'none';
+                                        }
+                                    }}
+                                >
+                                    {addedProducts.has(product.codigo_producto) ? (
+                                        <>🛒 AGREGADO</>
+                                    ) : (
+                                        <>🛒 ADD TO CART</>
+                                    )}
+                                </button>
                             </div>
-
-                            {/* Add to Cart Button */}
-                            <button
-                                className="category-add-button"
-                                onClick={() => handleAddToCart(product)}
-                                style={{
-                                    background: addedProducts.has(product.id) 
-                                        ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' 
-                                        : 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
-                                    color: 'var(--pure-white)',
-                                    border: '3px solid var(--accent-yellow)',
-                                    fontWeight: '700',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.5px',
-                                    fontSize: '14px',
-                                    padding: '12px 20px',
-                                    borderRadius: '10px',
-                                    width: '100%',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.3s ease'
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!addedProducts.has(product.id)) {
-                                        e.target.style.background = 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)';
-                                        e.target.style.color = 'var(--dark-black)';
-                                    }
-                                    e.target.style.transform = 'translateY(-3px)';
-                                    e.target.style.boxShadow = '0 10px 25px rgba(30, 58, 138, 0.4)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.target.style.background = addedProducts.has(product.id) 
-                                        ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' 
-                                        : 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)';
-                                    e.target.style.color = 'var(--pure-white)';
-                                    e.target.style.transform = 'translateY(0)';
-                                    e.target.style.boxShadow = 'none';
-                                }}
-                            >
-                                {addedProducts.has(product.id) ? '✅ ¡Agregado!' : '🛒 Agregar al Carrito'}
-                            </button>
                         </div>
                     ))}
                 </div>
             ) : (
                 <div style={{
                     textAlign: 'center',
-                    padding: '80px 40px',
+                    padding: '60px 20px',
                     background: 'var(--pure-white)',
                     borderRadius: '20px',
-                    border: '3px solid var(--border-gray)',
-                    boxShadow: '0 15px 35px rgba(30, 58, 138, 0.1)'
+                    border: '3px solid var(--accent-yellow)',
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
                 }}>
-                    <div style={{ fontSize: '80px', marginBottom: '24px' }}>
-                        {categoryIcon || '📦'}
-                    </div>
-                    <h3 style={{
-                        fontSize: '32px',
+                    <div style={{ fontSize: '80px', marginBottom: '20px' }}>📦</div>
+                    <h2 style={{
+                        color: 'var(--primary-dark-blue)',
+                        fontSize: '28px',
                         fontWeight: '800',
-                        color: 'var(--dark-black)',
                         margin: '0 0 16px 0',
                         textTransform: 'uppercase'
-                    }}>
-                        No se encontraron productos
-                    </h3>
+                    }}>NO SE ENCONTRARON PRODUCTOS</h2>
                     <p style={{
-                        fontSize: '18px',
                         color: 'var(--light-black)',
-                        margin: '0 0 24px 0',
+                        fontSize: '16px',
+                        margin: '0 0 30px 0',
                         fontWeight: '500'
                     }}>
                         No hay productos disponibles en la categoría "{categoryTitle || categoryName}".
@@ -420,31 +439,31 @@ export default function CategoryPage({
                     <button
                         onClick={() => router.push('/tienda/categorias')}
                         style={{
-                            background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
+                            background: 'linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark-blue) 100%)',
                             color: 'var(--pure-white)',
-                            border: '2px solid var(--accent-yellow)',
-                            padding: '16px 32px',
-                            borderRadius: '12px',
-                            fontSize: '16px',
-                            fontWeight: '700',
+                            border: 'none',
+                            padding: '12px 24px',
+                            borderRadius: '10px',
+                            fontSize: '14px',
+                            fontWeight: '600',
                             cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px'
+                            transition: 'all 0.3s ease'
                         }}
-                        onMouseEnter={(e) => {
+                        onMouseOver={(e) => {
                             e.target.style.transform = 'translateY(-2px)';
-                            e.target.style.boxShadow = '0 10px 25px rgba(30, 58, 138, 0.4)';
+                            e.target.style.boxShadow = '0 8px 16px rgba(59, 130, 246, 0.3)';
                         }}
-                        onMouseLeave={(e) => {
+                        onMouseOut={(e) => {
                             e.target.style.transform = 'translateY(0)';
                             e.target.style.boxShadow = 'none';
                         }}
                     >
-                        🔙 Ver Todas las Categorías
+                        ← VER TODAS LAS CATEGORÍAS
                     </button>
                 </div>
             )}
         </div>
     );
-}
+};
+
+export default CategoryPage;

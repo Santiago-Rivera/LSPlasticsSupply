@@ -53,217 +53,135 @@ export default function LoadBalancerMonitor() {
             }
         };
 
-        // Actualizar métricas cada 5 segundos
+        // Fetch inicial
         fetchMetrics();
+
+        // Actualizar cada 5 segundos
         const interval = setInterval(fetchMetrics, 5000);
 
         return () => clearInterval(interval);
     }, []);
 
-    // Solo mostrar en desarrollo o si se presiona Ctrl+Shift+M
+    // Solo mostrar en desarrollo o cuando se presiona Ctrl+Shift+M
     useEffect(() => {
-        const handleKeyPress = (e) => {
+        const handleKeyDown = (e) => {
             if (e.ctrlKey && e.shiftKey && e.key === 'M') {
                 setIsVisible(!isVisible);
             }
         };
 
-        window.addEventListener('keydown', handleKeyPress);
-        return () => window.removeEventListener('keydown', handleKeyPress);
+        if (typeof window !== 'undefined') {
+            window.addEventListener('keydown', handleKeyDown);
+            return () => window.removeEventListener('keydown', handleKeyDown);
+        }
     }, [isVisible]);
 
-    if (!isVisible) {
-        return (
-            <div style={{
-                position: 'fixed',
-                bottom: '10px',
-                right: '10px',
-                background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
-                color: 'white',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                fontSize: '12px',
-                cursor: 'pointer',
-                zIndex: 1000,
-                boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
-            }}
-            onClick={() => setIsVisible(true)}
-            title="Ctrl+Shift+M para alternar monitor"
-            >
-                📊 Monitor
-            </div>
-        );
+    // No mostrar en producción a menos que se active manualmente
+    if (!isVisible && process.env.NODE_ENV === 'production') {
+        return null;
     }
 
     return (
         <div style={{
             position: 'fixed',
-            top: '20px',
-            right: '20px',
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(0,0,0,0.1)',
-            borderRadius: '12px',
-            padding: '20px',
-            width: '320px',
-            zIndex: 1000,
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '14px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
+            bottom: '10px',
+            right: '10px',
+            background: 'rgba(0, 0, 0, 0.9)',
+            color: '#ffffff',
+            padding: '12px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            fontFamily: 'monospace',
+            zIndex: 9999,
+            minWidth: '250px',
+            maxWidth: '350px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+            border: `2px solid ${isOnline ? '#10b981' : '#ef4444'}`
         }}>
             {/* Header */}
             <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '15px',
-                borderBottom: '1px solid rgba(0,0,0,0.1)',
-                paddingBottom: '10px'
+                marginBottom: '8px',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+                paddingBottom: '4px'
             }}>
-                <h3 style={{
-                    margin: 0,
-                    color: '#1e3c72',
-                    fontSize: '16px',
-                    fontWeight: '600'
-                }}>
-                    📊 Load Balancer Monitor
-                </h3>
+                <span style={{ fontWeight: 'bold' }}>
+                    {isOnline ? '🟢' : '🔴'} Load Balancer
+                </span>
                 <button
                     onClick={() => setIsVisible(false)}
                     style={{
-                        background: 'none',
+                        background: 'transparent',
                         border: 'none',
-                        fontSize: '18px',
+                        color: '#ffffff',
                         cursor: 'pointer',
-                        color: '#666'
+                        fontSize: '14px'
                     }}
                 >
-                    ×
+                    ✕
                 </button>
             </div>
 
-            {/* Status Indicator */}
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '15px',
-                padding: '8px',
-                background: isOnline ? '#d4edda' : '#fff3cd',
-                border: `1px solid ${isOnline ? '#c3e6cb' : '#ffeaa7'}`,
-                borderRadius: '6px',
-                fontSize: '12px'
-            }}>
-                <span style={{ marginRight: '8px' }}>
-                    {isOnline ? '🟢' : '🟡'}
-                </span>
-                {isOnline ? 'API Conectada' : 'Modo Simulación'}
-            </div>
-
             {/* Metrics */}
-            <div style={{ marginBottom: '15px' }}>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: '10px',
-                    marginBottom: '10px'
-                }}>
-                    <div style={{
-                        background: '#f8f9fa',
-                        padding: '8px',
-                        borderRadius: '6px',
-                        textAlign: 'center'
-                    }}>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#1e3c72' }}>
-                            {metrics.totalRequests}
-                        </div>
-                        <div style={{ fontSize: '11px', color: '#666' }}>Total Requests</div>
-                    </div>
-                    <div style={{
-                        background: '#f8f9fa',
-                        padding: '8px',
-                        borderRadius: '6px',
-                        textAlign: 'center'
-                    }}>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#1e3c72' }}>
-                            {metrics.avgResponseTime}ms
-                        </div>
-                        <div style={{ fontSize: '11px', color: '#666' }}>Avg Response</div>
-                    </div>
-                    <div style={{
-                        background: '#f8f9fa',
-                        padding: '8px',
-                        borderRadius: '6px',
-                        textAlign: 'center'
-                    }}>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: metrics.errorRate < 1 ? '#28a745' : '#dc3545' }}>
-                            {metrics.errorRate.toFixed(2)}%
-                        </div>
-                        <div style={{ fontSize: '11px', color: '#666' }}>Error Rate</div>
-                    </div>
-                    <div style={{
-                        background: '#f8f9fa',
-                        padding: '8px',
-                        borderRadius: '6px',
-                        textAlign: 'center'
-                    }}>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#1e3c72' }}>
-                            {metrics.activeConnections}
-                        </div>
-                        <div style={{ fontSize: '11px', color: '#666' }}>Active Conn</div>
-                    </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Total Requests:</span>
+                    <span style={{ color: '#fbbf24' }}>{metrics.totalRequests}</span>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Avg Response:</span>
+                    <span style={{ color: '#3b82f6' }}>{metrics.avgResponseTime}ms</span>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Error Rate:</span>
+                    <span style={{ color: metrics.errorRate > 1 ? '#ef4444' : '#10b981' }}>
+                        {metrics.errorRate.toFixed(2)}%
+                    </span>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>Active Connections:</span>
+                    <span style={{ color: '#8b5cf6' }}>{metrics.activeConnections}</span>
                 </div>
             </div>
 
             {/* Instances */}
-            <div>
-                <h4 style={{
-                    margin: '0 0 10px 0',
-                    fontSize: '14px',
-                    color: '#1e3c72'
-                }}>
-                    Instances Status
-                </h4>
-                {metrics.instances.map((instance, index) => (
-                    <div
-                        key={instance.id || index}
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: '6px 8px',
-                            background: '#f8f9fa',
-                            borderRadius: '4px',
-                            marginBottom: '4px',
-                            fontSize: '12px'
-                        }}
-                    >
-                        <span style={{ display: 'flex', alignItems: 'center' }}>
-                            <span style={{
-                                width: '8px',
-                                height: '8px',
-                                borderRadius: '50%',
-                                background: instance.status === 'healthy' ? '#28a745' : '#dc3545',
-                                marginRight: '8px'
-                            }}></span>
-                            {instance.id || `Instance ${index + 1}`}
-                        </span>
-                        <span style={{ color: '#666' }}>
-                            {instance.requests || 0} req/s
-                        </span>
-                    </div>
-                ))}
-            </div>
+            {metrics.instances.length > 0 && (
+                <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                    <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Instances:</div>
+                    {metrics.instances.map((instance) => (
+                        <div
+                            key={instance.id}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                fontSize: '11px',
+                                opacity: 0.8
+                            }}
+                        >
+                            <span>
+                                {instance.status === 'healthy' ? '🟢' : '🔴'} {instance.id}
+                            </span>
+                            <span>{instance.requests} req/min</span>
+                        </div>
+                    ))}
+                </div>
+            )}
 
-            {/* Footer */}
+            {/* Status indicator */}
             <div style={{
-                marginTop: '15px',
-                paddingTop: '10px',
-                borderTop: '1px solid rgba(0,0,0,0.1)',
-                fontSize: '11px',
-                color: '#666',
+                marginTop: '8px',
+                paddingTop: '4px',
+                borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+                fontSize: '10px',
+                opacity: 0.7,
                 textAlign: 'center'
             }}>
-                Press Ctrl+Shift+M to toggle • L&S Plastics Supply
+                {isOnline ? 'Live Data' : 'Mock Data'} • Press Ctrl+Shift+M to toggle
             </div>
         </div>
     );

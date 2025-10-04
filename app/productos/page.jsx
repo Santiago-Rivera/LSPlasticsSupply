@@ -1,11 +1,12 @@
 "use client";
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCart } from '../../contexts/CartContext';
 
 export default function AllProductsPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { addToCart } = useCart();
     const [productsByCategory, setProductsByCategory] = useState({});
     const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ export default function AllProductsPage() {
 
     useEffect(() => {
         loadProductsFromJSON();
-    }, []);
+    }, [searchParams]);
 
     // Función para filtrar productos por búsqueda
     const filterProductsBySearch = (productos, searchTerm) => {
@@ -39,9 +40,8 @@ export default function AllProductsPage() {
 
             console.log('📁 Loading all products from productos.json...');
 
-            // Check search parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const searchTerm = urlParams.get('search');
+            // Check search parameters using Next.js hook
+            const searchTerm = searchParams.get('search');
 
             const response = await fetch('/productos.json');
             if (!response.ok) {
@@ -50,30 +50,33 @@ export default function AllProductsPage() {
 
             let productos = await response.json();
 
-            // Apply search filter if exists
+            // Apply search filter if present
             if (searchTerm) {
+                const originalCount = productos.length;
                 productos = filterProductsBySearch(productos, searchTerm);
                 setSearchInfo({
                     term: searchTerm,
-                    count: productos.length
+                    results: productos.length,
+                    total: originalCount
                 });
+                console.log(`🔍 Search "${searchTerm}": ${productos.length}/${originalCount} products found`);
             }
 
-            // Agrupar productos por categoría
-            const groupedProducts = productos.reduce((acc, producto) => {
-                const categoria = producto.categoria;
-                if (!acc[categoria]) {
-                    acc[categoria] = [];
+            // Group products by category
+            const grouped = productos.reduce((acc, producto) => {
+                const category = producto.categoria;
+                if (!acc[category]) {
+                    acc[category] = [];
                 }
-                acc[categoria].push(producto);
+                acc[category].push(producto);
                 return acc;
             }, {});
 
-            setProductsByCategory(groupedProducts);
+            setProductsByCategory(grouped);
             setTotalProducts(productos.length);
             setLoading(false);
 
-            console.log(`✅ Products loaded: ${productos.length}`);
+            console.log(`✅ Products loaded: ${productos.length} total, ${Object.keys(grouped).length} categories`);
 
         } catch (error) {
             console.error('❌ Error loading products:', error);
@@ -82,18 +85,21 @@ export default function AllProductsPage() {
         }
     }
 
-    const handleAddToCart = (producto) => {
-        addToCart(producto);
-        setAddedProducts(prev => new Set([...prev, producto.id]));
+    const handleAddToCart = (product) => {
+        try {
+            addToCart(product);
+            setAddedProducts(prev => new Set([...prev, product.codigo_producto]));
 
-        // Remover el estado después de 2 segundos
-        setTimeout(() => {
-            setAddedProducts(prev => {
-                const newSet = new Set(prev);
-                newSet.delete(producto.id);
-                return newSet;
-            });
-        }, 2000);
+            setTimeout(() => {
+                setAddedProducts(prev => {
+                    const newSet = new Set(prev);
+                    newSet.delete(product.codigo_producto);
+                    return newSet;
+                });
+            }, 2000);
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+        }
     };
 
     if (loading) {
@@ -103,18 +109,17 @@ export default function AllProductsPage() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: '70vh',
-                background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+                background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)',
                 padding: '20px'
             }}>
                 <div style={{
-                    background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
-                    color: 'var(--pure-white)',
+                    background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+                    color: '#ffffff',
                     padding: '40px',
                     borderRadius: '20px',
-                    border: '3px solid var(--accent-yellow)',
+                    border: '3px solid #fbbf24',
                     boxShadow: '0 20px 40px rgba(30, 58, 138, 0.3)',
-                    textAlign: 'center',
-                    animation: 'pulse 2s infinite'
+                    textAlign: 'center'
                 }}>
                     <div style={{ fontSize: '48px', marginBottom: '20px' }}>📦</div>
                     <h2 style={{
@@ -123,7 +128,7 @@ export default function AllProductsPage() {
                         fontWeight: '800',
                         textTransform: 'uppercase',
                         letterSpacing: '1px'
-                    }}>Loading products...</h2>
+                    }}>Loading Products...</h2>
                 </div>
             </div>
         );
@@ -136,15 +141,15 @@ export default function AllProductsPage() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: '70vh',
-                background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+                background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)',
                 padding: '20px'
             }}>
                 <div style={{
                     background: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)',
-                    color: 'var(--pure-white)',
+                    color: '#ffffff',
                     padding: '40px',
                     borderRadius: '20px',
-                    border: '3px solid var(--accent-yellow)',
+                    border: '3px solid #fbbf24',
                     boxShadow: '0 20px 40px rgba(220, 38, 38, 0.3)',
                     textAlign: 'center',
                     maxWidth: '600px'
@@ -155,7 +160,7 @@ export default function AllProductsPage() {
                         fontSize: '28px',
                         fontWeight: '800',
                         textTransform: 'uppercase'
-                    }}>Error loading products</h2>
+                    }}>Error Loading Products</h2>
                     <p style={{ margin: 0, fontSize: '18px', fontWeight: '500' }}>{error}</p>
                 </div>
             </div>
@@ -165,264 +170,337 @@ export default function AllProductsPage() {
     return (
         <div style={{
             minHeight: '100vh',
-            background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+            background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)',
             padding: 'clamp(12px, 3vw, 20px)'
         }}>
             <div style={{
                 maxWidth: '1400px',
                 margin: '0 auto',
-                padding: '0 clamp(12px, 3vw, 32px)'
+                padding: '0 clamp(12px, 2vw, 32px)'
             }}>
-                {/* Header - Responsive */}
+                {/* Header with search info */}
                 <div style={{
                     textAlign: 'center',
                     marginBottom: 'clamp(24px, 5vw, 40px)',
-                    background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
-                    padding: 'clamp(20px, 5vw, 40px)',
-                    borderRadius: 'clamp(12px, 2vw, 20px)',
-                    border: '3px solid var(--accent-yellow)',
-                    boxShadow: '0 20px 40px rgba(30, 58, 138, 0.2)'
+                    background: searchInfo ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+                    padding: 'clamp(20px, 5vw, 50px)',
+                    borderRadius: 'clamp(12px, 2.5vw, 20px)',
+                    border: '3px solid #fbbf24',
+                    boxShadow: '0 20px 40px rgba(30, 58, 138, 0.2)',
+                    position: 'relative',
+                    overflow: 'hidden'
                 }}>
-                    <h1 style={{
-                        fontSize: 'clamp(20px, 5vw, 36px)',
-                        fontWeight: '800',
-                        color: 'var(--pure-white)',
-                        margin: '0 0 16px 0',
-                        textTransform: 'uppercase',
-                        letterSpacing: 'clamp(1px, 0.3vw, 2px)',
-                        textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
-                        lineHeight: 1.2
-                    }}>
-                        {searchInfo ? '🔍 Search Results' : '🌟 Complete Product Catalog'}
-                    </h1>
-                    
-                    {searchInfo && (
-                        <div style={{
-                            background: 'var(--accent-yellow)',
-                            color: 'var(--dark-black)',
-                            padding: 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px)',
-                            borderRadius: 'clamp(6px, 1.5vw, 10px)',
-                            margin: '16px auto',
-                            maxWidth: '90%',
-                            border: '2px solid var(--bright-yellow)'
-                        }}>
-                            <p style={{
-                                margin: 0,
-                                fontSize: 'clamp(12px, 3vw, 16px)',
-                                fontWeight: '700'
-                            }}>
-                                🔍 "{searchInfo.term}": {searchInfo.count} products found
-                            </p>
-                        </div>
-                    )}
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 'clamp(4px, 1vw, 6px)',
+                        background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)'
+                    }}></div>
 
-                    <p style={{
-                        fontSize: 'clamp(14px, 3.5vw, 18px)',
-                        color: 'var(--accent-yellow)',
-                        margin: 0,
-                        fontWeight: '600',
-                        textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
+                    <div style={{
+                        fontSize: 'clamp(40px, 8vw, 64px)',
+                        marginBottom: 'clamp(16px, 3vw, 20px)'
                     }}>
-                        📦 {totalProducts} Premium Products Available
-                    </p>
+                        {searchInfo ? '🔍' : '📦'}
+                    </div>
+
+                    {searchInfo ? (
+                        <>
+                            <h1 style={{
+                                fontSize: 'clamp(24px, 6vw, 36px)',
+                                fontWeight: '800',
+                                color: '#ffffff',
+                                margin: '0 0 16px 0',
+                                textTransform: 'uppercase',
+                                letterSpacing: 'clamp(1px, 0.3vw, 2px)',
+                                textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                            }}>
+                                Search Results
+                            </h1>
+                            <div style={{
+                                background: 'rgba(255, 255, 255, 0.2)',
+                                padding: 'clamp(12px, 3vw, 16px)',
+                                borderRadius: '12px',
+                                margin: '0 0 16px 0',
+                                backdropFilter: 'blur(10px)'
+                            }}>
+                                <p style={{
+                                    fontSize: 'clamp(16px, 4vw, 20px)',
+                                    color: '#fbbf24',
+                                    margin: '0 0 8px 0',
+                                    fontWeight: '700'
+                                }}>
+                                    "{searchInfo.term}"
+                                </p>
+                                <p style={{
+                                    fontSize: 'clamp(14px, 3.5vw, 18px)',
+                                    color: '#ffffff',
+                                    margin: 0,
+                                    fontWeight: '600'
+                                }}>
+                                    {searchInfo.results} products found
+                                </p>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <h1 style={{
+                                fontSize: 'clamp(24px, 6vw, 36px)',
+                                fontWeight: '800',
+                                color: '#ffffff',
+                                margin: '0 0 16px 0',
+                                textTransform: 'uppercase',
+                                letterSpacing: 'clamp(1px, 0.3vw, 2px)',
+                                textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                            }}>
+                                All Products
+                            </h1>
+                            <p style={{
+                                fontSize: 'clamp(14px, 3.5vw, 18px)',
+                                color: '#fbbf24',
+                                margin: 0,
+                                fontWeight: '600'
+                            }}>
+                                {totalProducts} Premium Products Available
+                            </p>
+                        </>
+                    )}
                 </div>
 
-                {/* Products by Category - Responsive */}
-                {Object.entries(productsByCategory).map(([categoria, productos]) => (
-                    <div key={categoria} style={{
-                        marginBottom: 'clamp(30px, 6vw, 50px)',
-                        background: 'var(--pure-white)',
-                        borderRadius: 'clamp(12px, 2.5vw, 20px)',
-                        padding: 'clamp(16px, 4vw, 30px)',
-                        border: '3px solid var(--border-gray)',
-                        boxShadow: '0 15px 35px rgba(30, 58, 138, 0.1)',
-                        position: 'relative',
-                        overflow: 'hidden'
-                    }}>
-                        {/* Category accent line */}
+                {/* Navigation Buttons */}
+                <div style={{
+                    display: 'flex',
+                    gap: 'clamp(12px, 3vw, 20px)',
+                    marginBottom: 'clamp(24px, 5vw, 40px)',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap'
+                }}>
+                    <button
+                        onClick={() => router.push('/tienda/categorias')}
+                        style={{
+                            background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+                            color: '#ffffff',
+                            padding: 'clamp(12px, 3vw, 16px) clamp(20px, 4vw, 24px)',
+                            border: '2px solid #fbbf24',
+                            borderRadius: 'clamp(8px, 1.5vw, 12px)',
+                            fontSize: 'clamp(14px, 3.5vw, 16px)',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            textTransform: 'uppercase'
+                        }}
+                    >
+                        📂 Browse Categories
+                    </button>
+                    <button
+                        onClick={() => router.push('/')}
+                        style={{
+                            background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                            color: '#111827',
+                            padding: 'clamp(12px, 3vw, 16px) clamp(20px, 4vw, 24px)',
+                            border: '2px solid #f59e0b',
+                            borderRadius: 'clamp(8px, 1.5vw, 12px)',
+                            fontSize: 'clamp(14px, 3.5vw, 16px)',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            textTransform: 'uppercase'
+                        }}
+                    >
+                        🏠 Back to Home
+                    </button>
+                </div>
+
+                {/* Products by Category */}
+                {Object.keys(productsByCategory).map((categoryName) => (
+                    <div key={categoryName} style={{ marginBottom: 'clamp(40px, 8vw, 60px)' }}>
+                        {/* Category Header */}
                         <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: '6px',
-                            background: 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)'
-                        }}></div>
-
-                        {/* Category Header - Responsive */}
-                        <h2 style={{
-                            fontSize: 'clamp(18px, 4vw, 28px)',
-                            fontWeight: '800',
-                            color: 'var(--dark-black)',
-                            margin: '0 0 clamp(16px, 4vw, 30px) 0',
-                            textTransform: 'uppercase',
-                            letterSpacing: 'clamp(0.5px, 0.2vw, 1px)',
-                            textAlign: 'center',
-                            position: 'relative'
+                            background: 'linear-gradient(135deg, #374151 0%, #1f2937 100%)',
+                            padding: 'clamp(16px, 4vw, 24px)',
+                            borderRadius: 'clamp(12px, 2.5vw, 16px)',
+                            marginBottom: 'clamp(20px, 4vw, 30px)',
+                            border: '2px solid #fbbf24'
                         }}>
-                            📂 {categoria}
-                            <div style={{
-                                width: 'clamp(40px, 8vw, 60px)',
-                                height: '3px',
-                                background: 'linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark-blue) 100%)',
-                                borderRadius: '2px',
-                                margin: 'clamp(8px, 2vw, 12px) auto 0 auto'
-                            }}></div>
-                        </h2>
+                            <h2 style={{
+                                fontSize: 'clamp(20px, 5vw, 28px)',
+                                fontWeight: '700',
+                                color: '#ffffff',
+                                margin: 0,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                textAlign: 'center'
+                            }}>
+                                📦 {categoryName} ({productsByCategory[categoryName].length})
+                            </h2>
+                        </div>
 
-                        {/* Products Grid - Responsive */}
+                        {/* Products Grid */}
                         <div style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(250px, 30vw, 300px), 1fr))',
-                            gap: 'clamp(12px, 3vw, 24px)'
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(280px, 30vw, 320px), 1fr))',
+                            gap: 'clamp(20px, 4vw, 30px)'
                         }}>
-                            {productos.map((producto) => (
-                                <div key={`${categoria}-${producto.id || producto.codigo_producto || Math.random()}`} className="category-card">
-                                    {/* Product image - Real images from JSON */}
-                                    <div className="category-product-image" style={{
-                                        background: 'var(--off-white)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        border: '2px solid var(--accent-yellow)',
+                            {productsByCategory[categoryName].map((product) => (
+                                <div
+                                    key={product.codigo_producto}
+                                    style={{
+                                        background: '#ffffff',
+                                        borderRadius: 'clamp(12px, 2.5vw, 20px)',
+                                        padding: 'clamp(20px, 4vw, 24px)',
+                                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                                        transition: 'all 0.3s ease',
+                                        border: '3px solid #e5e7eb',
+                                        position: 'relative',
+                                        overflow: 'hidden'
+                                    }}
+                                >
+                                    {/* Product accent line */}
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 'clamp(3px, 0.8vw, 4px)',
+                                        background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)'
+                                    }}></div>
+
+                                    {/* Product Image */}
+                                    <div style={{
+                                        width: '100%',
+                                        height: 'clamp(160px, 20vw, 200px)',
+                                        position: 'relative',
+                                        marginBottom: 'clamp(16px, 3vw, 20px)',
+                                        borderRadius: '15px',
                                         overflow: 'hidden',
-                                        position: 'relative'
+                                        background: '#f8fafc'
                                     }}>
-                                        {producto.imagen_url ? (
-                                            <Image
-                                                src={`/${producto.imagen_url}`}
-                                                alt={producto.nombre}
-                                                width={200}
-                                                height={150}
-                                                style={{
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    objectFit: 'contain',
-                                                    background: 'var(--pure-white)',
-                                                    padding: '8px',
-                                                    transition: 'all 0.3s ease'
-                                                }}
-                                                onError={(e) => {
-                                                    e.target.style.display = 'none';
-                                                    e.target.nextSibling.style.display = 'flex';
-                                                }}
-                                            />
-                                        ) : null}
-                                        <div style={{
-                                            fontSize: '48px',
-                                            color: 'var(--primary-blue)',
-                                            display: producto.imagen_url ? 'none' : 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            width: '100%',
-                                            height: '100%'
-                                        }}>
-                                            📦
-                                        </div>
+                                        <Image
+                                            src={product.imagen_url}
+                                            alt={product.nombre}
+                                            fill
+                                            style={{
+                                                objectFit: 'contain',
+                                                padding: '8px'
+                                            }}
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                            }}
+                                        />
                                     </div>
 
-                                    {/* Product details */}
-                                    <h3 className="category-product-name" style={{
-                                        color: 'var(--dark-black)',
-                                        fontWeight: '700'
+                                    {/* Product Info */}
+                                    <h3 style={{
+                                        fontSize: 'clamp(16px, 4vw, 18px)',
+                                        fontWeight: '700',
+                                        color: '#1e3a8a',
+                                        margin: '0 0 8px 0',
+                                        lineHeight: 1.3
                                     }}>
-                                        {producto.nombre}
+                                        {product.nombre}
                                     </h3>
-                                    
+
                                     <p style={{
-                                        fontSize: '14px',
-                                        color: 'var(--light-black)',
-                                        margin: '0 0 12px 0',
-                                        lineHeight: '1.4',
+                                        fontSize: 'clamp(12px, 3vw, 14px)',
+                                        color: '#6b7280',
+                                        lineHeight: 1.5,
+                                        margin: '0 0 16px 0',
                                         fontWeight: '500'
                                     }}>
-                                        {producto.descripcion}
+                                        {product.descripcion}
                                     </p>
 
-                                    <div className="category-product-price" style={{
-                                        color: 'var(--primary-blue)',
-                                        background: 'var(--accent-yellow)',
-                                        padding: '8px 16px',
-                                        borderRadius: '8px',
-                                        display: 'inline-block',
-                                        border: '2px solid var(--bright-yellow)'
+                                    {/* Price and Add to Cart */}
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        marginTop: 'auto'
                                     }}>
-                                        ${producto.precio}
-                                    </div>
+                                        <span style={{
+                                            fontSize: 'clamp(20px, 5vw, 24px)',
+                                            fontWeight: '800',
+                                            color: '#1e3a8a'
+                                        }}>
+                                            ${product.precio}
+                                        </span>
 
-                                    {/* Add to cart button */}
-                                    <button
-                                        className="category-add-button"
-                                        onClick={() => handleAddToCart(producto)}
-                                        style={{
-                                            background: addedProducts.has(producto.id) 
-                                                ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' 
-                                                : 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
-                                            color: 'var(--pure-white)',
-                                            border: '2px solid var(--accent-yellow)',
-                                            fontWeight: '700',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.5px'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            if (!addedProducts.has(producto.id)) {
-                                                e.target.style.background = 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)';
-                                                e.target.style.color = 'var(--dark-black)';
-                                            }
-                                            e.target.style.transform = 'translateY(-2px)';
-                                            e.target.style.boxShadow = '0 8px 20px rgba(30, 58, 138, 0.4)';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.target.style.background = addedProducts.has(producto.id) 
-                                                ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' 
-                                                : 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)';
-                                            e.target.style.color = 'var(--pure-white)';
-                                            e.target.style.transform = 'translateY(0)';
-                                            e.target.style.boxShadow = 'none';
-                                        }}
-                                    >
-                                        {addedProducts.has(producto.id) ? '✅ Added!' : '🛒 Add to Cart'}
-                                    </button>
+                                        <button
+                                            onClick={() => handleAddToCart(product)}
+                                            disabled={addedProducts.has(product.codigo_producto)}
+                                            style={{
+                                                background: addedProducts.has(product.codigo_producto)
+                                                    ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                                    : 'linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%)',
+                                                color: '#ffffff',
+                                                border: 'none',
+                                                padding: 'clamp(10px, 2.5vw, 12px) clamp(16px, 4vw, 20px)',
+                                                borderRadius: 'clamp(8px, 1.5vw, 10px)',
+                                                fontSize: 'clamp(12px, 3vw, 14px)',
+                                                fontWeight: '600',
+                                                cursor: addedProducts.has(product.codigo_producto) ? 'default' : 'pointer',
+                                                transition: 'all 0.3s ease',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.5px'
+                                            }}
+                                        >
+                                            {addedProducts.has(product.codigo_producto) ? '✓ ADDED' : '🛒 ADD TO CART'}
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
 
-                {/* No products message */}
-                {totalProducts === 0 && !loading && (
+                {/* No Products Found */}
+                {totalProducts === 0 && searchInfo && (
                     <div style={{
                         textAlign: 'center',
-                        padding: '80px 40px',
-                        background: 'var(--pure-white)',
-                        borderRadius: '20px',
-                        border: '3px solid var(--border-gray)',
-                        boxShadow: '0 15px 35px rgba(30, 58, 138, 0.1)'
+                        padding: 'clamp(40px, 8vw, 60px)',
+                        background: '#ffffff',
+                        borderRadius: 'clamp(12px, 2.5vw, 20px)',
+                        border: '3px solid #fbbf24',
+                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
                     }}>
-                        <div style={{
-                            fontSize: '80px',
-                            marginBottom: '24px'
-                        }}>📦</div>
-                        <h3 style={{
-                            fontSize: '32px',
+                        <div style={{ fontSize: 'clamp(60px, 12vw, 80px)', marginBottom: 'clamp(16px, 3vw, 20px)' }}>
+                            🔍
+                        </div>
+                        <h2 style={{
+                            fontSize: 'clamp(24px, 6vw, 32px)',
                             fontWeight: '800',
-                            color: 'var(--dark-black)',
+                            color: '#1e3a8a',
                             margin: '0 0 16px 0',
                             textTransform: 'uppercase'
                         }}>
-                            No products found
-                        </h3>
+                            No Products Found
+                        </h2>
                         <p style={{
-                            fontSize: '18px',
-                            color: 'var(--light-black)',
-                            margin: 0,
+                            fontSize: 'clamp(16px, 4vw, 18px)',
+                            color: '#6b7280',
+                            margin: '0 0 24px 0',
                             fontWeight: '500'
                         }}>
-                            {searchInfo 
-                                ? `No products found for "${searchInfo.term}". Try another search term.`
-                                : 'Please come back later to see available products.'
-                            }
+                            No products found for "{searchInfo.term}". Try another search term.
                         </p>
+                        <button
+                            onClick={() => router.push('/productos')}
+                            style={{
+                                background: 'linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%)',
+                                color: '#ffffff',
+                                padding: 'clamp(12px, 3vw, 16px) clamp(20px, 4vw, 24px)',
+                                border: 'none',
+                                borderRadius: 'clamp(8px, 1.5vw, 12px)',
+                                fontSize: 'clamp(14px, 3.5vw, 16px)',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                textTransform: 'uppercase'
+                            }}
+                        >
+                            View All Products
+                        </button>
                     </div>
                 )}
             </div>

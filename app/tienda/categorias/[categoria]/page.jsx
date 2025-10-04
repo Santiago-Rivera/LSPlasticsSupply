@@ -1,15 +1,14 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useCart } from '../../../../contexts/CartContext';
+import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
 
-export default function DynamicCategoryPage() {
+const DynamicCategoryPage = () => {
     const router = useRouter();
     const params = useParams();
     const { addToCart } = useCart();
     const [products, setProducts] = useState([]);
-    const [categoryInfo, setCategoryInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [addedProducts, setAddedProducts] = useState(new Set());
@@ -26,6 +25,7 @@ export default function DynamicCategoryPage() {
         if (name.includes('accessory') || name.includes('accesorio')) return '🔧';
         if (name.includes('soup') || name.includes('sopa')) return '🍲';
         if (name.includes('desechable') || name.includes('disposable') || name.includes('caja')) return '📦';
+        if (name.includes('soufflé') || name.includes('souffle') || name.includes('cups') || name.includes('lids')) return '🥤';
         return '📦';
     };
 
@@ -47,6 +47,10 @@ export default function DynamicCategoryPage() {
 
             const allProducts = await response.json();
             
+            // Debug logs
+            console.log('Category slug:', categorySlug);
+            console.log('All products loaded:', allProducts.length);
+
             const categoryMappings = {
                 'contenedores-de-aluminio': 'Aluminum Containers',
                 'aluminum-containers': 'Aluminum Containers',
@@ -55,25 +59,29 @@ export default function DynamicCategoryPage() {
                 'contenedores-para-sopa': 'Soup Containers',
                 'soup-containers': 'Soup Containers',
                 'contenedores-de-plastico-microondas': 'Plastic Containers (Microwave)',
-                'plastic-containers': 'Plastic Containers (Microwave)',
+                'plastic-containers': 'Plastic Containers',
                 'bolsas-de-papel': 'Paper Bags',
                 'paper-bags': 'Paper Bags',
                 'servilletas-y-toallas-de-papel': 'Napkins & Paper Towels',
                 'napkins-paper-towels': 'Napkins & Paper Towels',
                 'accesorios': 'Accessories',
                 'accessories': 'Accessories',
-                'plastics': 'Plastics',
-                'plastic': 'Plastics'
+                'souffle-cups-lids': 'Soufflé Cups & Lids'
             };
 
             const mappedCategory = categoryMappings[categorySlug];
-            let categoryProducts = [];
+            console.log('Mapped category:', mappedCategory);
+
+            let categoryProducts;
 
             if (mappedCategory) {
-                categoryProducts = allProducts.filter(product =>
-                    product.categoria === mappedCategory
-                );
+                categoryProducts = allProducts.filter(product => {
+                    console.log('Product category:', product.categoria, 'Mapped category:', mappedCategory);
+                    return product.categoria === mappedCategory;
+                });
+                console.log('Found products with exact match:', categoryProducts.length);
             } else {
+                // Búsqueda alternativa más flexible
                 categoryProducts = allProducts.filter(product => {
                     const productSlug = product.categoria
                         .toLowerCase()
@@ -84,22 +92,23 @@ export default function DynamicCategoryPage() {
                         .replace(/-+/g, '-')
                         .trim();
                     
-                    return productSlug === categorySlug || 
+                    // Búsqueda directa por palabras clave para souffle
+                    if (categorySlug === 'souffle-cups-lids') {
+                        return product.categoria.toLowerCase().includes('soufflé') ||
+                               product.categoria.toLowerCase().includes('souffle') ||
+                               product.nombre.toLowerCase().includes('soufflé') ||
+                               product.nombre.toLowerCase().includes('souffle');
+                    }
+
+                    return productSlug === categorySlug ||
                            productSlug.includes(categorySlug) ||
                            categorySlug.includes(productSlug);
                 });
+                console.log('Found products with alternative search:', categoryProducts.length);
             }
 
+            console.log('Final products found:', categoryProducts.length);
             setProducts(categoryProducts);
-
-            if (categoryProducts.length > 0) {
-                setCategoryInfo({
-                    name: categoryProducts[0].categoria,
-                    slug: categorySlug,
-                    count: categoryProducts.length
-                });
-            }
-
             setLoading(false);
 
         } catch (error) {
@@ -111,12 +120,12 @@ export default function DynamicCategoryPage() {
 
     const handleAddToCart = (product) => {
         addToCart(product);
-        setAddedProducts(prev => new Set([...prev, product.id]));
+        setAddedProducts(prev => new Set([...prev, product.codigo_producto]));
 
         setTimeout(() => {
             setAddedProducts(prev => {
                 const newSet = new Set(prev);
-                newSet.delete(product.id);
+                newSet.delete(product.codigo_producto);
                 return newSet;
             });
         }, 2000);
@@ -148,7 +157,7 @@ export default function DynamicCategoryPage() {
                         fontWeight: '800',
                         textTransform: 'uppercase',
                         letterSpacing: '1px'
-                    }}>Loading products...</h2>
+                    }}>Cargando categoría...</h2>
                 </div>
             </div>
         );
@@ -187,35 +196,60 @@ export default function DynamicCategoryPage() {
         );
     }
 
+    const categoryName = products.length > 0 ? products[0].categoria : categorySlug.replace(/-/g, ' ');
+    const categoryIcon = getCategoryIcon(categoryName);
+
     return (
         <div className="category-page" style={{
-            background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)'
+            background: 'linear-gradient(135deg, var(--off-white) 0%, var(--pure-white) 100%)',
+            minHeight: '100vh',
+            padding: '20px'
         }}>
             {/* Category Header */}
             <div style={{
                 background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
-                padding: '40px',
+                padding: '50px 30px',
                 borderRadius: '20px',
                 border: '3px solid var(--accent-yellow)',
                 boxShadow: '0 20px 40px rgba(30, 58, 138, 0.2)',
                 marginBottom: '40px',
-                textAlign: 'center'
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden'
             }}>
-                <h1 className="category-title" style={{
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '6px',
+                    background: 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)'
+                }}></div>
+
+                <div style={{ fontSize: '64px', marginBottom: '20px' }}>
+                    {categoryIcon}
+                </div>
+
+                <h1 style={{
                     color: 'var(--pure-white)',
                     textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
-                    marginBottom: '16px'
+                    marginBottom: '16px',
+                    fontSize: '36px',
+                    fontWeight: '800',
+                    textTransform: 'uppercase',
+                    letterSpacing: '2px'
                 }}>
-                    📂 {categoryInfo?.name || categorySlug}
+                    {categoryName}
                 </h1>
+
                 <p style={{
-                    fontSize: '18px',
-                    color: 'var(--accent-yellow)',
+                    fontSize: '16px',
+                    color: 'var(--pure-white)',
                     margin: 0,
-                    fontWeight: '600',
-                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
+                    fontWeight: '500',
+                    opacity: 0.9
                 }}>
-                    📦 {products.length} Products Available
+                    {products.length} Productos Disponibles
                 </p>
             </div>
 
@@ -232,157 +266,147 @@ export default function DynamicCategoryPage() {
                     fontWeight: '600',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    marginBottom: '30px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                }}
-                onMouseEnter={(e) => {
-                    e.target.style.transform = 'translateY(-2px)';
-                    e.target.style.boxShadow = '0 8px 20px rgba(17, 24, 39, 0.4)';
-                    e.target.style.borderColor = 'var(--bright-yellow)';
-                }}
-                onMouseLeave={(e) => {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = 'none';
-                    e.target.style.borderColor = 'var(--accent-yellow)';
+                    marginBottom: '30px'
                 }}
             >
-                ← Back to Categories
+                ← VOLVER A CATEGORÍAS
             </button>
 
             {/* Products Grid */}
             {products.length > 0 ? (
-                <div className="category-grid">
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '30px',
+                    padding: '20px 0'
+                }}>
                     {products.map((product) => (
-                        <div key={product.id || product.codigo_producto} className="category-card">
-                            {/* Product image with real images */}
-                            <div className="category-product-image" style={{
-                                background: 'var(--off-white)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                border: '2px solid var(--accent-yellow)',
+                        <div
+                            key={product.codigo_producto}
+                            style={{
+                                background: 'var(--pure-white)',
+                                borderRadius: '20px',
+                                border: '3px solid var(--accent-yellow)',
+                                padding: '24px',
+                                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                                transition: 'all 0.3s ease'
+                            }}
+                        >
+                            <div style={{
+                                width: '100%',
+                                height: '200px',
+                                position: 'relative',
+                                marginBottom: '20px',
+                                borderRadius: '15px',
                                 overflow: 'hidden',
-                                position: 'relative'
+                                background: 'var(--off-white)'
                             }}>
-                                {product.imagen_url ? (
-                                    <Image
-                                        src={`/${product.imagen_url}`}
-                                        alt={product.nombre}
-                                        width={250}
-                                        height={180}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'contain',
-                                            background: 'var(--pure-white)',
-                                            padding: '8px',
-                                            transition: 'all 0.3s ease'
-                                        }}
-                                        onError={(e) => {
-                                            e.target.style.display = 'none';
-                                            e.target.nextSibling.style.display = 'flex';
-                                        }}
-                                    />
-                                ) : null}
-                                <div style={{
-                                    fontSize: '48px',
-                                    color: 'var(--primary-blue)',
-                                    display: product.imagen_url ? 'none' : 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: '100%',
-                                    height: '100%'
-                                }}>
-                                    {getCategoryIcon(categoryInfo?.name || '')}
-                                </div>
+                                <Image
+                                    src={product.imagen_url}
+                                    alt={product.nombre}
+                                    fill
+                                    style={{
+                                        objectFit: 'contain',
+                                        padding: '10px'
+                                    }}
+                                />
                             </div>
 
-                            <h3 className="category-product-name">{product.nombre}</h3>
+                            <h3 style={{
+                                color: 'var(--primary-dark-blue)',
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                margin: '0 0 12px 0'
+                            }}>
+                                {product.nombre}
+                            </h3>
+
                             <p style={{
-                                fontSize: '14px',
                                 color: 'var(--light-black)',
-                                margin: '0 0 12px 0',
-                                lineHeight: '1.4',
-                                fontWeight: '500'
+                                fontSize: '14px',
+                                margin: '0 0 20px 0'
                             }}>
                                 {product.descripcion}
                             </p>
-                            <div className="category-product-price">${product.precio}</div>
-                            <button
-                                className="category-add-button"
-                                onClick={() => handleAddToCart(product)}
-                                style={{
-                                    background: addedProducts.has(product.id || product.codigo_producto) 
-                                        ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' 
-                                        : 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
-                                    color: 'var(--pure-white)',
-                                    border: '2px solid var(--accent-yellow)',
-                                    fontWeight: '700',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.5px'
-                                }}
-                            >
-                                {addedProducts.has(product.id || product.codigo_producto) ? '✅ Added!' : '🛒 Add to Cart'}
-                            </button>
+
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }}>
+                                <span style={{
+                                    fontSize: '24px',
+                                    fontWeight: '800',
+                                    color: 'var(--primary-dark-blue)'
+                                }}>
+                                    ${product.precio}
+                                </span>
+
+                                <button
+                                    onClick={() => handleAddToCart(product)}
+                                    disabled={addedProducts.has(product.codigo_producto)}
+                                    style={{
+                                        background: addedProducts.has(product.codigo_producto)
+                                            ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                            : 'linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark-blue) 100%)',
+                                        color: 'var(--pure-white)',
+                                        border: 'none',
+                                        padding: '12px 20px',
+                                        borderRadius: '10px',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        cursor: addedProducts.has(product.codigo_producto) ? 'default' : 'pointer'
+                                    }}
+                                >
+                                    {addedProducts.has(product.codigo_producto) ? '🛒 AGREGADO' : '🛒 ADD TO CART'}
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
             ) : (
                 <div style={{
                     textAlign: 'center',
-                    padding: '80px 40px',
+                    padding: '60px 20px',
                     background: 'var(--pure-white)',
                     borderRadius: '20px',
-                    border: '3px solid var(--border-gray)',
-                    boxShadow: '0 15px 35px rgba(30, 58, 138, 0.1)'
+                    border: '3px solid var(--accent-yellow)',
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
                 }}>
-                    <div style={{ fontSize: '80px', marginBottom: '24px' }}>📦</div>
-                    <h3 style={{
-                        fontSize: '32px',
+                    <div style={{ fontSize: '80px', marginBottom: '20px' }}>📦</div>
+                    <h2 style={{
+                        color: 'var(--primary-dark-blue)',
+                        fontSize: '28px',
                         fontWeight: '800',
-                        color: 'var(--dark-black)',
                         margin: '0 0 16px 0',
                         textTransform: 'uppercase'
-                    }}>
-                        No products found
-                    </h3>
+                    }}>NO SE ENCONTRARON PRODUCTOS</h2>
                     <p style={{
-                        fontSize: '18px',
                         color: 'var(--light-black)',
-                        margin: '0 0 24px 0',
-                        fontWeight: '500'
+                        fontSize: '16px',
+                        margin: '0 0 30px 0'
                     }}>
-                        No products available in this category.
+                        No hay productos disponibles en esta categoría.
                     </p>
                     <button
                         onClick={() => router.push('/tienda/categorias')}
                         style={{
-                            background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
+                            background: 'linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark-blue) 100%)',
                             color: 'var(--pure-white)',
-                            border: '2px solid var(--accent-yellow)',
-                            padding: '16px 32px',
-                            borderRadius: '12px',
-                            fontSize: '16px',
-                            fontWeight: '700',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.target.style.transform = 'translateY(-2px)';
-                            e.target.style.boxShadow = '0 10px 25px rgba(30, 58, 138, 0.4)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.target.style.transform = 'translateY(0)';
-                            e.target.style.boxShadow = 'none';
+                            border: 'none',
+                            padding: '12px 24px',
+                            borderRadius: '10px',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            cursor: 'pointer'
                         }}
                     >
-                        🔙 View All Categories
+                        ← VER TODAS LAS CATEGORÍAS
                     </button>
                 </div>
             )}
         </div>
     );
-}
+};
+
+export default DynamicCategoryPage;
