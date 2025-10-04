@@ -150,7 +150,7 @@ export default function LoadBalancerMonitor() {
             </div>
 
             {/* Instances */}
-            {metrics.instances.length > 0 && (
+            {metrics.instances && metrics.instances.length > 0 && (
                 <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
                     <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>Instances:</div>
                     {metrics.instances.map((instance) => (

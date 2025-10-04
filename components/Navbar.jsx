@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "../contexts/CartContext";
 import { useState } from "react";
 
-const Navbar = () => {
+export default function Navbar() {
     const router = useRouter();
     const { getCartItemCount, getCartTotal, setIsOpen } = useCart();
     const [searchQuery, setSearchQuery] = useState('');
@@ -13,56 +13,39 @@ const Navbar = () => {
 
     const handleAboutClick = (e) => {
         e.preventDefault();
-        try {
-            // If we're already on the main page, scroll to the section
-            if (typeof window !== 'undefined' && window.location.pathname === '/') {
-                const aboutSection = document.getElementById('about-section');
-                if (aboutSection) {
-                    aboutSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }
-            } else {
-                // If we're on another page, navigate to main and then scroll
-                router.push('/#about-section');
+        if (typeof window !== 'undefined' && window.location.pathname === '/') {
+            const aboutSection = document.getElementById('about-section');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
             }
-        } catch (error) {
-            console.error('Error navigating to about section:', error);
+        } else {
+            router.push('/#about-section');
         }
     };
 
     const handleSearch = (e) => {
         e.preventDefault();
-        try {
-            if (searchQuery.trim()) {
-                router.push(`/productos?search=${encodeURIComponent(searchQuery.trim())}`);
-            }
-        } catch (error) {
-            console.error('Error performing search:', error);
+        if (searchQuery.trim()) {
+            router.push(`/productos?search=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
 
-    // Handle preview item clicks
     const handleCategoryClick = (index) => {
-        try {
-            setActivePreview(null);
-            const categoryRoutes = {
-                0: '/tienda/categorias/aluminum-containers',
-                1: '/tienda/categorias/plastic-containers',
-                2: '/tienda/categorias/paper-bags',
-                3: '/tienda/categorias/napkins-paper-towels',
-                4: '/tienda/categorias/soup-containers',
-                5: '/tienda/categorias/accessories'
-            };
+        setActivePreview(null);
+        const categoryRoutes = {
+            0: '/tienda/categorias/aluminum-containers',
+            1: '/tienda/categorias/plastic-containers',
+            2: '/tienda/categorias/paper-bags',
+            3: '/tienda/categorias/napkins-paper-towels'
+        };
 
-            if (categoryRoutes[index]) {
-                router.push(categoryRoutes[index]);
-            } else {
-                router.push('/tienda/categorias');
-            }
-        } catch (error) {
-            console.error('Error navigating to category:', error);
+        if (categoryRoutes[index]) {
+            router.push(categoryRoutes[index]);
+        } else {
+            router.push('/tienda/categorias');
         }
     };
 
@@ -71,9 +54,9 @@ const Navbar = () => {
 
     return (
         <div className="navbar-container">
-            {/* Main navbar with logo, search, and cart */}
+            {/* Main navbar */}
             <nav className="navbar-main">
-                {/* Logo section */}
+                {/* Logo */}
                 <div className="navbar-logo">
                     <Link href="/" className="navbar-logo-link">
                         <Image
@@ -83,11 +66,11 @@ const Navbar = () => {
                             height={40}
                             style={{ borderRadius: '50%' }}
                         />
-                        <span className="navbar-brand">L&S Plastics Supply</span>
+                        <span className="navbar-brand">L&S Plastics</span>
                     </Link>
                 </div>
 
-                {/* Search section */}
+                {/* Search */}
                 <div className="navbar-search">
                     <form onSubmit={handleSearch} className="search-form">
                         <input
@@ -103,7 +86,7 @@ const Navbar = () => {
                     </form>
                 </div>
 
-                {/* Cart section */}
+                {/* Cart */}
                 <div className="navbar-cart">
                     <button
                         onClick={() => setIsOpen(true)}
@@ -118,13 +101,9 @@ const Navbar = () => {
                 </div>
             </nav>
 
-            {/* Secondary navigation menu */}
+            {/* Secondary navigation */}
             <nav className="navbar-secondary">
                 <div className="nav-links">
-                    <Link href="/" className="nav-link">
-                        🏠 HOME
-                    </Link>
-
                     <div
                         className="nav-dropdown"
                         onMouseEnter={() => setActivePreview('about')}
@@ -132,7 +111,7 @@ const Navbar = () => {
                     >
                         <button
                             onClick={handleAboutClick}
-                            className="nav-link dropdown-trigger"
+                            className="nav-link"
                         >
                             ℹ️ ABOUT
                         </button>
@@ -140,7 +119,7 @@ const Navbar = () => {
                         {activePreview === 'about' && (
                             <div className="nav-preview">
                                 <h4>About L&S Plastics</h4>
-                                <p>Leading supplier of quality plastic products for food service industry</p>
+                                <p>Leading supplier of quality plastic products</p>
                                 <small>📞 Contact: 908-708-5425</small>
                             </div>
                         )}
@@ -151,7 +130,7 @@ const Navbar = () => {
                         onMouseEnter={() => setActivePreview('categories')}
                         onMouseLeave={() => setActivePreview(null)}
                     >
-                        <Link href="/tienda/categorias" className="nav-link dropdown-trigger">
+                        <Link href="/tienda/categorias" className="nav-link">
                             📂 CATEGORIES
                         </Link>
 
@@ -160,59 +139,27 @@ const Navbar = () => {
                                 <h4>Product Categories</h4>
                                 <div className="preview-grid">
                                     <button onClick={() => handleCategoryClick(0)} className="preview-item">
-                                        🥄 Aluminum Containers
+                                        Aluminum Containers
                                     </button>
                                     <button onClick={() => handleCategoryClick(1)} className="preview-item">
-                                        🥡 Plastic Containers
+                                        Plastic Containers
                                     </button>
                                     <button onClick={() => handleCategoryClick(2)} className="preview-item">
-                                        🛍️ Paper Bags
+                                        Paper Bags
                                     </button>
                                     <button onClick={() => handleCategoryClick(3)} className="preview-item">
-                                        📋 Napkins & Towels
+                                        Napkins & Towels
                                     </button>
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    <div 
-                        className="nav-dropdown"
-                        onMouseEnter={() => setActivePreview('products')}
-                        onMouseLeave={() => setActivePreview(null)}
-                    >
-                        <Link href="/productos" className="nav-link dropdown-trigger">
-                            📦 PRODUCTS
-                        </Link>
-
-                        {activePreview === 'products' && (
-                            <div className="nav-preview">
-                                <h4>Featured Products</h4>
-                                <div className="preview-grid">
-                                    <div className="preview-item">
-                                        📦 Clip Food Containers
-                                    </div>
-                                    <div className="preview-item">
-                                        🥡 Premium Plastic Tubs
-                                    </div>
-                                    <div className="preview-item">
-                                        📦 Multi-Use Containers
-                                    </div>
-                                    <div className="preview-item">
-                                        🥄 Aluminum Containers
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    <Link href="/tienda" className="nav-link">
-                        🛍️ SHOP
+                    <Link href="/productos" className="nav-link">
+                        📦 PRODUCTS
                     </Link>
                 </div>
             </nav>
         </div>
     );
-};
-
-export default Navbar;
+}

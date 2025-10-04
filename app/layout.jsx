@@ -1,6 +1,5 @@
 import Navbar from '../components/Navbar'
 import { CartProvider } from '../contexts/CartContext'
-import LoadBalancerMonitor from '../components/LoadBalancerMonitor'
 import CartModal from '../components/CartModal'
 import '../styles/responsive.css'
 
@@ -19,15 +18,11 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <head>
-                <title>L&S Plastics - Premium Packaging Supplies</title>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-                {/* Meta tags para pagos seguros y balanceador de carga */}
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-                <meta name="x-instance-id" content={process.env.INSTANCE_ID || 'default'} />
                 <meta name="theme-color" content="#1e3a8a" />
             </head>
             <body style={{
@@ -42,12 +37,11 @@ export default function RootLayout({ children }) {
                     <Navbar />
                     <main style={{
                         minHeight: 'calc(100vh - 60px)',
-                        overflow: 'auto'
+                        overflow: 'hidden'
                     }}>
                         {children}
                     </main>
                     <CartModal />
-                    <LoadBalancerMonitor />
                 </CartProvider>
             </body>
         </html>

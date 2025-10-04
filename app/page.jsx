@@ -6,467 +6,238 @@ import '../styles/responsive.css';
 export default function HomePage() {
     const router = useRouter();
 
-    const productCategories = [
-        {
-            title: 'Clip Food Containers',
-            description: 'Secure and durable containers for all your food storage needs.',
-            icon: '🥡',
-            image: '/Clip-Container.png',
-            link: '/productos?search=clip%20food%20containers'
-        },
-        {
-            title: 'Premium Plastic Tubs',
-            description: 'Versatile tubs for storage, catering, and food service.',
-            icon: '📦',
-            image: '/Plastic-Tubs.png',
-            link: '/productos?search=premium%20plastic%20tubs'
-        },
-        {
-            title: 'Multi-Use Containers',
-            description: 'Ideal for delivery services and organizing food items.',
-            icon: '🍱',
-            image: '/Multi-Use-Containers.png',
-            link: '/productos?search=multi%20use%20containers'
-        }
-    ];
-
-    const categories = [
-        {
-            name: 'Aluminum Containers',
-            icon: '🥄',
-            description: 'Durable aluminum containers for food storage',
-            link: '/tienda/categorias/aluminum-containers'
-        },
-        {
-            name: 'Plastic Containers',
-            icon: '🥡',
-            description: 'Versatile plastic containers for all needs',
-            link: '/tienda/categorias/plastic-containers'
-        },
-        {
-            name: 'Paper Bags',
-            icon: '🛍️',
-            description: 'Eco-friendly paper bags for packaging',
-            link: '/tienda/categorias/paper-bags'
-        },
-        {
-            name: 'Napkins & Paper Towels',
-            icon: '📋',
-            description: 'Essential paper products for dining',
-            link: '/tienda/categorias/napkins-paper-towels'
-        },
-        {
-            name: 'Soup Containers',
-            icon: '🍲',
-            description: 'Leak-proof containers for liquids',
-            link: '/tienda/categorias/soup-containers'
-        },
-        {
-            name: 'Soufflé Cups & Lids',
-            icon: '🥤',
-            description: 'Small portion containers with lids',
-            link: '/tienda/categorias/souffle-cups-lids'
-        }
-    ];
-
     return (
-        <div style={{
-            minHeight: '100vh',
-            background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)',
-            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif'
-        }}>
+        <div>
             {/* Banner Section */}
-            <section className="banner-section" style={{
-                width: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-                borderBottom: '4px solid #fbbf24'
-            }}>
+            <section
+                className="banner-section"
+                style={{
+                    height: 'clamp(300px, 50vw, 500px)',
+                    position: 'relative',
+                    width: '100%',
+                    overflow: 'hidden'
+                }}
+            >
                 <Image
                     src="/images/banner-packaging.jpg"
                     alt="Your Trusted Source for Packaging Supplies"
-                    width={1400}
-                    height={600}
+                    fill
                     style={{
-                        width: '100%',
-                        height: 'clamp(300px, 40vw, 600px)',
                         objectFit: 'cover',
                         objectPosition: 'center'
                     }}
                     priority
+                    sizes="100vw"
                 />
+            </section>
 
-                {/* Banner Overlay */}
+            {/* About Section */}
+            <section id="about-section" className="about-section">
                 <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(59, 130, 246, 0.6) 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 'clamp(20px, 5vw, 40px)'
+                    maxWidth: '1200px',
+                    margin: '0 auto',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '60px',
+                    alignItems: 'center'
                 }}>
-                    <div style={{
-                        textAlign: 'center',
-                        color: '#ffffff',
-                        maxWidth: '800px'
-                    }}>
-                        <h1 style={{
-                            fontSize: 'clamp(32px, 8vw, 56px)',
+                    {/* Left Content */}
+                    <div>
+                        <div style={{
+                            background: 'var(--accent-yellow)',
+                            color: 'var(--dark-black)',
+                            padding: '6px 16px',
+                            borderRadius: '20px',
+                            fontSize: '12px',
+                            fontWeight: '700',
+                            textTransform: 'uppercase',
+                            marginBottom: '20px',
+                            display: 'inline-block'
+                        }}>
+                            ABOUT US
+                        </div>
+                        <h2 style={{
+                            fontSize: '36px',
                             fontWeight: '800',
-                            margin: '0 0 24px 0',
-                            textShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-                            lineHeight: 1.1
+                            color: 'var(--dark-black)',
+                            marginBottom: '24px'
                         }}>
-                            Your Trusted Source for Premium Packaging
-                        </h1>
+                            L&S Plastics Supply
+                        </h2>
                         <p style={{
-                            fontSize: 'clamp(16px, 4vw, 24px)',
-                            margin: '0 0 32px 0',
-                            fontWeight: '500',
-                            textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
-                            opacity: 0.95
+                            fontSize: '16px',
+                            color: 'var(--light-black)',
+                            lineHeight: '1.7',
+                            marginBottom: '24px'
                         }}>
-                            Quality plastic supplies, containers, and food service solutions
+                            Your trusted supplier of high-quality containers and plastic products.
+                            We offer complete solutions for restaurants, food services, and businesses.
                         </p>
                         <button
-                            onClick={() => router.push('/tienda/categorias')}
+                            onClick={() => router.push('/catalogo')}
+                            className="view-products-btn"
                             style={{
-                                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-                                color: '#111827',
-                                padding: 'clamp(14px, 3vw, 18px) clamp(28px, 6vw, 40px)',
-                                border: 'none',
-                                borderRadius: '12px',
-                                fontSize: 'clamp(16px, 4vw, 20px)',
-                                fontWeight: '700',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                                boxShadow: '0 8px 24px rgba(251, 191, 36, 0.3)'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                                e.target.style.boxShadow = '0 12px 32px rgba(251, 191, 36, 0.4)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.transform = 'translateY(0) scale(1)';
-                                e.target.style.boxShadow = '0 8px 24px rgba(251, 191, 36, 0.3)';
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                width: 'auto'
                             }}
                         >
-                            🛍️ Shop Now
+                            📋 VIEW CATALOG
+                        </button>
+                    </div>
+
+                    {/* Right Content - Logo */}
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        background: 'var(--pure-white)',
+                        borderRadius: '20px',
+                        padding: '40px',
+                        border: '3px solid var(--accent-yellow)'
+                    }}>
+                        <Image
+                            src="/L&S.jpg"
+                            alt="L&S Plastics Supply Logo"
+                            width={300}
+                            height={200}
+                            style={{
+                                objectFit: 'contain'
+                            }}
+                        />
+                    </div>
+                </div>
+            </section>
+
+            {/* Mission & Vision Section */}
+            <section className="mission-vision-section">
+                <div className="mission-vision-grid">
+                    <div className="mission-card">
+                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎯</div>
+                        <h3>OUR MISSION</h3>
+                        <p>
+                            To provide the highest quality plastic products for the food industry,
+                            ensuring our customers have access to reliable, safe, and efficient solutions
+                            for their packaging and storage needs.
+                        </p>
+                    </div>
+                    <div className="vision-card">
+                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚀</div>
+                        <h3>OUR VISION</h3>
+                        <p>
+                            To be the leading company in plastic supplies for the food industry,
+                            recognized for our innovation, exceptional quality, and commitment to
+                            customer satisfaction and environmental care.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Products Section */}
+            <section className="products-section">
+                <h2 className="section-title">OUR PRODUCTS</h2>
+                <div className="products-grid">
+                    <div className="product-card">
+                        <Image
+                            src="/Clip-Container.png"
+                            alt="Clip Food Containers"
+                            width={200}
+                            height={200}
+                            className="product-image"
+                        />
+                        <h3 className="product-title">Clip Food Containers</h3>
+                        <p className="product-description">
+                            Secure and durable containers for all your food storage needs.
+                        </p>
+                        <button
+                            className="view-products-btn"
+                            onClick={() => router.push('/tienda/categorias')}
+                        >
+                            VIEW PRODUCTS
+                        </button>
+                    </div>
+
+                    <div className="product-card">
+                        <Image
+                            src="/Plastic-Tubs.png"
+                            alt="Premium Plastic Tubs"
+                            width={200}
+                            height={200}
+                            className="product-image"
+                        />
+                        <h3 className="product-title">Premium Plastic Tubs</h3>
+                        <p className="product-description">
+                            Versatile tubs for storage, catering, and food service.
+                        </p>
+                        <button
+                            className="view-products-btn"
+                            onClick={() => router.push('/tienda/categorias')}
+                        >
+                            VIEW PRODUCTS
+                        </button>
+                    </div>
+
+                    <div className="product-card">
+                        <Image
+                            src="/Multi-Use-Containers.png"
+                            alt="Multi-Use Containers"
+                            width={200}
+                            height={200}
+                            className="product-image"
+                        />
+                        <h3 className="product-title">Multi-Use Containers</h3>
+                        <p className="product-description">
+                            Ideal for delivery services and organizing food items.
+                        </p>
+                        <button
+                            className="view-products-btn"
+                            onClick={() => router.push('/tienda/categorias')}
+                        >
+                            VIEW PRODUCTS
                         </button>
                     </div>
                 </div>
             </section>
 
-            {/* Featured Products Section */}
-            <section style={{
-                padding: 'clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px)',
-                maxWidth: '1400px',
-                margin: '0 auto'
-            }}>
-                <div style={{
-                    textAlign: 'center',
-                    marginBottom: 'clamp(40px, 8vw, 60px)'
-                }}>
-                    <h2 style={{
-                        fontSize: 'clamp(28px, 6vw, 40px)',
-                        fontWeight: '800',
-                        color: '#1e3a8a',
-                        margin: '0 0 16px 0',
-                        textTransform: 'uppercase',
-                        letterSpacing: '1px'
-                    }}>
-                        📦 Featured Products
-                    </h2>
-                    <p style={{
-                        fontSize: 'clamp(16px, 4vw, 20px)',
-                        color: '#6b7280',
-                        margin: 0,
-                        fontWeight: '500'
-                    }}>
-                        Discover our most popular packaging solutions
-                    </p>
-                </div>
-
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(280px, 30vw, 350px), 1fr))',
-                    gap: 'clamp(24px, 5vw, 40px)'
-                }}>
-                    {productCategories.map((category, index) => (
-                        <div
-                            key={index}
-                            onClick={() => router.push(category.link)}
-                            style={{
-                                background: '#ffffff',
-                                borderRadius: '20px',
-                                padding: 'clamp(24px, 5vw, 32px)',
-                                textAlign: 'center',
-                                boxShadow: '0 10px 30px rgba(30, 58, 138, 0.1)',
-                                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                border: '3px solid #e5e7eb',
-                                cursor: 'pointer',
-                                position: 'relative',
-                                overflow: 'hidden'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)';
-                                e.currentTarget.style.boxShadow = '0 20px 40px rgba(30, 58, 138, 0.2)';
-                                e.currentTarget.style.borderColor = '#fbbf24';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                                e.currentTarget.style.boxShadow = '0 10px 30px rgba(30, 58, 138, 0.1)';
-                                e.currentTarget.style.borderColor = '#e5e7eb';
-                            }}
-                        >
-                            {/* Product accent line */}
-                            <div style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                height: '4px',
-                                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)'
-                            }}></div>
-
-                            {/* Product Image */}
-                            <div style={{
-                                width: '100%',
-                                height: 'clamp(180px, 20vw, 220px)',
-                                position: 'relative',
-                                marginBottom: 'clamp(20px, 4vw, 24px)',
-                                borderRadius: '15px',
-                                overflow: 'hidden',
-                                background: '#f8fafc'
-                            }}>
-                                <Image
-                                    src={category.image}
-                                    alt={category.title}
-                                    fill
-                                    style={{
-                                        objectFit: 'contain',
-                                        padding: '10px'
-                                    }}
-                                />
-                            </div>
-
-                            {/* Product Info */}
-                            <div style={{
-                                fontSize: 'clamp(32px, 8vw, 48px)',
-                                marginBottom: 'clamp(16px, 3vw, 20px)'
-                            }}>
-                                {category.icon}
-                            </div>
-
-                            <h3 style={{
-                                fontSize: 'clamp(18px, 4vw, 22px)',
-                                fontWeight: '700',
-                                color: '#1e3a8a',
-                                margin: '0 0 12px 0',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px'
-                            }}>
-                                {category.title}
-                            </h3>
-
-                            <p style={{
-                                fontSize: 'clamp(14px, 3vw, 16px)',
-                                color: '#6b7280',
-                                lineHeight: 1.6,
-                                margin: '0 0 24px 0',
-                                fontWeight: '500'
-                            }}>
-                                {category.description}
-                            </p>
-
-                            <div style={{
-                                background: '#fbbf24',
-                                color: '#111827',
-                                padding: 'clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px)',
-                                borderRadius: '8px',
-                                fontSize: 'clamp(12px, 3vw, 14px)',
-                                fontWeight: '700',
-                                display: 'inline-block',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px'
-                            }}>
-                                🔍 View Products
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Categories Section */}
-            <section style={{
-                background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-                padding: 'clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px)',
-                color: '#ffffff'
-            }}>
-                <div style={{
-                    maxWidth: '1400px',
-                    margin: '0 auto'
-                }}>
-                    <div style={{
-                        textAlign: 'center',
-                        marginBottom: 'clamp(40px, 8vw, 60px)'
-                    }}>
-                        <h2 style={{
-                            fontSize: 'clamp(28px, 6vw, 40px)',
-                            fontWeight: '800',
-                            margin: '0 0 16px 0',
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                        }}>
-                            📂 Shop by Category
-                        </h2>
-                        <p style={{
-                            fontSize: 'clamp(16px, 4vw, 20px)',
-                            color: '#fbbf24',
-                            margin: 0,
-                            fontWeight: '600'
-                        }}>
-                            Find exactly what you need for your business
+            {/* Customer Testimonials */}
+            <section className="testimonials-section">
+                <h2 className="section-title">⭐ CUSTOMER TESTIMONIALS</h2>
+                <div className="testimonials-grid">
+                    <div className="testimonial-card">
+                        <p className="testimonial-text">
+                            "With L&S Plastics Supply I found exactly what I was looking for: resistant, practical products at
+                            an excellent price. They also always deliver on time, something I value tremendously for my
+                            catering business."
                         </p>
-                    </div>
-
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(250px, 25vw, 300px), 1fr))',
-                        gap: 'clamp(20px, 4vw, 30px)'
-                    }}>
-                        {categories.map((category, index) => (
-                            <div
-                                key={index}
-                                onClick={() => router.push(category.link)}
-                                style={{
-                                    background: 'rgba(255, 255, 255, 0.1)',
-                                    borderRadius: '16px',
-                                    padding: 'clamp(20px, 4vw, 28px)',
-                                    textAlign: 'center',
-                                    transition: 'all 0.3s ease',
-                                    border: '2px solid rgba(255, 255, 255, 0.2)',
-                                    cursor: 'pointer',
-                                    backdropFilter: 'blur(10px)'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-                                    e.currentTarget.style.transform = 'translateY(-5px)';
-                                    e.currentTarget.style.borderColor = '#fbbf24';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                                }}
-                            >
-                                <div style={{
-                                    fontSize: 'clamp(32px, 8vw, 48px)',
-                                    marginBottom: 'clamp(12px, 3vw, 16px)'
-                                }}>
-                                    {category.icon}
-                                </div>
-                                <h3 style={{
-                                    fontSize: 'clamp(16px, 4vw, 18px)',
-                                    fontWeight: '700',
-                                    margin: '0 0 8px 0',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.5px'
-                                }}>
-                                    {category.name}
-                                </h3>
-                                <p style={{
-                                    fontSize: 'clamp(12px, 3vw, 14px)',
-                                    color: '#e5e7eb',
-                                    margin: 0,
-                                    fontWeight: '500'
-                                }}>
-                                    {category.description}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* About Section */}
-            <section id="about-section" style={{
-                padding: 'clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px)',
-                maxWidth: '1400px',
-                margin: '0 auto'
-            }}>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: window.innerWidth > 768 ? '1fr 1fr' : '1fr',
-                    gap: 'clamp(30px, 6vw, 60px)',
-                    alignItems: 'center'
-                }}>
-                    <div>
-                        <h2 style={{
-                            fontSize: 'clamp(28px, 6vw, 40px)',
-                            fontWeight: '800',
-                            color: '#1e3a8a',
-                            margin: '0 0 24px 0',
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px'
-                        }}>
-                            ℹ️ About L&S Plastics
-                        </h2>
-                        <p style={{
-                            fontSize: 'clamp(16px, 4vw, 18px)',
-                            color: '#4b5563',
-                            lineHeight: 1.7,
-                            margin: '0 0 20px 0',
-                            fontWeight: '500'
-                        }}>
-                            Leading supplier of quality plastic products for the food service industry.
-                            We provide premium packaging solutions that help businesses serve their customers better.
-                        </p>
-                        <p style={{
-                            fontSize: 'clamp(16px, 4vw, 18px)',
-                            color: '#4b5563',
-                            lineHeight: 1.7,
-                            margin: '0 0 32px 0',
-                            fontWeight: '500'
-                        }}>
-                            From durable food containers to eco-friendly packaging, we offer comprehensive
-                            solutions for restaurants, catering services, and food distributors.
-                        </p>
-                        <div style={{
-                            background: '#fbbf24',
-                            color: '#111827',
-                            padding: 'clamp(12px, 3vw, 16px) clamp(20px, 4vw, 24px)',
-                            borderRadius: '12px',
-                            fontSize: 'clamp(16px, 4vw, 18px)',
-                            fontWeight: '700',
-                            display: 'inline-block',
-                            textDecoration: 'none'
-                        }}>
-                            📞 Contact: 908-708-5425
+                        <div>
+                            <div style={{ fontWeight: '700', color: 'var(--primary-blue)' }}>Maria Gonzalez</div>
+                            <div style={{ fontSize: '12px', color: 'var(--light-black)' }}>Professional Catering Entrepreneur</div>
                         </div>
                     </div>
-                    <div style={{
-                        position: 'relative',
-                        height: 'clamp(250px, 30vw, 400px)',
-                        borderRadius: '20px',
-                        overflow: 'hidden',
-                        boxShadow: '0 20px 40px rgba(30, 58, 138, 0.2)'
-                    }}>
-                        <Image
-                            src="/L&S.jpg"
-                            alt="L&S Plastics - Quality Supplies"
-                            fill
-                            style={{
-                                objectFit: 'cover'
-                            }}
-                        />
+
+                    <div className="testimonial-card">
+                        <p className="testimonial-text">
+                            "Before, it was hard for me to find a supplier who really delivered what they promised. Since
+                            working with L&S Plastics, I have the security that I will never run out of the quality supplies I
+                            need for my restaurant."
+                        </p>
+                        <div>
+                            <div style={{ fontWeight: '700', color: 'var(--primary-blue)' }}>Andrés Pérez</div>
+                            <div style={{ fontSize: '12px', color: 'var(--light-black)' }}>Restaurant Owner & Chef</div>
+                        </div>
+                    </div>
+
+                    <div className="testimonial-card">
+                        <p className="testimonial-text">
+                            "I ordered by recommendation and I was truly delighted. The customer service was very
+                            cordial and professional, and the products arrived quickly and in excellent condition. I will
+                            definitely continue as a loyal customer!"
+                        </p>
+                        <div>
+                            <div style={{ fontWeight: '700', color: 'var(--primary-blue)' }}>Carolina Vásquez</div>
+                            <div style={{ fontSize: '12px', color: 'var(--light-black)' }}>Event Planning Specialist</div>
+                        </div>
                     </div>
                 </div>
             </section>

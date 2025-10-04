@@ -5,7 +5,7 @@
       "precio": 37.0,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/Half_size_shallow.jpeg",
+      "imagen_url": "images/productos/Half_size_shallow.png",
       "codigo_producto": "AL-BS-HS"
     },
     {
@@ -14,7 +14,7 @@
       "precio": 40.0,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/Half_size_deep.jpg",
+      "imagen_url": "images/productos/Half_size_deep.png",
       "codigo_producto": "AL-BS-HD"
     },
     {
@@ -23,7 +23,7 @@
       "precio": 38.0,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/half_medium.jpg",
+      "imagen_url": "images/productos/half_medium.png",
       "codigo_producto": "AL-BS-HM"
     },
     {
@@ -32,7 +32,7 @@
       "precio": 26.0,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/Half-size-Lid.jpg",
+      "imagen_url": "images/productos/Half-size-Lid.png",
       "codigo_producto": "AL-TA-HS"
     },
     {
@@ -41,7 +41,7 @@
       "precio": 59.0,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/Aluminun-rouds-8.jpg",
+      "imagen_url": "images/productos/Aluminun-rouds-8.png",
       "codigo_producto": "AL-RD-08"
     },
     {
@@ -50,7 +50,7 @@
       "precio": 69.0,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/Aluminun-rouds-9.jpg",
+      "imagen_url": "images/productos/Aluminun-rouds-9.png",
       "codigo_producto": "AL-RD-09"
     },
     {
@@ -59,7 +59,7 @@
       "precio": 39.0,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/Rouds-aluminun.jpg",
+      "imagen_url": "images/productos/Rouds-aluminun.png",
       "codigo_producto": "AL-RD-ST"
     },
     {
@@ -68,7 +68,7 @@
       "precio": 26.99,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/9in-Round-Aluminum-Foil-Container-Side.jpg",
+      "imagen_url": "images/productos/9in-Round-Aluminum-Foil-Container-Side.png",
       "codigo_producto": "AL-TR9-500"
     },
     {
@@ -77,7 +77,7 @@
       "precio": 25.99,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/Roud-aluminun-Lid-8-box-of-500-pcs.jpg",
+      "imagen_url": "images/productos/Roud-aluminun-Lid-8-box-of-500-pcs.png",
       "codigo_producto": "AL-TR8-500"
     },
     {
@@ -86,7 +86,7 @@
       "precio": 23.99,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/image.png",
+      "imagen_url": "images/productos/Round-Aluminum-Lid-7-Box-of-500-pcs.png",
       "codigo_producto": "AL-TR7-500"
     },
     {
@@ -95,7 +95,7 @@
       "precio": 26.99,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/aluminio_rollo_std.jpg",
+      "imagen_url": "images/productos/aluminio_rollo_std.png",
       "codigo_producto": "AL-RO-ST"
     },
     {
@@ -104,7 +104,7 @@
       "precio": 45.99,
       "categoria": "Aluminum Containers",
       "categoria_id": 1,
-      "imagen_url": "images/productos/aluminio_rollo_18x500.jpg",
+      "imagen_url": "images/productos/aluminio_rollo_18x500.png",
       "codigo_producto": "AL-RO-18500"
     },
     {
@@ -113,7 +113,7 @@
       "precio": 12.99,
       "categoria": "Disposable Containers (Boxes)",
       "categoria_id": 2,
-      "imagen_url": "images/productos/caja_des_6x6.jpg",
+      "imagen_url": "images/productos/caja_des_6x6.png",
       "codigo_producto": "DIS-BX-6X6"
     },
     {
@@ -122,7 +122,7 @@
       "precio": 15.99,
       "categoria": "Disposable Containers (Boxes)",
       "categoria_id": 2,
-      "imagen_url": "images/productos/caja_des_8x8x1.jpg",
+      "imagen_url": "images/productos/caja_des_8x8x1.png",
       "codigo_producto": "DIS-BX-8X8X1"
     },
     {
@@ -131,7 +131,7 @@
       "precio": 18.99,
       "categoria": "Disposable Containers (Boxes)",
       "categoria_id": 2,
-      "imagen_url": "images/productos/caja_des_8x8x3.jpg",
+      "imagen_url": "images/productos/caja_des_8x8x3.png",
       "codigo_producto": "DIS-BX-8X8X3"
     },
     {
@@ -140,7 +140,7 @@
       "precio": 16.99,
       "categoria": "Disposable Containers (Boxes)",
       "categoria_id": 2,
-      "imagen_url": "images/productos/caja_des_9x6.jpg",
+      "imagen_url": "images/productos/caja_des_9x6.png",
       "codigo_producto": "DIS-BX-9X6"
     },
     {
@@ -149,7 +149,7 @@
       "precio": 19.99,
       "categoria": "Disposable Containers (Boxes)",
       "categoria_id": 2,
-      "imagen_url": "images/productos/caja_des_9x9x1.jpg",
+      "imagen_url": "images/productos/caja_des_9x9x1.png",
       "codigo_producto": "DIS-BX-9X9X1"
     },
     {
@@ -158,7 +158,7 @@
       "precio": 89.99,
       "categoria": "Disposable Containers (Boxes)",
       "categoria_id": 2,
-      "imagen_url": "images/productos/10\u00d75\u00d712-paquete-de-250pz.jpg",
+      "imagen_url": "images/productos/Container-10-5-12-Pack-of-250pcs.png",
       "codigo_producto": "DIS-BX-10X5X12-250"
     },
     {
@@ -176,7 +176,7 @@
       "precio": 8.99,
       "categoria": "Accessories",
       "categoria_id": 7,
-      "imagen_url": "images/productos/caja-vacia-tips-para-100-unds.jpg",
+      "imagen_url": "images/productos/caja-vacia-tips-para-100-unds.png",
       "codigo_producto": "ACC-BOX-TIPS-100"
     },
     {
@@ -185,7 +185,7 @@
       "precio": 19.99,
       "categoria": "Soup Containers",
       "categoria_id": 3,
-      "imagen_url": "images/productos/sopa_std_8oz.webp",
+      "imagen_url": "images/productos/sopa_std_8oz.png",
       "codigo_producto": "SOP-STD-8OZ"
     },
     {
@@ -194,7 +194,7 @@
       "precio": 22.99,
       "categoria": "Soup Containers",
       "categoria_id": 3,
-      "imagen_url": "images/productos/sopa_std_12oz.webp",
+      "imagen_url": "images/productos/sopa_std_12oz.png",
       "codigo_producto": "SOP-STD-12OZ"
     },
     {
@@ -203,7 +203,7 @@
       "precio": 28.99,
       "categoria": "Soup Containers",
       "categoria_id": 3,
-      "imagen_url": "images/productos/sopa_std_24oz.webp",
+      "imagen_url": "images/productos/sopa_std_24oz.png",
       "codigo_producto": "SOP-STD-24OZ"
     },
     {
@@ -212,7 +212,7 @@
       "precio": 35.99,
       "categoria": "Soup Containers",
       "categoria_id": 3,
-      "imagen_url": "images/productos/sopa_heavy_32oz_a.webp",
+      "imagen_url": "images/productos/sopa_heavy_32oz_a.png",
       "codigo_producto": "SOP-HD-32OZ-A"
     },
     {
@@ -221,7 +221,7 @@
       "precio": 37.99,
       "categoria": "Soup Containers",
       "categoria_id": 3,
-      "imagen_url": "images/productos/sopa_heavy_32oz_b.webp",
+      "imagen_url": "images/productos/sopa_heavy_32oz_b.png",
       "codigo_producto": "SOP-HD-32OZ-B"
     },
     {
@@ -239,7 +239,7 @@
       "precio": 32.99,
       "categoria": "Plastic Containers (Microwave)",
       "categoria_id": 4,
-      "imagen_url": "images/productos/plastico_micro_28oz.jpg",
+      "imagen_url": "images/productos/plastico_micro_28oz.png",
       "codigo_producto": "PL-MIC-28OZ"
     },
     {
@@ -257,7 +257,7 @@
       "precio": 45.99,
       "categoria": "Plastic Containers (Microwave)",
       "categoria_id": 4,
-      "imagen_url": "images/productos/plastico_micro_48oz.jpg",
+      "imagen_url": "images/productos/plastico_micro_48oz.png",
       "codigo_producto": "PL-MIC-48OZ"
     },
     {
@@ -266,7 +266,7 @@
       "precio": 24.99,
       "categoria": "Plastic Containers (Microwave)",
       "categoria_id": 4,
-      "imagen_url": "images/productos/plastico_micro_std.webp",
+      "imagen_url": "images/productos/plastico_micro_std.png",
       "codigo_producto": "PL-MIC-STD"
     },
     {
@@ -275,7 +275,7 @@
       "precio": 8.99,
       "categoria": "Paper Bags",
       "categoria_id": 5,
-      "imagen_url": "images/productos/bolsa_papel_04.webp",
+      "imagen_url": "images/productos/bolsa_papel_04.png",
       "codigo_producto": "PB-04"
     },
     {
@@ -284,7 +284,7 @@
       "precio": 10.99,
       "categoria": "Paper Bags",
       "categoria_id": 5,
-      "imagen_url": "images/productos/bolsa_papel_06.jpg",
+      "imagen_url": "images/productos/bolsa_papel_06.png",
       "codigo_producto": "PB-06"
     },
     {
@@ -293,7 +293,7 @@
       "precio": 12.99,
       "categoria": "Paper Bags",
       "categoria_id": 5,
-      "imagen_url": "images/productos/bolsa_papel_08.jpg",
+      "imagen_url": "images/productos/bolsa_papel_08.png",
       "codigo_producto": "PB-08"
     },
     {
@@ -302,7 +302,7 @@
       "precio": 6.99,
       "categoria": "Paper Bags",
       "categoria_id": 5,
-      "imagen_url": "images/productos/bolsa_papel_1-6.webp",
+      "imagen_url": "images/productos/bolsa_papel_1-6.png",
       "codigo_producto": "PB-1-6"
     },
     {
@@ -311,7 +311,7 @@
       "precio": 5.99,
       "categoria": "Paper Bags",
       "categoria_id": 5,
-      "imagen_url": "images/productos/bolsa_papel_1-8.webp",
+      "imagen_url": "images/productos/bolsa_papel_1-8.png",
       "codigo_producto": "PB-1-8"
     },
     {
@@ -329,7 +329,7 @@
       "precio": 18.99,
       "categoria": "Paper Bags",
       "categoria_id": 5,
-      "imagen_url": "images/productos/bolsa_papel_12.jpg",
+      "imagen_url": "images/productos/bolsa_papel_12.png",
       "codigo_producto": "PB-12"
     },
     {
@@ -338,7 +338,7 @@
       "precio": 21.99,
       "categoria": "Paper Bags",
       "categoria_id": 5,
-      "imagen_url": "images/productos/bolsa_papel_13x7x17.webp",
+      "imagen_url": "images/productos/bolsa_papel_13x7x17.png",
       "codigo_producto": "PB-13X7X17"
     },
     {
@@ -356,7 +356,7 @@
       "precio": 14.99,
       "categoria": "Napkins & Paper Towels",
       "categoria_id": 6,
-      "imagen_url": "images/productos/servilleta_cena_2ply.webp",
+      "imagen_url": "images/productos/servilleta_cena_2ply.png",
       "codigo_producto": "NAP-DIN-2PLY"
     },
     {
@@ -365,7 +365,7 @@
       "precio": 16.99,
       "categoria": "Napkins & Paper Towels",
       "categoria_id": 6,
-      "imagen_url": "images/productos/servilleta_tallfold.webp",
+      "imagen_url": "images/productos/servilleta_tallfold.png",
       "codigo_producto": "NAP-TF"
     },
     {
@@ -374,7 +374,7 @@
       "precio": 22.99,
       "categoria": "Napkins & Paper Towels",
       "categoria_id": 6,
-      "imagen_url": "images/productos/toalla_rollo_kraft.webp",
+      "imagen_url": "images/productos/toalla_rollo_kraft.png",
       "codigo_producto": "TOW-KR-ROLL"
     },
     {
@@ -383,7 +383,7 @@
       "precio": 9.99,
       "categoria": "Accessories",
       "categoria_id": 7,
-      "imagen_url": "images/productos/accesorio_portavasos.webp",
+      "imagen_url": "images/productos/accesorio_portavasos.png",
       "codigo_producto": "ACC-CUP-HOLDER"
     },
     {
@@ -392,7 +392,7 @@
       "precio": 49.99,
       "categoria": "Straws",
       "categoria_id": 8,
-      "imagen_url": "images/productos/straws/strow_size_7_3_4_350_24.jpg",
+      "imagen_url": "images/productos/straws/strow_size_7_3_4_350_24.png",
       "codigo_producto": "ACC-STR"
     },
     {
@@ -401,7 +401,7 @@
       "precio": 49.99,
       "categoria": "Coffee Cups & Lids",
       "categoria_id": 9,
-      "imagen_url": "images/productos/coffe_cups/10oz_coffe_cups_1000pcs.webp",
+      "imagen_url": "images/productos/coffe_cups/10oz_coffe_cups_1000pcs.png",
       "codigo_producto": "CUP-CFE-10"
     },
     {
@@ -410,7 +410,7 @@
       "precio": 55.99,
       "categoria": "Coffee Cups & Lids",
       "categoria_id": 9,
-      "imagen_url": "images/productos/coffe_cups/12oz_coffe_cups_1000pcs.webp",
+      "imagen_url": "images/productos/coffe_cups/12oz_coffe_cups_1000pcs.png",
       "codigo_producto": "CUP-CFE-12"
     },
     {
@@ -419,7 +419,7 @@
       "precio": 59.99,
       "categoria": "Coffee Cups & Lids",
       "categoria_id": 9,
-      "imagen_url": "images/productos/coffe_cups/16oz_coffe_cups_1000pcs.jpeg",
+      "imagen_url": "images/productos/coffe_cups/16oz_coffe_cups_1000pcs.png",
       "codigo_producto": "CUP-CFE-16"
     },
     {
@@ -428,7 +428,7 @@
       "precio": 48.99,
       "categoria": "Coffee Cups & Lids",
       "categoria_id": 9,
-      "imagen_url": "images/productos/coffe_cups/20oz_coffe_cups_1000pcs.jpg",
+      "imagen_url": "images/productos/coffe_cups/20oz_coffe_cups_1000pcs.png",
       "codigo_producto": "CUP-CFE-20"
     },
     {
@@ -437,7 +437,7 @@
       "precio": 34.99,
       "categoria": "Coffee Cups & Lids",
       "categoria_id": 9,
-      "imagen_url": "images/productos/coffe_cups/lids_10_24_oz_coffe_cups_1000pcs.webp",
+      "imagen_url": "images/productos/coffe_cups/lids_10_24_oz_coffe_cups_1000pcs.png",
       "codigo_producto": "LID-CFE-1024"
     },
     {
@@ -446,7 +446,7 @@
       "precio": 42.99,
       "categoria": "Cutlery & Accessories",
       "categoria_id": 12,
-      "imagen_url": "images/productos/cutlery/l_black_nitrili_gloves_xl_1000pcs.jpg",
+      "imagen_url": "images/productos/cutlery/l_black_nitrili_gloves_xl_1000pcs.png",
       "codigo_producto": "ACC-GLV-XL"
     },
     {
@@ -455,7 +455,7 @@
       "precio": 23.99,
       "categoria": "Cutlery & Accessories",
       "categoria_id": 12,
-      "imagen_url": "images/productos/cutlery/cutlery_kits_box_420pcs.webp",
+      "imagen_url": "images/productos/cutlery/cutlery_kits_box_420pcs.png",
       "codigo_producto": "ACC-KIT-420"
     },
     {
@@ -473,7 +473,7 @@
       "precio": 19.99,
       "categoria": "Cutlery & Accessories",
       "categoria_id": 12,
-      "imagen_url": "images/productos/cutlery/full_size_heavy_forks_white_box_of_1000pcs.webp",
+      "imagen_url": "images/productos/cutlery/full_size_heavy_forks_white_box_of_1000pcs.png",
       "codigo_producto": "CUT-FRK-HD"
     },
     {
@@ -482,7 +482,7 @@
       "precio": 19.99,
       "categoria": "Cutlery & Accessories",
       "categoria_id": 12,
-      "imagen_url": "images/productos/cutlery/full_size_heavy_knife_white_box_of_1000pcs.webp",
+      "imagen_url": "images/productos/cutlery/full_size_heavy_knife_white_box_of_1000pcs.png",
       "codigo_producto": "CUT-KNF-HD"
     },
     {
@@ -491,7 +491,7 @@
       "precio": 19.99,
       "categoria": "Miscellaneous",
       "categoria_id": 13,
-      "imagen_url": "images/productos/misc/46_garbage_bags_100pcs_2xhd.webp",
+      "imagen_url": "images/productos/misc/46_garbage_bags_100pcs_2xhd.png",
       "codigo_producto": "MIS-BAG-46"
     },
     {
@@ -500,7 +500,7 @@
       "precio": 55.99,
       "categoria": "Cold Cups & Lids",
       "categoria_id": 10,
-      "imagen_url": "images/productos/cold_cups/dart_clear_500pcs.jpg",
+      "imagen_url": "images/productos/cold_cups/dart_clear_500pcs.png",
       "codigo_producto": "CUP-CLD-DRT"
     },
     {
@@ -509,7 +509,7 @@
       "precio": 48.99,
       "categoria": "Cold Cups & Lids",
       "categoria_id": 10,
-      "imagen_url": "images/productos/cold_cups/20oz_clear_plastic_pet_cold_cups_1000pcs.webp",
+      "imagen_url": "images/productos/cold_cups/20oz_clear_plastic_pet_cold_cups_1000pcs.png",
       "codigo_producto": "CUP-CLD-20"
     },
     {
@@ -518,7 +518,7 @@
       "precio": 56.99,
       "categoria": "Cold Cups & Lids",
       "categoria_id": 10,
-      "imagen_url": "images/productos/cold_cups/16oz_clear_plastic_pet_cold_cups_1000pcs.webp",
+      "imagen_url": "images/productos/cold_cups/16oz_clear_plastic_pet_cold_cups_1000pcs.png",
       "codigo_producto": "CUP-CLD-16"
     },
     {
@@ -527,7 +527,7 @@
       "precio": 55.99,
       "categoria": "Cold Cups & Lids",
       "categoria_id": 10,
-      "imagen_url": "images/productos/cold_cups/12_oz_clear_plastic_squat_pet_cold_cups_1000pcs.webp",
+      "imagen_url": "images/productos/cold_cups/12_oz_clear_plastic_squat_pet_cold_cups_1000pcs.png",
       "codigo_producto": "CUP-CLD-12S"
     },
     {
@@ -536,7 +536,7 @@
       "precio": 32.99,
       "categoria": "Cold Cups & Lids",
       "categoria_id": 10,
-      "imagen_url": "images/productos/cold_cups/clear_plastic_pet_straw_lid_12oz___24oz_box_1000pcs.webp",
+      "imagen_url": "images/productos/cold_cups/clear_plastic_pet_straw_lid_12oz___24oz_box_1000pcs.png",
       "codigo_producto": "LID-CLD-STR"
     },
     {
@@ -545,7 +545,7 @@
       "precio": 39.99,
       "categoria": "Cold Cups & Lids",
       "categoria_id": 10,
-      "imagen_url": "images/productos/cold_cups/dome_lids_12_24_oz_cold_cup.webp",
+      "imagen_url": "images/productos/cold_cups/dome_lids_12_24_oz_cold_cup.png",
       "codigo_producto": "LID-CLD-DME"
     },
     {
@@ -554,7 +554,7 @@
       "precio": 26.99,
       "categoria": "Soufflé Cups & Lids",
       "categoria_id": 11,
-      "imagen_url": "images/productos/souffle_cups/2oz_clear_souflee_cup_box_of_2500_pcs.webp",
+      "imagen_url": "images/productos/souffle_cups/2oz_clear_souflee_cup_box_of_2500_pcs.png",
       "codigo_producto": "CUP-SFL-02"
     },
     {
@@ -563,7 +563,7 @@
       "precio": 24.99,
       "categoria": "Soufflé Cups & Lids",
       "categoria_id": 11,
-      "imagen_url": "images/productos/souffle_cups/1_5___2_0_clear_plastic_souflee_lid_box_of_2500_pcs.webp",
+      "imagen_url": "images/productos/souffle_cups/1_5___2_0_clear_plastic_souflee_lid_box_of_2500_pcs.png",
       "codigo_producto": "LID-SFL-1520"
     },
     {
@@ -581,7 +581,7 @@
       "precio": 28.99,
       "categoria": "Plastic Containers",
       "categoria_id": 14,
-      "imagen_url": "images/productos/Plastic-Tubs.png",
+      "imagen_url": "images/productos/Plastic-Tubs-copia.png",
       "codigo_producto": "PL-TUBS-PREM"
     },
     {

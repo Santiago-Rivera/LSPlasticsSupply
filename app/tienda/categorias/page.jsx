@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function CategoriasPage() {
     const router = useRouter();
@@ -56,12 +57,19 @@ export default function CategoriasPage() {
                         products: [],
                         icon: getCategoryIcon(categoryName),
                         description: getCategoryDescription(categoryName),
-                        count: 0
+                        count: 0,
+                        featuredImage: null
                     });
                 }
                 
-                categoryMap.get(categoryId).products.push(product);
-                categoryMap.get(categoryId).count++;
+                const category = categoryMap.get(categoryId);
+                category.products.push(product);
+                category.count++;
+
+                // Usar la imagen del primer producto como imagen destacada de la categoría
+                if (!category.featuredImage) {
+                    category.featuredImage = product.imagen_url;
+                }
             });
 
             const categoriesArray = Array.from(categoryMap.values());
@@ -339,14 +347,62 @@ export default function CategoriasPage() {
                                 transition: 'height 0.3s ease'
                             }}></div>
 
-                            {/* Category Icon */}
+                            {/* Category Image + Icon - Real Product Image with Emoji */}
                             <div style={{
-                                fontSize: 'clamp(40px, 10vw, 64px)',
-                                marginBottom: 'clamp(16px, 3vw, 24px)',
-                                color: 'var(--primary-blue)',
-                                transition: 'all 0.3s ease'
+                                width: '100%',
+                                height: 'clamp(150px, 20vw, 200px)',
+                                position: 'relative',
+                                marginBottom: 'clamp(16px, 3vw, 20px)',
+                                borderRadius: '15px',
+                                overflow: 'hidden',
+                                background: 'var(--off-white)',
+                                border: '2px solid var(--accent-yellow)'
                             }}>
-                                {category.icon}
+                                <Image
+                                    src={`/${category.featuredImage}`}
+                                    alt={`${category.name} - Featured Product`}
+                                    fill
+                                    style={{
+                                        objectFit: 'contain',
+                                        padding: '12px'
+                                    }}
+                                    onError={(e) => {
+                                        console.log('Image failed to load:', category.featuredImage);
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                    }}
+                                />
+                                {/* Fallback icon if image fails */}
+                                <div style={{
+                                    display: 'none',
+                                    width: '100%',
+                                    height: '100%',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: 'clamp(40px, 10vw, 64px)',
+                                    color: 'var(--primary-blue)'
+                                }}>
+                                    {category.icon}
+                                </div>
+
+                                {/* Category Emoji Overlay */}
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '8px',
+                                    right: '8px',
+                                    background: 'rgba(251, 191, 36, 0.9)',
+                                    borderRadius: '50%',
+                                    width: '40px',
+                                    height: '40px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '20px',
+                                    border: '2px solid var(--pure-white)',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+                                }}>
+                                    {category.icon}
+                                </div>
                             </div>
 
                             {/* Category Name */}

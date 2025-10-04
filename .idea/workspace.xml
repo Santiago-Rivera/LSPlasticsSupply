@@ -5,26 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Add Soufflé Cups &amp; Lids category and enhance product display">
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/souffle-cups-lids/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/productos/Clip-Container-Copia.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/productos/Multi-Use-Containers-Copia.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/productos/Plastic-Tubs-copia.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/productos/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/productos/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tienda/categorias/[categoria]/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/categorias/[categoria]/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tienda/categorias/napkins-paper-towels/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/categorias/napkins-paper-towels/page.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/tienda/categorias/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/categorias/page.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/CartModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CartModal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/CategoryPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CategoryPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/LoadBalancerMonitor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/LoadBalancerMonitor.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/CartContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/CartContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/productos/caja_des_8x8x1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/productos/caja_des_8x8x1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ProductTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProductTable.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/productos.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/productos.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/responsive.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/responsive.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +136,7 @@
       <workItem from="1759520858252" duration="526000" />
       <workItem from="1759522068155" duration="3318000" />
       <workItem from="1759527963635" duration="63000" />
-      <workItem from="1759544716286" duration="6492000" />
+      <workItem from="1759544716286" duration="9065000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -178,7 +170,23 @@
       <option name="project" value="LOCAL" />
       <updated>1759523465839</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: Add Soufflé Cups &amp; Lids category and enhance product display">
+      <option name="closed" value="true" />
+      <created>1759551468242</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1759551468242</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: Add Soufflé Cups &amp; Lids category and enhance product display">
+      <option name="closed" value="true" />
+      <created>1759551488060</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1759551488060</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
