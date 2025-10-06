@@ -7,7 +7,21 @@ import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe('pk_test_51HvjDiLr2z8xKlYGAOkRMeQkqJJ9qzQdR6tLqGJYQaLqGJKQwRtQsQwRtQs');
 
 // Componente del formulario de tarjeta real
-function CardPaymentForm({ amount, cartItems, onSuccess, onError, onLoading }) {
+function CardPaymentForm({
+    amount,
+    cartItems,
+    onSuccess,
+    onError,
+    onLoading,
+    couponCode,
+    setCouponCode,
+    appliedCoupon,
+    couponError,
+    couponLoading,
+    onApplyCoupon,
+    onRemoveCoupon,
+    subtotal
+}) {
     const stripe = useStripe();
     const elements = useElements();
     const [isProcessing, setIsProcessing] = useState(false);
@@ -249,7 +263,230 @@ function CardPaymentForm({ amount, cartItems, onSuccess, onError, onLoading }) {
                 </div>
             </div>
 
-            {/* Resumen del pago */}
+            {/* Campo de Cupón */}
+            <div className="form-group" style={{ marginTop: '24px' }}>
+                <label className="form-label" style={{
+                    color: 'var(--dark-black)',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    fontSize: '12px',
+                    letterSpacing: '0.5px',
+                    marginBottom: '8px',
+                    display: 'block'
+                }}>
+                    🎟️ Código de Cupón (Opcional)
+                </label>
+                
+                {/* Cupón aplicado */}
+                {appliedCoupon ? (
+                    <div style={{
+                        background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                        border: '2px solid #15803d',
+                        borderRadius: '8px',
+                        padding: '16px',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <div>
+                            <span style={{
+                                color: 'white',
+                                fontWeight: '600',
+                                fontSize: '14px'
+                            }}>
+                                ✅ Cupón aplicado: {appliedCoupon.description}
+                            </span>
+                            <div style={{
+                                color: '#dcfce7',
+                                fontSize: '12px',
+                                marginTop: '4px'
+                            }}>
+                                Ahorro: {appliedCoupon.type === 'percentage' 
+                                    ? `${appliedCoupon.discount}%`
+                                    : `$${appliedCoupon.discount}`
+                                }
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={onRemoveCoupon}
+                            style={{
+                                background: 'rgba(255,255,255,0.2)',
+                                border: '1px solid rgba(255,255,255,0.3)',
+                                borderRadius: '6px',
+                                color: 'white',
+                                padding: '6px 12px',
+                                fontSize: '12px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.background = 'rgba(255,255,255,0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.background = 'rgba(255,255,255,0.2)';
+                            }}
+                        >
+                            ❌ Remover
+                        </button>
+                    </div>
+                ) : (
+                    <div style={{
+                        display: 'flex',
+                        gap: '12px',
+                        alignItems: 'flex-start'
+                    }}>
+                        <div style={{ flex: 1 }}>
+                            <input
+                                type="text"
+                                value={couponCode || ''}
+                                onChange={(e) => setCouponCode && setCouponCode(e.target.value.toUpperCase())}
+                                placeholder="Ingresa tu código de cupón"
+                                style={{
+                                    width: '100%',
+                                    border: `2px solid ${couponError ? '#dc2626' : 'var(--border-gray)'}`,
+                                    borderRadius: '8px',
+                                    padding: '12px 16px',
+                                    fontSize: '14px',
+                                    fontWeight: '500',
+                                    color: 'var(--dark-black)',
+                                    background: 'var(--off-white)',
+                                    transition: 'all 0.3s ease',
+                                    textTransform: 'uppercase',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => {
+                                    e.target.style.borderColor = 'var(--primary-blue)';
+                                    e.target.style.backgroundColor = 'var(--pure-white)';
+                                    e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)';
+                                }}
+                                onBlur={(e) => {
+                                    e.target.style.borderColor = couponError ? '#dc2626' : 'var(--border-gray)';
+                                    e.target.style.backgroundColor = 'var(--off-white)';
+                                    e.target.style.boxShadow = 'none';
+                                }}
+                            />
+                        </div>
+                        <button
+                            type="button"
+                            onClick={onApplyCoupon}
+                            disabled={!couponCode || couponLoading}
+                            style={{
+                                background: couponLoading 
+                                    ? 'var(--border-gray)' 
+                                    : 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)',
+                                color: couponLoading ? 'var(--gray-text)' : 'var(--dark-black)',
+                                border: '2px solid var(--bright-yellow)',
+                                borderRadius: '8px',
+                                padding: '12px 20px',
+                                fontSize: '14px',
+                                fontWeight: '600',
+                                cursor: couponLoading || !couponCode ? 'not-allowed' : 'pointer',
+                                transition: 'all 0.3s ease',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                opacity: couponLoading || !couponCode ? 0.6 : 1,
+                                whiteSpace: 'nowrap'
+                            }}
+                            onMouseEnter={(e) => {
+                                if (!couponLoading && couponCode) {
+                                    e.target.style.background = 'linear-gradient(135deg, var(--bright-yellow) 0%, var(--accent-yellow) 100%)';
+                                    e.target.style.transform = 'translateY(-2px)';
+                                    e.target.style.boxShadow = '0 8px 16px rgba(251, 191, 36, 0.3)';
+                                }
+                            }}
+                            onMouseLeave={(e) => {
+                                if (!couponLoading && couponCode) {
+                                    e.target.style.background = 'linear-gradient(135deg, var(--accent-yellow) 0%, var(--bright-yellow) 100%)';
+                                    e.target.style.transform = 'translateY(0)';
+                                    e.target.style.boxShadow = 'none';
+                                }
+                            }}
+                        >
+                            {couponLoading ? '⏳ Aplicando...' : '🎯 Aplicar'}
+                        </button>
+                    </div>
+                )}
+
+                {/* Error del cupón */}
+                {couponError && (
+                    <div style={{
+                        marginTop: '8px',
+                        color: '#dc2626',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        background: '#fef2f2',
+                        border: '1px solid #fecaca',
+                        borderRadius: '6px',
+                        padding: '8px 12px'
+                    }}>
+                        ❌ {couponError}
+                    </div>
+                )}
+
+                {/* Sugerencias de cupones */}
+                {!appliedCoupon && (
+                    <div style={{
+                        marginTop: '12px',
+                        background: 'var(--off-white)',
+                        border: '1px solid var(--border-gray)',
+                        borderRadius: '8px',
+                        padding: '12px'
+                    }}>
+                        <p style={{
+                            fontSize: '12px',
+                            color: 'var(--light-black)',
+                            margin: '0 0 8px 0',
+                            fontWeight: '600'
+                        }}>
+                            💡 Cupones disponibles:
+                        </p>
+                        <div style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '8px'
+                        }}>
+                            {['WELCOME10', 'FIRST25', 'SAVE15', 'SPRING2025'].map((code) => (
+                                <span
+                                    key={code}
+                                    onClick={() => setCouponCode && setCouponCode(code)}
+                                    style={{
+                                        background: 'var(--primary-blue)',
+                                        color: 'white',
+                                        padding: '4px 8px',
+                                        borderRadius: '4px',
+                                        fontSize: '10px',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.background = 'var(--primary-dark-blue)';
+                                        e.target.style.transform = 'translateY(-1px)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.background = 'var(--primary-blue)';
+                                        e.target.style.transform = 'translateY(0)';
+                                    }}
+                                >
+                                    {code}
+                                </span>
+                            ))}
+                        </div>
+                        <div style={{
+                            marginTop: '8px',
+                            fontSize: '10px',
+                            color: 'var(--light-black)',
+                            fontStyle: 'italic'
+                        }}>
+                            Haz clic en cualquier cupón para probarlo
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Resumen del pago actualizado */}
             <div style={{
                 background: 'linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 100%)',
                 padding: '20px',
@@ -257,26 +494,104 @@ function CardPaymentForm({ amount, cartItems, onSuccess, onError, onLoading }) {
                 margin: '24px 0',
                 border: '2px solid var(--accent-yellow)'
             }}>
-                <h4 style={{
-                    color: 'var(--pure-white)',
-                    fontSize: '18px',
-                    fontWeight: '700',
-                    margin: '0 0 8px 0',
-                    textAlign: 'center',
-                    textTransform: 'uppercase'
-                }}>
-                    💰 Total a Pagar
-                </h4>
-                <p style={{
-                    color: 'var(--accent-yellow)',
-                    fontSize: '24px',
-                    fontWeight: '800',
-                    margin: 0,
-                    textAlign: 'center',
-                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
-                }}>
-                    ${(amount || 0).toFixed(2)}
-                </p>
+                {/* Mostrar subtotal y descuento si hay cupón */}
+                {appliedCoupon && subtotal ? (
+                    <>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '8px'
+                        }}>
+                            <span style={{
+                                color: 'var(--pure-white)',
+                                fontSize: '14px',
+                                fontWeight: '600'
+                            }}>
+                                Subtotal:
+                            </span>
+                            <span style={{
+                                color: 'var(--pure-white)',
+                                fontSize: '14px',
+                                fontWeight: '600'
+                            }}>
+                                ${subtotal.toFixed(2)}
+                            </span>
+                        </div>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '12px'
+                        }}>
+                            <span style={{
+                                color: '#22c55e',
+                                fontSize: '14px',
+                                fontWeight: '600'
+                            }}>
+                                Descuento ({appliedCoupon.description}):
+                            </span>
+                            <span style={{
+                                color: '#22c55e',
+                                fontSize: '14px',
+                                fontWeight: '600'
+                            }}>
+                                -${appliedCoupon.type === 'percentage' 
+                                    ? (subtotal * appliedCoupon.discount / 100).toFixed(2)
+                                    : Math.min(appliedCoupon.discount, subtotal).toFixed(2)
+                                }
+                            </span>
+                        </div>
+                        <div style={{
+                            borderTop: '1px solid rgba(255,255,255,0.2)',
+                            paddingTop: '12px'
+                        }}>
+                            <h4 style={{
+                                color: 'var(--pure-white)',
+                                fontSize: '18px',
+                                fontWeight: '700',
+                                margin: '0 0 8px 0',
+                                textAlign: 'center',
+                                textTransform: 'uppercase'
+                            }}>
+                                💰 Total a Pagar
+                            </h4>
+                            <p style={{
+                                color: 'var(--accent-yellow)',
+                                fontSize: '24px',
+                                fontWeight: '800',
+                                margin: 0,
+                                textAlign: 'center',
+                                textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
+                            }}>
+                                ${(amount || 0).toFixed(2)}
+                            </p>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <h4 style={{
+                            color: 'var(--pure-white)',
+                            fontSize: '18px',
+                            fontWeight: '700',
+                            margin: '0 0 8px 0',
+                            textAlign: 'center',
+                            textTransform: 'uppercase'
+                        }}>
+                            💰 Total a Pagar
+                        </h4>
+                        <p style={{
+                            color: 'var(--accent-yellow)',
+                            fontSize: '24px',
+                            fontWeight: '800',
+                            margin: 0,
+                            textAlign: 'center',
+                            textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
+                        }}>
+                            ${(amount || 0).toFixed(2)}
+                        </p>
+                    </>
+                )}
             </div>
 
             {/* Botón de pago */}
@@ -341,7 +656,21 @@ function CardPaymentForm({ amount, cartItems, onSuccess, onError, onLoading }) {
 }
 
 // Componente wrapper con Elements provider
-export default function StripeCardForm({ amount, cartItems, onSuccess, onError, onLoading }) {
+export default function StripeCardForm({ 
+    amount, 
+    cartItems, 
+    onSuccess, 
+    onError, 
+    onLoading,
+    couponCode,
+    setCouponCode,
+    appliedCoupon,
+    couponError,
+    couponLoading,
+    onApplyCoupon,
+    onRemoveCoupon,
+    subtotal
+}) {
     return (
         <Elements stripe={stripePromise}>
             <CardPaymentForm 
@@ -350,6 +679,14 @@ export default function StripeCardForm({ amount, cartItems, onSuccess, onError, 
                 onSuccess={onSuccess}
                 onError={onError}
                 onLoading={onLoading}
+                couponCode={couponCode}
+                setCouponCode={setCouponCode}
+                appliedCoupon={appliedCoupon}
+                couponError={couponError}
+                couponLoading={couponLoading}
+                onApplyCoupon={onApplyCoupon}
+                onRemoveCoupon={onRemoveCoupon}
+                subtotal={subtotal}
             />
         </Elements>
     );

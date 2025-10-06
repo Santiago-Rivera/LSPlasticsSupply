@@ -5,33 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Add new product categories and update existing product details">
-      <change afterPath="$PROJECT_DIR$/app/api/images/route.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/coffee-cups-lids/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/cold-cups-lids/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/cutlery-accessories/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/miscellaneous/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/tienda/categorias/straws/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/1-6-plastic-shopping-bags-flower-400pcs-copia.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/Half_size_shallow_copia.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/full_size_heavy_knife_white_box_of_1000pcs-copia.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/productos/1-10-Plastic-Shopping-Bags-Flower-1500pcs.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/productos/1-6-plastic-shopping-bags-flower-400pcs.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/productos/1-8-plastic-shopping-bags-flower-1000pcs.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/coupons/validate/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/coupons.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tienda/categorias/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/categorias/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tienda/categorias/plastic-containers-microwave/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/categorias/plastic-containers-microwave/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tienda/categorias/plastic-containers/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/tienda/categorias/plastic-bags/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CategoryPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CategoryPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ProductTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProductTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Clip-Container.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Multi-Use-Containers.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Plastic-Tubs.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/productos/cutlery/full_size_heavy_spoon_white_box_of_1000pcs.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/productos/cutlery/full_size_heavy_spoon_white_box_of_1000pcs.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/productos.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/productos.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/StripeCardForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/StripeCardForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +40,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectColorInfo">{
@@ -154,7 +132,7 @@
       <workItem from="1759544716286" duration="9065000" />
       <workItem from="1759607406446" duration="7290000" />
       <workItem from="1759700474464" duration="25000" />
-      <workItem from="1759768464418" duration="1121000" />
+      <workItem from="1759768464418" duration="3194000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -204,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759551488060</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat: Add new product categories and update existing product details">
+      <option name="closed" value="true" />
+      <created>1759781837811</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1759781837811</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

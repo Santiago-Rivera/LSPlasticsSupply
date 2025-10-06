@@ -13,6 +13,15 @@ export default function CheckoutPage() {
     const [windowWidth, setWindowWidth] = useState(1024);
     const [paymentMessage] = useState(''); // Removed unused setter
 
+    // Estados para cupones
+    const [couponCode, setCouponCode] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [couponError, setCouponError] = useState('');
+    const [couponLoading, setCouponLoading] = useState(false);
+
+    // Cupones disponibles ahora se obtienen del API
+    const [availableCoupons, setAvailableCoupons] = useState([]);
+
     // Estados para información de envío
     const [currentStep, setCurrentStep] = useState(1); // 1: Shipping Info, 2: Payment
     const [shippingInfo, setShippingInfo] = useState({
@@ -52,6 +61,24 @@ export default function CheckoutPage() {
                 window.removeEventListener('resize', handleResize);
             }
         };
+    }, []);
+
+    // Cargar cupones disponibles al montar el componente
+    useEffect(() => {
+        const fetchAvailableCoupons = async () => {
+            try {
+                const response = await fetch('/api/coupons/validate');
+                const data = await response.json();
+
+                if (data.success) {
+                    setAvailableCoupons(data.coupons);
+                }
+            } catch (error) {
+                console.error('Error fetching coupons:', error);
+            }
+        };
+
+        fetchAvailableCoupons();
     }, []);
 
     // Function to generate order number
@@ -172,6 +199,214 @@ export default function CheckoutPage() {
     const handlePaymentError = (errorMessage) => {
         alert(errorMessage);
         setPaymentProcessing(false);
+    };
+
+    // Aplicar cupón con validación real y fallback local
+    const applyCoupon = async () => {
+        if (!couponCode.trim()) {
+            setCouponError('Por favor ingresa un código de cupón');
+            return;
+        }
+
+        setCouponLoading(true);
+        setCouponError('');
+
+        try {
+            const requestBody = {
+                couponCode: couponCode.trim(),
+                cartTotal: getCartTotal(),
+                cartItems: cartItems
+            };
+
+            console.log('Enviando datos del cupón:', requestBody);
+
+            // Verificar si estamos en el cliente
+            if (typeof window === 'undefined') {
+                throw new Error('Esta función debe ejecutarse en el cliente');
+            }
+
+            // Intentar usar la API primero
+            try {
+                const baseURL = window.location.origin;
+                const apiURL = `${baseURL}/api/coupons/validate`;
+
+                console.log('Intentando API:', apiURL);
+
+                const response = await fetch(apiURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                    credentials: 'same-origin',
+                    cache: 'no-cache',
+                    signal: AbortSignal.timeout(5000) // 5 segundo timeout
+                });
+
+                console.log('Respuesta del servidor:', response.status, response.statusText);
+
+                if (!response.ok) {
+                    let errorMessage = `Error ${response.status}: ${response.statusText}`;
+
+                    try {
+                        const errorData = await response.json();
+                        errorMessage = errorData.error || errorMessage;
+                    } catch (jsonError) {
+                        console.error('Error al parsear respuesta de error:', jsonError);
+                    }
+
+                    throw new Error(errorMessage);
+                }
+
+                const data = await response.json();
+                console.log('Datos del cupón desde API:', data);
+
+                if (data.success) {
+                    setAppliedCoupon({
+                        ...data.coupon,
+                        discountAmount: data.discountAmount,
+                        finalTotal: data.finalTotal
+                    });
+                    setCouponError('');
+
+                    const savingsMessage = data.coupon.type === 'percentage'
+                        ? `¡Cupón aplicado! Ahorras ${data.coupon.discount}% = $${data.discountAmount.toFixed(2)}`
+                        : `¡Cupón aplicado! Ahorras $${data.discountAmount.toFixed(2)}`;
+
+                    alert(savingsMessage);
+                     // Éxito con la API
+                } else {
+                    throw new Error(data.error || 'Error desconocido al validar el cupón');
+                }
+            } catch (apiError) {
+                console.warn('API no disponible, usando validación local:', apiError.message);
+
+                // Fallback: Validación local de cupones
+                const localCoupons = {
+                    'WELCOME10': {
+                        code: 'WELCOME10',
+                        type: 'percentage',
+                        discount: 10,
+                        description: '10% de descuento de bienvenida',
+                        minimumPurchase: 50,
+                        maxDiscount: null
+                    },
+                    'SAVE15': {
+                        code: 'SAVE15',
+                        type: 'percentage',
+                        discount: 15,
+                        description: '15% de descuento en tu compra',
+                        minimumPurchase: 100,
+                        maxDiscount: 50
+                    },
+                    'BULK20': {
+                        code: 'BULK20',
+                        type: 'percentage',
+                        discount: 20,
+                        description: '20% de descuento en compras mayoristas',
+                        minimumPurchase: 200,
+                        maxDiscount: 100
+                    },
+                    'FIRST25': {
+                        code: 'FIRST25',
+                        type: 'fixed',
+                        discount: 25,
+                        description: '$25 de descuento en tu primera compra',
+                        minimumPurchase: 75,
+                        maxDiscount: null
+                    },
+                    'SHIPPING10': {
+                        code: 'SHIPPING10',
+                        type: 'fixed',
+                        discount: 10,
+                        description: '$10 de descuento en envío',
+                        minimumPurchase: 30,
+                        maxDiscount: null
+                    }
+                };
+
+                const couponCodeUpper = couponCode.trim().toUpperCase();
+                const coupon = localCoupons[couponCodeUpper];
+
+                if (!coupon) {
+                    throw new Error('Código de cupón no válido');
+                }
+
+                const cartTotal = getCartTotal();
+
+                // Validar mínimo de compra
+                if (coupon.minimumPurchase && cartTotal < coupon.minimumPurchase) {
+                    throw new Error(`Este cupón requiere una compra mínima de $${coupon.minimumPurchase.toFixed(2)}`);
+                }
+
+                // Calcular descuento
+                let discountAmount = 0;
+                if (coupon.type === 'percentage') {
+                    discountAmount = cartTotal * (coupon.discount / 100);
+                    if (coupon.maxDiscount) {
+                        discountAmount = Math.min(discountAmount, coupon.maxDiscount);
+                    }
+                } else if (coupon.type === 'fixed') {
+                    discountAmount = Math.min(coupon.discount, cartTotal);
+                }
+
+                const finalTotal = Math.max(0, cartTotal - discountAmount);
+
+                // Aplicar el cupón validado localmente
+                setAppliedCoupon({
+                    ...coupon,
+                    discountAmount: discountAmount,
+                    finalTotal: finalTotal
+                });
+                setCouponError('');
+
+                const savingsMessage = coupon.type === 'percentage'
+                    ? `¡Cupón aplicado! Ahorras ${coupon.discount}% = $${discountAmount.toFixed(2)} (Validación local)`
+                    : `¡Cupón aplicado! Ahorras $${discountAmount.toFixed(2)} (Validación local)`;
+
+                alert(savingsMessage);
+            }
+
+        } catch (error) {
+            console.error('Error completo al aplicar cupón:', error);
+
+            // Mensajes de error más específicos
+            let errorMessage = 'Error al validar el cupón. Inténtalo de nuevo.';
+
+            if (error.name === 'AbortError') {
+                errorMessage = 'Tiempo de espera agotado. Intenta de nuevo.';
+            } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                errorMessage = 'Servidor no disponible. Usando validación local pero el cupón no es válido.';
+            } else if (error.message.includes('NetworkError') || error.message.includes('Network request failed')) {
+                errorMessage = 'Error de red. Verifica tu conexión a internet.';
+            } else if (error.message.includes('404')) {
+                errorMessage = 'API no encontrada. Usando validación local.';
+            } else if (error.message.includes('500')) {
+                errorMessage = 'Error interno del servidor. Usando validación local.';
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            setCouponError(errorMessage);
+            setAppliedCoupon(null);
+        } finally {
+            setCouponLoading(false);
+        }
+    };
+
+    // Remover cupón
+    const removeCoupon = () => {
+        setAppliedCoupon(null);
+        setCouponCode('');
+        setCouponError('');
+    };
+
+    // Calcular total con descuento usando los datos reales del cupón
+    const calculateFinalTotal = () => {
+        if (!appliedCoupon || !appliedCoupon.finalTotal) {
+            return getCartTotal();
+        }
+        return appliedCoupon.finalTotal;
     };
 
     // Order complete screen
@@ -370,15 +605,55 @@ export default function CheckoutPage() {
                             marginTop: 'clamp(16px, 4vw, 20px)',
                             textAlign: 'center'
                         }}>
-                            <h3 style={{
-                                fontSize: 'clamp(20px, 5vw, 24px)',
-                                fontWeight: '800',
-                                color: 'var(--dark-black)',
-                                margin: 0,
-                                textTransform: 'uppercase'
+                            {/* Subtotal */}
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginBottom: '8px',
+                                fontSize: 'clamp(16px, 4vw, 18px)',
+                                fontWeight: '600',
+                                color: 'var(--dark-black)'
                             }}>
-                                Total: ${total.toFixed(2)}
-                            </h3>
+                                <span>Subtotal:</span>
+                                <span>${total.toFixed(2)}</span>
+                            </div>
+
+                            {/* Descuento del cupón (si aplica) */}
+                            {appliedCoupon && (
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginBottom: '8px',
+                                    fontSize: 'clamp(14px, 3.5vw, 16px)',
+                                    fontWeight: '600',
+                                    color: '#22c55e'
+                                }}>
+                                    <span>🎟️ Descuento ({appliedCoupon.description}):</span>
+                                    <span>-${appliedCoupon.type === 'percentage' 
+                                        ? (total * appliedCoupon.discount / 100).toFixed(2)
+                                        : Math.min(appliedCoupon.discount, total).toFixed(2)
+                                    }</span>
+                                </div>
+                            )}
+
+                            {/* Total final */}
+                            <div style={{
+                                borderTop: '2px solid var(--border-gray)',
+                                paddingTop: '12px',
+                                marginTop: '12px'
+                            }}>
+                                <h3 style={{
+                                    fontSize: 'clamp(20px, 5vw, 24px)',
+                                    fontWeight: '800',
+                                    color: 'var(--dark-black)',
+                                    margin: 0,
+                                    textTransform: 'uppercase'
+                                }}>
+                                    Total: ${calculateFinalTotal().toFixed(2)}
+                                </h3>
+                            </div>
                         </div>
                     </div>
 
@@ -964,11 +1239,19 @@ export default function CheckoutPage() {
                                 {/* Credit Card Form */}
                                 {!paymentProcessing && (
                                     <StripeCardForm
-                                        amount={total}
+                                        amount={calculateFinalTotal()}
                                         onSuccess={handlePaymentSuccess}
                                         onError={handlePaymentError}
                                         onLoading={setPaymentProcessing}
                                         shippingInfo={shippingInfo}
+                                        couponCode={couponCode}
+                                        setCouponCode={setCouponCode}
+                                        appliedCoupon={appliedCoupon}
+                                        couponError={couponError}
+                                        couponLoading={couponLoading}
+                                        onApplyCoupon={applyCoupon}
+                                        onRemoveCoupon={removeCoupon}
+                                        subtotal={total}
                                     />
                                 )}
                             </>
