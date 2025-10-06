@@ -1,5 +1,4 @@
 "use client";
-import Image from 'next/image';
 import { useCart } from '../contexts/CartContext';
 import { useState } from 'react';
 
@@ -98,18 +97,32 @@ export default function ProductTable({ products }) {
                         background: 'var(--off-white)',
                         border: '2px solid var(--border-gray)'
                     }}>
-                        <Image
-                            src={`/${product.imagen_url}`}
+                        <img
+                            src={`/api/images?path=${product.imagen_url}`}
                             alt={product.nombre}
-                            fill
                             style={{
+                                width: '100%',
+                                height: '100%',
                                 objectFit: 'contain',
                                 padding: '8px'
                             }}
                             onError={(e) => {
-                                console.log('Product image failed to load:', product.imagen_url);
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
+                                console.log('Product image failed to load via API:', product.imagen_url);
+                                // Try direct static path as fallback
+                                const img = e.target;
+                                if (img.src.includes('/api/images')) {
+                                    img.src = `/${product.imagen_url}`;
+                                } else {
+                                    // Show fallback
+                                    img.style.display = 'none';
+                                    const fallback = img.nextElementSibling;
+                                    if (fallback) {
+                                        fallback.style.display = 'flex';
+                                    }
+                                }
+                            }}
+                            onLoad={() => {
+                                console.log('Product image loaded successfully via API:', product.imagen_url);
                             }}
                         />
                         {/* Fallback icon if image fails */}
@@ -120,9 +133,22 @@ export default function ProductTable({ products }) {
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: '48px',
-                            color: 'var(--primary-blue)'
+                            color: 'var(--primary-blue)',
+                            flexDirection: 'column',
+                            gap: '8px',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            background: 'var(--off-white)'
                         }}>
                             📦
+                            <span style={{
+                                fontSize: '12px',
+                                color: 'var(--light-black)',
+                                textAlign: 'center'
+                            }}>
+                                Imagen no disponible
+                            </span>
                         </div>
                     </div>
 

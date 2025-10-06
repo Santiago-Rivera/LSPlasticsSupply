@@ -567,30 +567,30 @@
       "codigo_producto": "LID-SFL-1520"
     },
     {
-      "nombre": "Clip Food Containers",
-      "descripcion": "Secure and durable containers for all your food storage needs.",
-      "precio": 32.99,
-      "categoria": "Plastic Containers",
+      "nombre": "1/6 Plastic Shopping Bags Flower 400pcs",
+      "descripcion": "Plastic shopping bag with floral design and “Thank You” print, size 1/6, pack of 400",
+      "precio": 16.99,
+      "categoria": "Plastic Bags",
       "categoria_id": 14,
-      "imagen_url": "images/productos/Clip-Container-Copia.png",
+      "imagen_url": "images/productos/1-6-plastic-shopping-bags-flower-400pcs.png",
       "codigo_producto": "PL-CLIP-STD"
     },
     {
-      "nombre": "Premium Plastic Tubs",
-      "descripcion": "Versatile tubs for storage, catering, and food service.",
-      "precio": 28.99,
-      "categoria": "Plastic Containers",
+      "nombre": "1/10 Plastic Shopping Bags Flower 1500pcs",
+      "descripcion": "Plastic shopping bag with purple flower design, size 1/10, pack of 1500",
+      "precio": 16.99,
+      "categoria": "Plastic Bags",
       "categoria_id": 14,
-      "imagen_url": "images/productos/Plastic-Tubs-copia.png",
+      "imagen_url": "images/productos/1-10-Plastic-Shopping-Bags-Flower-1500pcs.png",
       "codigo_producto": "PL-TUBS-PREM"
     },
     {
-      "nombre": "Multi-Use Containers",
-      "descripcion": "Ideal for delivery services and organizing food items.",
-      "precio": 35.99,
-      "categoria": "Plastic Containers",
+      "nombre": "1/8 Plastic Shopping Bags Flower 1000pcs",
+      "descripcion": "Durable plastic shopping bag with floral print, size 1/8, pack of 1000",
+      "precio": 16.99,
+      "categoria": "Plastic Bags",
       "categoria_id": 14,
-      "imagen_url": "images/productos/Multi-Use-Containers-Copia.png",
+      "imagen_url": "images/productos/1-8-plastic-shopping-bags-flower-1000pcs.png",
       "codigo_producto": "PL-MULTI-USE"
     }
   ]

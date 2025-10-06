@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../contexts/CartContext';
-import Image from 'next/image';
 
 export default function CategoryPage({
     categoryName,
@@ -47,7 +46,8 @@ export default function CategoryPage({
                     'aluminum-containers': 'Aluminum Containers',
                     'disposable-containers': 'Disposable Containers (Boxes)',
                     'soup-containers': 'Soup Containers',
-                    'plastic-containers': 'Plastic Containers (Microwave)',
+                    'plastic-containers-microwave': 'Plastic Containers (Microwave)',
+                    'plastic': 'Plastic Containers (Microwave)',
                     'paper-bags': 'Paper Bags',
                     'napkins-paper-towels': 'Napkins & Paper Towels',
                     'accessories': 'Accessories',
@@ -56,7 +56,8 @@ export default function CategoryPage({
                     'cold-cups-lids': 'Cold Cups & Lids',
                     'cutlery-accessories': 'Cutlery & Accessories',
                     'straws': 'Straws',
-                    'miscellaneous': 'Miscellaneous'
+                    'miscellaneous': 'Miscellaneous',
+                    'plastic-bags': 'Plastic Bags'
                 };
 
                 const mappedCategory = categoryMappings[categorySlug];
@@ -317,18 +318,32 @@ export default function CategoryPage({
                                     background: 'var(--off-white)',
                                     border: '2px solid var(--border-gray)'
                                 }}>
-                                    <Image
-                                        src={`/${product.imagen_url}`}
+                                    <img
+                                        src={`/api/images?path=${product.imagen_url}&t=${Date.now()}`}
                                         alt={product.nombre}
-                                        fill
                                         style={{
+                                            width: '100%',
+                                            height: '100%',
                                             objectFit: 'contain',
                                             padding: '8px'
                                         }}
                                         onError={(e) => {
-                                            console.log('Product image failed to load:', product.imagen_url);
-                                            e.target.style.display = 'none';
-                                            e.target.nextSibling.style.display = 'flex';
+                                            console.log('Product image failed to load via API:', product.imagen_url);
+                                            // Try direct static path as fallback
+                                            const img = e.target;
+                                            if (img.src.includes('/api/images')) {
+                                                img.src = `/${product.imagen_url}?t=${Date.now()}`;
+                                            } else {
+                                                // Show fallback
+                                                img.style.display = 'none';
+                                                const fallback = img.nextElementSibling;
+                                                if (fallback) {
+                                                    fallback.style.display = 'flex';
+                                                }
+                                            }
+                                        }}
+                                        onLoad={() => {
+                                            console.log('Product image loaded successfully via API:', product.imagen_url);
                                         }}
                                     />
                                     {/* Fallback icon if image fails */}
@@ -339,9 +354,22 @@ export default function CategoryPage({
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         fontSize: '48px',
-                                        color: 'var(--primary-blue)'
+                                        color: 'var(--primary-blue)',
+                                        flexDirection: 'column',
+                                        gap: '8px',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        background: 'var(--off-white)'
                                     }}>
                                         📦
+                                        <span style={{
+                                            fontSize: '12px',
+                                            color: 'var(--light-black)',
+                                            textAlign: 'center'
+                                        }}>
+                                            Imagen no disponible
+                                        </span>
                                     </div>
                                 </div>
 

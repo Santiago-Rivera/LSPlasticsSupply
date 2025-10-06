@@ -140,15 +140,15 @@ export default function HomePage() {
                 <div className="products-grid">
                     <div className="product-card">
                         <Image
-                            src="/Clip-Container.png"
-                            alt="Clip Food Containers"
+                            src="/1-6-plastic-shopping-bags-flower-400pcs-copia.png"
+                            alt="1/6 Plastic Shopping Bags Flower 400pcs"
                             width={200}
                             height={200}
                             className="product-image"
                         />
-                        <h3 className="product-title">Clip Food Containers</h3>
+                        <h3 className="product-title">1/6 Plastic Shopping Bags Flower 400pcs</h3>
                         <p className="product-description">
-                            Secure and durable containers for all your food storage needs.
+                            Plastic shopping bag with floral design and “Thank You” print, size 1/6, pack of 400
                         </p>
                         <button
                             className="view-products-btn"
@@ -160,15 +160,15 @@ export default function HomePage() {
 
                     <div className="product-card">
                         <Image
-                            src="/Plastic-Tubs.png"
-                            alt="Premium Plastic Tubs"
+                            src="/Half_size_shallow_copia.png"
+                            alt="Half size shallow"
                             width={200}
                             height={200}
                             className="product-image"
                         />
-                        <h3 className="product-title">Premium Plastic Tubs</h3>
+                        <h3 className="product-title">Half size shallow</h3>
                         <p className="product-description">
-                            Versatile tubs for storage, catering, and food service.
+                            Medium-sized aluminum tray, shallow depth, ideal for individual portions or side dishes.
                         </p>
                         <button
                             className="view-products-btn"
@@ -180,15 +180,15 @@ export default function HomePage() {
 
                     <div className="product-card">
                         <Image
-                            src="/Multi-Use-Containers.png"
-                            alt="Multi-Use Containers"
+                            src="/full_size_heavy_knife_white_box_of_1000pcs-copia.png"
+                            alt="Full size heavy knife white box of 1000pcs"
                             width={200}
                             height={200}
                             className="product-image"
                         />
-                        <h3 className="product-title">Multi-Use Containers</h3>
+                        <h3 className="product-title">Full size heavy knife white box of 1000pcs</h3>
                         <p className="product-description">
-                            Ideal for delivery services and organizing food items.
+                            Full size heavy-duty white disposable knife.
                         </p>
                         <button
                             className="view-products-btn"
