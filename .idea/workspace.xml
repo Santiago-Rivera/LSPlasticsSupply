@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Implement coupon system with validation and discount calculation">
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Enhance layout and responsiveness with improved styles and structure">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/responsive.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/responsive.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -132,7 +131,7 @@
       <workItem from="1759607406446" duration="7290000" />
       <workItem from="1759700474464" duration="25000" />
       <workItem from="1759768464418" duration="6063000" />
-      <workItem from="1759853122279" duration="1532000" />
+      <workItem from="1759853122279" duration="6932000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -198,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759787171534</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat: Enhance layout and responsiveness with improved styles and structure">
+      <option name="closed" value="true" />
+      <created>1759854883746</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1759854883746</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,7 +223,8 @@
     <MESSAGE value="feat: Add Soufflé Cups &amp; Lids category and enhance product display" />
     <MESSAGE value="feat: Add new product categories and update existing product details" />
     <MESSAGE value="feat: Implement coupon system with validation and discount calculation" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Implement coupon system with validation and discount calculation" />
+    <MESSAGE value="feat: Enhance layout and responsiveness with improved styles and structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Enhance layout and responsiveness with improved styles and structure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

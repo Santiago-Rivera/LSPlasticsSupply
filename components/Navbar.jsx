@@ -141,9 +141,6 @@ export default function Navbar() {
                                     <button onClick={() => handleCategoryClick(0)} className="preview-item">
                                         Aluminum Containers
                                     </button>
-                                    <button onClick={() => handleCategoryClick(1)} className="preview-item">
-                                        Plastic Containers
-                                    </button>
                                     <button onClick={() => handleCategoryClick(2)} className="preview-item">
                                         Paper Bags
                                     </button>

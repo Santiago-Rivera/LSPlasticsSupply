@@ -551,7 +551,7 @@ body {
 .banner-section {
     position: relative;
     width: 100%;
-    height: clamp(200px, 40vh, 400px);
+    height: clamp(200px, 30vh, 400px);
     overflow: hidden;
     background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark-blue) 100%);
 }
@@ -982,8 +982,8 @@ body {
 
     /* Banner section responsive */
     .banner-section {
-        height: 200px !important;
-        min-height: 200px !important;
+        height: 180px !important;
+        min-height: 180px !important;
         width: 100% !important;
         overflow: hidden !important;
     }
@@ -1157,8 +1157,8 @@ body {
 
     /* Banner section mobile */
     .banner-section {
-        height: 180px !important;
-        min-height: 180px !important;
+        height: 160px !important;
+        min-height: 160px !important;
     }
 
     /* About section mobile */
