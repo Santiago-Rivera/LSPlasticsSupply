@@ -16,13 +16,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        <html lang="es">
             <head>
+                <title>L&S Plastics - Premium Packaging Supplies</title>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
                 <meta name="theme-color" content="#1e3a8a" />
             </head>
             <body style={{
@@ -31,13 +32,16 @@ export default function RootLayout({ children }) {
                 padding: 0,
                 boxSizing: 'border-box',
                 backgroundColor: '#f8fafc',
-                color: '#111827'
+                color: '#111827',
+                overflowX: 'hidden'
             }}>
                 <CartProvider>
                     <Navbar />
                     <main style={{
                         minHeight: 'calc(100vh - 60px)',
-                        overflow: 'hidden'
+                        width: '100%',
+                        maxWidth: '100vw',
+                        overflowX: 'hidden'
                     }}>
                         {children}
                     </main>

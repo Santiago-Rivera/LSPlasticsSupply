@@ -7,17 +7,9 @@ export default function HomePage() {
     const router = useRouter();
 
     return (
-        <div>
+        <div className="page-container">
             {/* Banner Section */}
-            <section
-                className="banner-section"
-                style={{
-                    height: 'clamp(300px, 50vw, 500px)',
-                    position: 'relative',
-                    width: '100%',
-                    overflow: 'hidden'
-                }}
-            >
+            <section className="banner-section">
                 <Image
                     src="/images/banner-packaging.jpg"
                     alt="Your Trusted Source for Packaging Supplies"
@@ -32,79 +24,36 @@ export default function HomePage() {
             </section>
 
             {/* About Section */}
-            <section id="about-section" className="about-section">
-                <div style={{
-                    maxWidth: '1200px',
-                    margin: '0 auto',
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: '60px',
-                    alignItems: 'center'
-                }}>
+            <section className="about-section">
+                <div className="about-container">
                     {/* Left Content */}
-                    <div>
-                        <div style={{
-                            background: 'var(--accent-yellow)',
-                            color: 'var(--dark-black)',
-                            padding: '6px 16px',
-                            borderRadius: '20px',
-                            fontSize: '12px',
-                            fontWeight: '700',
-                            textTransform: 'uppercase',
-                            marginBottom: '20px',
-                            display: 'inline-block'
-                        }}>
+                    <div className="about-content">
+                        <div className="about-badge">
                             ABOUT US
                         </div>
-                        <h2 style={{
-                            fontSize: '36px',
-                            fontWeight: '800',
-                            color: 'var(--dark-black)',
-                            marginBottom: '24px'
-                        }}>
+                        <h2 className="about-title">
                             L&S Plastics Supply
                         </h2>
-                        <p style={{
-                            fontSize: '16px',
-                            color: 'var(--light-black)',
-                            lineHeight: '1.7',
-                            marginBottom: '24px'
-                        }}>
+                        <p className="about-description">
                             Your trusted supplier of high-quality containers and plastic products.
                             We offer complete solutions for restaurants, food services, and businesses.
                         </p>
                         <button
                             onClick={() => router.push('/catalogo')}
                             className="view-products-btn"
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                width: 'auto'
-                            }}
                         >
-                            📋 VIEW CATALOG
+                            📋 VIEW PRODUCTS
                         </button>
                     </div>
 
                     {/* Right Content - Logo */}
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        background: 'var(--pure-white)',
-                        borderRadius: '20px',
-                        padding: '40px',
-                        border: '3px solid var(--accent-yellow)'
-                    }}>
+                    <div className="about-logo">
                         <Image
                             src="/L&S.jpg"
                             alt="L&S Plastics Supply Logo"
                             width={300}
                             height={200}
-                            style={{
-                                objectFit: 'contain'
-                            }}
+                            className="logo-image"
                         />
                     </div>
                 </div>
@@ -114,7 +63,7 @@ export default function HomePage() {
             <section className="mission-vision-section">
                 <div className="mission-vision-grid">
                     <div className="mission-card">
-                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎯</div>
+                        <div className="card-icon">🎯</div>
                         <h3>OUR MISSION</h3>
                         <p>
                             To provide the highest quality plastic products for the food industry,
@@ -123,7 +72,7 @@ export default function HomePage() {
                         </p>
                     </div>
                     <div className="vision-card">
-                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚀</div>
+                        <div className="card-icon">🚀</div>
                         <h3>OUR VISION</h3>
                         <p>
                             To be the leading company in plastic supplies for the food industry,
@@ -148,14 +97,8 @@ export default function HomePage() {
                         />
                         <h3 className="product-title">1/6 Plastic Shopping Bags Flower 400pcs</h3>
                         <p className="product-description">
-                            Plastic shopping bag with floral design and “Thank You” print, size 1/6, pack of 400
+                            Plastic shopping bag with floral design and "Thank You" print, size 1/6, pack of 400
                         </p>
-                        <button
-                            className="view-products-btn"
-                            onClick={() => router.push('/tienda/categorias')}
-                        >
-                            VIEW PRODUCTS
-                        </button>
                     </div>
 
                     <div className="product-card">
@@ -166,16 +109,10 @@ export default function HomePage() {
                             height={200}
                             className="product-image"
                         />
-                        <h3 className="product-title">Half size shallow</h3>
+                        <h3 className="product-title">Half Size Shallow Aluminum Tray</h3>
                         <p className="product-description">
                             Medium-sized aluminum tray, shallow depth, ideal for individual portions or side dishes.
                         </p>
-                        <button
-                            className="view-products-btn"
-                            onClick={() => router.push('/tienda/categorias')}
-                        >
-                            VIEW PRODUCTS
-                        </button>
                     </div>
 
                     <div className="product-card">
@@ -186,16 +123,10 @@ export default function HomePage() {
                             height={200}
                             className="product-image"
                         />
-                        <h3 className="product-title">Full size heavy knife white box of 1000pcs</h3>
+                        <h3 className="product-title">Full Size Heavy Duty White Knife (1000pcs)</h3>
                         <p className="product-description">
-                            Full size heavy-duty white disposable knife.
+                            Full-size disposable white knife with heavy-duty construction and high resistance.
                         </p>
-                        <button
-                            className="view-products-btn"
-                            onClick={() => router.push('/tienda/categorias')}
-                        >
-                            VIEW PRODUCTS
-                        </button>
                     </div>
                 </div>
             </section>
@@ -206,37 +137,37 @@ export default function HomePage() {
                 <div className="testimonials-grid">
                     <div className="testimonial-card">
                         <p className="testimonial-text">
-                            "With L&S Plastics Supply I found exactly what I was looking for: resistant, practical products at
-                            an excellent price. They also always deliver on time, something I value tremendously for my
+                            "With L&S Plastics Supply I found exactly what I was looking for: durable and practical products at an
+                            excellent price. They also always meet delivery times, something I value immensely for my
                             catering business."
                         </p>
                         <div>
-                            <div style={{ fontWeight: '700', color: 'var(--primary-blue)' }}>Maria Gonzalez</div>
-                            <div style={{ fontSize: '12px', color: 'var(--light-black)' }}>Professional Catering Entrepreneur</div>
+                            <div className="testimonial-author">Maria González</div>
+                            <div className="testimonial-role">Professional Catering Entrepreneur</div>
                         </div>
                     </div>
 
                     <div className="testimonial-card">
                         <p className="testimonial-text">
-                            "Before, it was hard for me to find a supplier who really delivered what they promised. Since
-                            working with L&S Plastics, I have the security that I will never run out of the quality supplies I
+                            "Before, I had trouble finding a supplier who really delivered what they promised. Since I've been
+                            working with L&S Plastics, I have the security that I'll never run out of the quality supplies I
                             need for my restaurant."
                         </p>
                         <div>
-                            <div style={{ fontWeight: '700', color: 'var(--primary-blue)' }}>Andrés Pérez</div>
-                            <div style={{ fontSize: '12px', color: 'var(--light-black)' }}>Restaurant Owner & Chef</div>
+                            <div className="testimonial-author">Andrés Pérez</div>
+                            <div className="testimonial-role">Restaurant Owner & Chef</div>
                         </div>
                     </div>
 
                     <div className="testimonial-card">
                         <p className="testimonial-text">
-                            "I ordered by recommendation and I was truly delighted. The customer service was very
-                            cordial and professional, and the products arrived quickly and in excellent condition. I will
-                            definitely continue as a loyal customer!"
+                            "I placed an order by recommendation and was really delighted. The customer service was very
+                            cordial and professional, and the products arrived quickly and in excellent condition. I will definitely
+                            continue being a loyal customer."
                         </p>
                         <div>
-                            <div style={{ fontWeight: '700', color: 'var(--primary-blue)' }}>Carolina Vásquez</div>
-                            <div style={{ fontSize: '12px', color: 'var(--light-black)' }}>Event Planning Specialist</div>
+                            <div className="testimonial-author">Carolina Vásquez</div>
+                            <div className="testimonial-role">Event Planning Specialist</div>
                         </div>
                     </div>
                 </div>
