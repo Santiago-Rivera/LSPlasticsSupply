@@ -10,6 +10,8 @@ export default function CartModal() {
         removeFromCart,
         updateQuantity,
         getCartTotal,
+        getCartSubtotal,
+        getQuantityDiscounts,
         getCartItemCount,
         isOpen,
         setIsOpen,
@@ -119,9 +121,96 @@ export default function CartModal() {
                 {/* Footer */}
                 {cartItems.length > 0 && (
                     <div className="cart-modal-footer">
-                        <div className="cart-total">
-                            <span>Total:</span>
-                            <span>${total.toFixed(2)}</span>
+                        {/* Mostrar descuentos por cantidad si existen */}
+                        {getQuantityDiscounts() > 0 && (
+                            <div className="cart-discounts" style={{
+                                background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                                padding: '12px',
+                                borderRadius: '8px',
+                                marginBottom: '12px',
+                                color: 'white'
+                            }}>
+                                <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>
+                                    🎉 ¡Descuentos aplicados!
+                                </div>
+                                <div style={{ fontSize: '12px' }}>
+                                    5% descuento en productos con 2 o más unidades
+                                </div>
+                                <div style={{ 
+                                    display: 'flex', 
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginTop: '4px',
+                                    fontSize: '12px'
+                                }}>
+                                    <span>Ahorro total:</span>
+                                    <span style={{ fontWeight: '700' }}>-${getQuantityDiscounts().toFixed(2)}</span>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="cart-summary" style={{
+                            background: '#f8fafc',
+                            padding: '16px',
+                            borderRadius: '8px',
+                            marginBottom: '16px',
+                            border: '1px solid #e2e8f0'
+                        }}>
+                            {/* Mostrar subtotal si hay descuentos */}
+                            {getQuantityDiscounts() > 0 && (
+                                <>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        marginBottom: '8px',
+                                        fontSize: '14px',
+                                        color: '#64748b'
+                                    }}>
+                                        <span>Subtotal:</span>
+                                        <span>${getCartSubtotal().toFixed(2)}</span>
+                                    </div>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        marginBottom: '8px',
+                                        fontSize: '14px',
+                                        color: '#22c55e',
+                                        fontWeight: '600'
+                                    }}>
+                                        <span>Descuentos por cantidad:</span>
+                                        <span>-${getQuantityDiscounts().toFixed(2)}</span>
+                                    </div>
+                                    <div style={{
+                                        borderTop: '1px solid #e2e8f0',
+                                        paddingTop: '8px'
+                                    }}>
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            fontSize: '18px',
+                                            fontWeight: '700',
+                                            color: '#1e293b'
+                                        }}>
+                                            <span>Total:</span>
+                                            <span>${total.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                            
+                            {/* Si no hay descuentos, mostrar solo el total */}
+                            {getQuantityDiscounts() === 0 && (
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    fontSize: '18px',
+                                    fontWeight: '700',
+                                    color: '#1e293b'
+                                }}>
+                                    <span>Total:</span>
+                                    <span>${total.toFixed(2)}</span>
+                                </div>
+                            )}
                         </div>
 
                         <div className="cart-actions">

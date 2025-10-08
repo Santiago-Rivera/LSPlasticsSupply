@@ -6,7 +6,7 @@ import StripeCardForm from '../../components/StripeCardForm';
 
 export default function CheckoutPage() {
     const router = useRouter();
-    const { cartItems, getCartTotal, clearCart } = useCart();
+    const {cartItems, getCartTotal, getCartSubtotal, getQuantityDiscounts, clearCart} = useCart();
     const [orderComplete, setOrderComplete] = useState(false);
     const [orderNumber, setOrderNumber] = useState('');
     const [paymentProcessing, setPaymentProcessing] = useState(false);
@@ -18,9 +18,6 @@ export default function CheckoutPage() {
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [couponError, setCouponError] = useState('');
     const [couponLoading, setCouponLoading] = useState(false);
-
-    // Cupones disponibles ahora se obtienen del API
-    const [availableCoupons, setAvailableCoupons] = useState([]);
 
     // Estados para información de envío
     const [currentStep, setCurrentStep] = useState(1); // 1: Shipping Info, 2: Payment
@@ -61,24 +58,6 @@ export default function CheckoutPage() {
                 window.removeEventListener('resize', handleResize);
             }
         };
-    }, []);
-
-    // Cargar cupones disponibles al montar el componente
-    useEffect(() => {
-        const fetchAvailableCoupons = async () => {
-            try {
-                const response = await fetch('/api/coupons/validate');
-                const data = await response.json();
-
-                if (data.success) {
-                    setAvailableCoupons(data.coupons);
-                }
-            } catch (error) {
-                console.error('Error fetching coupons:', error);
-            }
-        };
-
-        fetchAvailableCoupons();
     }, []);
 
     // Function to generate order number
@@ -611,13 +590,29 @@ export default function CheckoutPage() {
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 marginBottom: '8px',
-                                fontSize: 'clamp(16px, 4vw, 18px)',
+                                fontSize: 'clamp(14px, 3.5vw, 16px)',
                                 fontWeight: '600',
                                 color: 'var(--dark-black)'
                             }}>
                                 <span>Subtotal:</span>
-                                <span>${total.toFixed(2)}</span>
+                                <span>${getCartSubtotal().toFixed(2)}</span>
                             </div>
+
+                            {/* Descuentos por cantidad (si aplican) */}
+                            {getQuantityDiscounts() > 0 && (
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginBottom: '8px',
+                                    fontSize: 'clamp(14px, 3.5vw, 16px)',
+                                    fontWeight: '600',
+                                    color: '#22c55e'
+                                }}>
+                                    <span>🎉 Descuento por cantidad (5% - 2+ unidades):</span>
+                                    <span>-${getQuantityDiscounts().toFixed(2)}</span>
+                                </div>
+                            )}
 
                             {/* Descuento del cupón (si aplica) */}
                             {appliedCoupon && (
@@ -631,9 +626,9 @@ export default function CheckoutPage() {
                                     color: '#22c55e'
                                 }}>
                                     <span>🎟️ Descuento ({appliedCoupon.description}):</span>
-                                    <span>-${appliedCoupon.type === 'percentage' 
-                                        ? (total * appliedCoupon.discount / 100).toFixed(2)
-                                        : Math.min(appliedCoupon.discount, total).toFixed(2)
+                                    <span>-${appliedCoupon.type === 'percentage'
+                                        ? (getCartTotal() * appliedCoupon.discount / 100).toFixed(2)
+                                        : Math.min(appliedCoupon.discount, getCartTotal()).toFixed(2)
                                     }</span>
                                 </div>
                             )}

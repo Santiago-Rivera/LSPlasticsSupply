@@ -70,6 +70,23 @@ export default function HomePage() {
                             ensuring our customers have access to reliable, safe, and efficient solutions
                             for their packaging and storage needs.
                         </p>
+                        <div className="mission-details">
+                            <h4>What We Do:</h4>
+                            <ul>
+                                <li>🥡 Premium food containers and packaging solutions</li>
+                                <li>🛍️ Eco-friendly plastic bags and shopping solutions</li>
+                                <li>🥤 Disposable cups, lids, and beverage accessories</li>
+                                <li>🍴 Cutlery and dining accessories for food service</li>
+                                <li>📦 Bulk packaging solutions for restaurants and retailers</li>
+                            </ul>
+                            <h4>Our Commitment:</h4>
+                            <p>
+                                We are dedicated to maintaining the highest standards of food safety,
+                                ensuring all our products meet FDA regulations and industry best practices.
+                                Our team works tirelessly to provide competitive pricing without
+                                compromising on quality.
+                            </p>
+                        </div>
                     </div>
                     <div className="vision-card">
                         <div className="card-icon">🚀</div>
@@ -79,6 +96,23 @@ export default function HomePage() {
                             recognized for our innovation, exceptional quality, and commitment to
                             customer satisfaction and environmental care.
                         </p>
+                        <div className="vision-details">
+                            <h4>Our Goals:</h4>
+                            <ul>
+                                <li>🌱 Sustainable packaging solutions for a greener future</li>
+                                <li>⭐ Industry-leading customer service and support</li>
+                                <li>🔬 Continuous innovation in product design and materials</li>
+                                <li>🤝 Building long-term partnerships with our clients</li>
+                                <li>🌍 Expanding our reach across North America</li>
+                            </ul>
+                            <h4>Why Choose L&S Plastics:</h4>
+                            <p>
+                                With over a decade of experience in the industry, we understand
+                                the unique challenges facing food service businesses. Our extensive
+                                inventory, competitive pricing, and reliable delivery make us the
+                                trusted partner for restaurants, cafes, and food retailers nationwide.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -20,8 +20,30 @@ export function CartProvider({ children }) {
         }
     }, []);
 
-    // Calcular total del carrito (memoizado para rendimiento)
+    // Calcular descuentos por cantidad (5% para 2 o más unidades del mismo producto)
+    const getQuantityDiscounts = useCallback(() => {
+        return cartItems.reduce((totalDiscount, item) => {
+            if (item.quantity >= 2) { // Cambiado de > 2 a >= 2
+                const itemTotal = parseFloat(item.precio || 0) * item.quantity;
+                const discount = itemTotal * 0.05; // 5% de descuento
+                return totalDiscount + discount;
+            }
+            return totalDiscount;
+        }, 0);
+    }, [cartItems]);
+
+    // Calcular total del carrito CON descuentos aplicados (memoizado para rendimiento)
     const getCartTotal = useCallback(() => {
+        const subtotal = cartItems.reduce((total, item) => {
+            return total + (parseFloat(item.precio || 0) * (item.quantity || 0));
+        }, 0);
+
+        const quantityDiscount = getQuantityDiscounts();
+        return subtotal - quantityDiscount;
+    }, [cartItems, getQuantityDiscounts]);
+
+    // Calcular subtotal SIN descuentos
+    const getCartSubtotal = useCallback(() => {
         return cartItems.reduce((total, item) => {
             return total + (parseFloat(item.precio || 0) * (item.quantity || 0));
         }, 0);
@@ -173,6 +195,8 @@ export function CartProvider({ children }) {
         updateQuantity,
         clearCart,
         getCartTotal,
+        getCartSubtotal,
+        getQuantityDiscounts,
         getCartItemCount,
         sessionId
     };

@@ -713,6 +713,62 @@ body {
     transform: scale(1.1) rotate(5deg);
 }
 
+/* Mission/Vision Grid Layout */
+.mission-vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 4vw, 40px);
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.mission-details, .vision-details {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.mission-details h4, .vision-details h4 {
+    color: var(--primary-blue);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mission-details ul, .vision-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+}
+
+.mission-details li, .vision-details li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--light-black);
+    border-bottom: 1px solid var(--light-gray);
+    transition: all 0.2s ease;
+}
+
+.mission-details li:hover, .vision-details li:hover {
+    color: var(--primary-blue);
+    transform: translateX(5px);
+}
+
+.mission-details li:last-child, .vision-details li:last-child {
+    border-bottom: none;
+}
+
+.mission-details p, .vision-details p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--light-black);
+    margin-bottom: 12px;
+}
+
 /* Products Section Enhanced */
 .products-section {
     padding: clamp(40px, 8vw, 80px) clamp(12px, 4vw, 20px);
@@ -1091,9 +1147,12 @@ body {
     }
 
     .mission-card p, .vision-card p {
-        font-size: 13px !important;
-        line-height: 1.6 !important;
-        word-wrap: break-word !important;
+        font-size: clamp(14px, 3.5vw, 16px) !important;
+        line-height: 1.8 !important;
+        color: var(--light-black) !important;
+        margin-bottom: clamp(16px, 4vw, 24px) !important;
+        max-width: 100% !important;
+        text-align: center !important;
     }
 
     .section-title {
@@ -1223,8 +1282,12 @@ body {
     }
 
     .mission-card p, .vision-card p {
-        font-size: 12px !important;
-        line-height: 1.5 !important;
+        font-size: clamp(14px, 3.5vw, 16px) !important;
+        line-height: 1.8 !important;
+        color: var(--light-black) !important;
+        margin-bottom: clamp(16px, 4vw, 24px) !important;
+        max-width: 100% !important;
+        text-align: center !important;
     }
 
     .testimonials-section {
@@ -1372,6 +1435,62 @@ body {
 
 .mission-card:hover .card-icon, .vision-card:hover .card-icon {
     transform: scale(1.1) rotate(5deg);
+}
+
+/* Mission/Vision Grid Layout */
+.mission-vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 4vw, 40px);
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.mission-details, .vision-details {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.mission-details h4, .vision-details h4 {
+    color: var(--primary-blue);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mission-details ul, .vision-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+}
+
+.mission-details li, .vision-details li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--light-black);
+    border-bottom: 1px solid var(--light-gray);
+    transition: all 0.2s ease;
+}
+
+.mission-details li:hover, .vision-details li:hover {
+    color: var(--primary-blue);
+    transform: translateX(5px);
+}
+
+.mission-details li:last-child, .vision-details li:last-child {
+    border-bottom: none;
+}
+
+.mission-details p, .vision-details p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--light-black);
+    margin-bottom: 12px;
 }
 
 /* Products Section Enhanced */

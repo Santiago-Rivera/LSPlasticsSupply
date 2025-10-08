@@ -424,66 +424,6 @@ function CardPaymentForm({
                         ❌ {couponError}
                     </div>
                 )}
-
-                {/* Sugerencias de cupones */}
-                {!appliedCoupon && (
-                    <div style={{
-                        marginTop: '12px',
-                        background: 'var(--off-white)',
-                        border: '1px solid var(--border-gray)',
-                        borderRadius: '8px',
-                        padding: '12px'
-                    }}>
-                        <p style={{
-                            fontSize: '12px',
-                            color: 'var(--light-black)',
-                            margin: '0 0 8px 0',
-                            fontWeight: '600'
-                        }}>
-                            💡 Cupones disponibles:
-                        </p>
-                        <div style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: '8px'
-                        }}>
-                            {['WELCOME10', 'FIRST25', 'SAVE15', 'SPRING2025'].map((code) => (
-                                <span
-                                    key={code}
-                                    onClick={() => setCouponCode && setCouponCode(code)}
-                                    style={{
-                                        background: 'var(--primary-blue)',
-                                        color: 'white',
-                                        padding: '4px 8px',
-                                        borderRadius: '4px',
-                                        fontSize: '10px',
-                                        fontWeight: '600',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s ease'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.target.style.background = 'var(--primary-dark-blue)';
-                                        e.target.style.transform = 'translateY(-1px)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.target.style.background = 'var(--primary-blue)';
-                                        e.target.style.transform = 'translateY(0)';
-                                    }}
-                                >
-                                    {code}
-                                </span>
-                            ))}
-                        </div>
-                        <div style={{
-                            marginTop: '8px',
-                            fontSize: '10px',
-                            color: 'var(--light-black)',
-                            fontStyle: 'italic'
-                        }}>
-                            Haz clic en cualquier cupón para probarlo
-                        </div>
-                    </div>
-                )}
             </div>
 
             {/* Resumen del pago actualizado */}
