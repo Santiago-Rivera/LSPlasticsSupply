@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Adjust banner section heights for improved responsiveness across devices">
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Implement quantity-based discounts and update cart summary display">
+      <change afterPath="$PROJECT_DIR$/EMAIL_SETUP_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CartModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CartModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/StripeCardForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/StripeCardForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/CartContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/CartContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/responsive.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/responsive.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +136,8 @@
       <workItem from="1759700474464" duration="25000" />
       <workItem from="1759768464418" duration="6063000" />
       <workItem from="1759853122279" duration="8951000" />
-      <workItem from="1759952188419" duration="3709000" />
+      <workItem from="1759952188419" duration="4395000" />
+      <workItem from="1759971481130" duration="1829000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -227,7 +227,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759872665708</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="feat: Implement quantity-based discounts and update cart summary display">
+      <option name="closed" value="true" />
+      <created>1759961879503</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1759961879503</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,7 +256,8 @@
     <MESSAGE value="feat: Enhance layout and responsiveness with improved styles and structure" />
     <MESSAGE value="feat: Remove Plastic Containers button and adjust banner section heights for improved responsiveness" />
     <MESSAGE value="feat: Adjust banner section heights for improved responsiveness across devices" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Adjust banner section heights for improved responsiveness across devices" />
+    <MESSAGE value="feat: Implement quantity-based discounts and update cart summary display" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Implement quantity-based discounts and update cart summary display" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -128,8 +128,32 @@ export default function CheckoutPage() {
     };
 
     // Continuar al paso de pago
-    const proceedToPayment = () => {
+    const proceedToPayment = async () => {
         if (validateShippingInfo()) {
+            try {
+                // Enviar información de envío por email
+                const response = await fetch('/api/send-shipping-info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        shippingInfo,
+                        cartItems,
+                        total: getCartTotal()
+                    }),
+                });
+
+                if (response.ok) {
+                    console.log('✅ Información de envío enviada por email exitosamente');
+                } else {
+                    console.warn('⚠️ Error enviando información por email, pero continuando con el proceso');
+                }
+            } catch (error) {
+                console.warn('⚠️ Error enviando información por email:', error);
+                // Continuamos con el proceso aunque falle el envío del email
+            }
+
             setCurrentStep(2);
         }
     };
