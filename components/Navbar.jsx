@@ -40,7 +40,13 @@ export default function Navbar() {
             1: '/tienda/categorias/plastic-containers',
             2: '/tienda/categorias/paper-bags',
             3: '/tienda/categorias/napkins-paper-towels',
-            4: '/tienda/categorias/plastic-containers-microwave'
+            4: '/tienda/categorias/plastic-containers-microwave',
+            5: '/tienda/categorias/cutlery-accessories',
+            6: '/tienda/categorias/soup-containers',
+            7: '/tienda/categorias/disposable-containers',
+            8: '/tienda/categorias/plastic-bags',
+            9: '/tienda/categorias/cold-cups-lids',
+            10: '/tienda/categorias/straws'
         };
 
         if (categoryRoutes[index]) {
@@ -150,6 +156,24 @@ export default function Navbar() {
                                     </button>
                                     <button onClick={() => handleCategoryClick(4)} className="preview-item">
                                         Plastic Containers (Microwave)
+                                    </button>
+                                    <button onClick={() => handleCategoryClick(5)} className="preview-item">
+                                        Cutlery & Accessories
+                                    </button>
+                                    <button onClick={() => handleCategoryClick(6)} className="preview-item">
+                                        Soup Containers
+                                    </button>
+                                    <button onClick={() => handleCategoryClick(7)} className="preview-item">
+                                        Disposable Containers (Boxes)
+                                    </button>
+                                    <button onClick={() => handleCategoryClick(8)} className="preview-item">
+                                        Plastic Bags
+                                    </button>
+                                    <button onClick={() => handleCategoryClick(9)} className="preview-item">
+                                        Cold Cups & Lids
+                                    </button>
+                                    <button onClick={() => handleCategoryClick(10)} className="preview-item">
+                                        Straws
                                     </button>
                                 </div>
                             </div>

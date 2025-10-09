@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Add email setup guide and implement shipping info email notification">
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Add Plastic Containers (Microwave) category to navbar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +133,7 @@
       <workItem from="1759853122279" duration="8951000" />
       <workItem from="1759952188419" duration="4395000" />
       <workItem from="1759971481130" duration="2839000" />
-      <workItem from="1759975603768" duration="270000" />
+      <workItem from="1759975603768" duration="1788000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -238,7 +239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759973533376</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="feat: Add Plastic Containers (Microwave) category to navbar">
+      <option name="closed" value="true" />
+      <created>1759976068239</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1759976068239</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,7 +270,8 @@
     <MESSAGE value="feat: Adjust banner section heights for improved responsiveness across devices" />
     <MESSAGE value="feat: Implement quantity-based discounts and update cart summary display" />
     <MESSAGE value="feat: Add email setup guide and implement shipping info email notification" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add email setup guide and implement shipping info email notification" />
+    <MESSAGE value="feat: Add Plastic Containers (Microwave) category to navbar" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Plastic Containers (Microwave) category to navbar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
