@@ -32,7 +32,7 @@ export async function POST(request) {
         // Preparar el contenido del email
         const emailOptions = {
             from: `"LS Plastics Supply" <${process.env.EMAIL_FROM || process.env.EMAIL_USER}>`,
-            to: process.env.EMAIL_TO || 'Info@plasticsupplyls.com',
+            to: process.env.EMAIL_TO || 'Lavadoandsonsllc@gmail.com',
             subject: `🛒 Nueva Orden - Información de Envío - ${shippingInfo.fullName}`,
             html: generateEmailHTML(shippingInfo, cartItems, total),
             // También incluir versión texto plano
