@@ -39,7 +39,8 @@ export default function Navbar() {
             0: '/tienda/categorias/aluminum-containers',
             1: '/tienda/categorias/plastic-containers',
             2: '/tienda/categorias/paper-bags',
-            3: '/tienda/categorias/napkins-paper-towels'
+            3: '/tienda/categorias/napkins-paper-towels',
+            4: '/tienda/categorias/plastic-containers-microwave'
         };
 
         if (categoryRoutes[index]) {
@@ -146,6 +147,9 @@ export default function Navbar() {
                                     </button>
                                     <button onClick={() => handleCategoryClick(3)} className="preview-item">
                                         Napkins & Towels
+                                    </button>
+                                    <button onClick={() => handleCategoryClick(4)} className="preview-item">
+                                        Plastic Containers (Microwave)
                                     </button>
                                 </div>
                             </div>

@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Implement quantity-based discounts and update cart summary display">
-      <change afterPath="$PROJECT_DIR$/EMAIL_SETUP_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Add email setup guide and implement shipping info email notification">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +131,8 @@
       <workItem from="1759768464418" duration="6063000" />
       <workItem from="1759853122279" duration="8951000" />
       <workItem from="1759952188419" duration="4395000" />
-      <workItem from="1759971481130" duration="1829000" />
+      <workItem from="1759971481130" duration="2839000" />
+      <workItem from="1759975603768" duration="270000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -235,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759961879503</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="feat: Add email setup guide and implement shipping info email notification">
+      <option name="closed" value="true" />
+      <created>1759973533376</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1759973533376</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +260,8 @@
     <MESSAGE value="feat: Remove Plastic Containers button and adjust banner section heights for improved responsiveness" />
     <MESSAGE value="feat: Adjust banner section heights for improved responsiveness across devices" />
     <MESSAGE value="feat: Implement quantity-based discounts and update cart summary display" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Implement quantity-based discounts and update cart summary display" />
+    <MESSAGE value="feat: Add email setup guide and implement shipping info email notification" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add email setup guide and implement shipping info email notification" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
