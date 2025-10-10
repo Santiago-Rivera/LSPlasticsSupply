@@ -965,7 +965,6 @@ export default function CheckoutPage() {
                                                 type="text"
                                                 value={shippingInfo.city}
                                                 onChange={(e) => handleShippingChange('city', e.target.value)}
-                                                placeholder="Ej: Bogotá"
                                                 style={{
                                                     width: '100%',
                                                     padding: 'clamp(12px, 3vw, 16px)',
@@ -1004,7 +1003,6 @@ export default function CheckoutPage() {
                                                 type="text"
                                                 value={shippingInfo.province}
                                                 onChange={(e) => handleShippingChange('province', e.target.value)}
-                                                placeholder="Ej: Cundinamarca"
                                                 style={{
                                                     width: '100%',
                                                     padding: 'clamp(12px, 3vw, 16px)',
@@ -1050,7 +1048,6 @@ export default function CheckoutPage() {
                                                 type="text"
                                                 value={shippingInfo.country}
                                                 onChange={(e) => handleShippingChange('country', e.target.value)}
-                                                placeholder="Ej: Colombia"
                                                 style={{
                                                     width: '100%',
                                                     padding: 'clamp(12px, 3vw, 16px)',
@@ -1089,7 +1086,6 @@ export default function CheckoutPage() {
                                                 type="text"
                                                 value={shippingInfo.postalCode}
                                                 onChange={(e) => handleShippingChange('postalCode', e.target.value)}
-                                                placeholder="Ej: 110111"
                                                 style={{
                                                     width: '100%',
                                                     padding: 'clamp(12px, 3vw, 16px)',
