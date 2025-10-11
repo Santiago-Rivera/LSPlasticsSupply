@@ -310,7 +310,7 @@ export default function CategoryPage({
                                 {/* Product Image */}
                                 <div style={{
                                     width: '100%',
-                                    height: '180px',
+                                    height: '250px', // Aumentado de 180px a 250px
                                     position: 'relative',
                                     marginBottom: '16px',
                                     borderRadius: '12px',
