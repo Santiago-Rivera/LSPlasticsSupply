@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Remove placeholder text from shipping information fields">
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Increase product image height on CategoryPage and update workspace configuration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CategoryPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CategoryPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/StripeCardForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/StripeCardForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +138,8 @@
       <workItem from="1759975603768" duration="2594000" />
       <workItem from="1760028359196" duration="1222000" />
       <workItem from="1760135104844" duration="2028000" />
-      <workItem from="1760146450559" duration="1649000" />
+      <workItem from="1760146450559" duration="2549000" />
+      <workItem from="1760659415862" duration="2738000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -274,11 +277,30 @@
       <option name="project" value="LOCAL" />
       <updated>1760135531264</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="feat: Increase product image height on CategoryPage and update workspace configuration">
+      <option name="closed" value="true" />
+      <created>1760148130506</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1760148130506</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
@@ -301,7 +323,8 @@
     <MESSAGE value="feat: Add additional categories to navbar for improved navigation" />
     <MESSAGE value="feat: Update email recipient for shipping notifications" />
     <MESSAGE value="feat: Remove placeholder text from shipping information fields" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Remove placeholder text from shipping information fields" />
+    <MESSAGE value="feat: Increase product image height on CategoryPage and update workspace configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Increase product image height on CategoryPage and update workspace configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

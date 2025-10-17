@@ -128,33 +128,19 @@ export default function CheckoutPage() {
     };
 
     // Continuar al paso de pago
-    const proceedToPayment = async () => {
+    const proceedToPayment = () => {
         if (validateShippingInfo()) {
+            // Guardar información de envío en localStorage para recuperarla después
             try {
-                // Enviar información de envío por email
-                const response = await fetch('/api/send-shipping-info', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        shippingInfo,
-                        cartItems,
-                        total: getCartTotal()
-                    }),
-                });
-
-                if (response.ok) {
-                    console.log('✅ Información de envío enviada por email exitosamente');
-                } else {
-                    console.warn('⚠️ Error enviando información por email, pero continuando con el proceso');
-                }
+                localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo));
+                console.log('✅ Información de envío guardada localmente');
             } catch (error) {
-                console.warn('⚠️ Error enviando información por email:', error);
-                // Continuamos con el proceso aunque falle el envío del email
+                console.warn('⚠️ No se pudo guardar en localStorage:', error);
             }
 
+            // Continuar al paso de pago inmediatamente (sin llamadas a API)
             setCurrentStep(2);
+            console.log('📍 Información de envío lista:', shippingInfo);
         }
     };
 
@@ -1266,7 +1252,6 @@ export default function CheckoutPage() {
                                         couponLoading={couponLoading}
                                         onApplyCoupon={applyCoupon}
                                         onRemoveCoupon={removeCoupon}
-                                        subtotal={total}
                                     />
                                 )}
                             </>
