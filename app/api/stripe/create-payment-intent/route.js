@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
-// Mock implementation para evitar errores de build cuando no hay Stripe configurado
+// Inicializar Stripe con la clave secreta
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2023-10-16',
+});
+
 export async function POST(request) {
     try {
         // Verificar si Stripe está configurado
@@ -9,11 +14,6 @@ export async function POST(request) {
                 error: 'Stripe not configured'
             }, { status: 400 });
         }
-
-        const Stripe = (await import('stripe')).default;
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-            apiVersion: '2023-10-16',
-        });
 
         const { amount, currency = 'usd' } = await request.json();
 
@@ -39,7 +39,8 @@ export async function POST(request) {
     } catch (error) {
         console.error('Error creating payment intent:', error);
         return NextResponse.json({
-            error: 'Failed to create payment intent'
+            error: 'Failed to create payment intent',
+            details: error.message
         }, { status: 500 });
     }
 }

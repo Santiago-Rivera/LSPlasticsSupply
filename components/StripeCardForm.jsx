@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 
-// Componente de formulario de pago simplificado sin APIs externas
+// Componente de formulario de pago simplificado que evita problemas con Stripe
 function SimplePaymentForm({
     amount,
     onSuccess,
@@ -28,30 +28,35 @@ function SimplePaymentForm({
     // Validar tarjeta
     const validateCard = () => {
         const newErrors = {};
-        
-        if (!cardInfo.cardNumber.replace(/\s/g, '').match(/^\d{16}$/)) {
-            newErrors.cardNumber = 'Número de tarjeta inválido (16 dígitos)';
+
+        // Validar número de tarjeta (formato básico)
+        const cardNumber = cardInfo.cardNumber.replace(/\s/g, '');
+        if (!cardNumber.match(/^\d{13,19}$/)) {
+            newErrors.cardNumber = 'Número de tarjeta inválido';
         }
-        
+
+        // Validar fecha de expiración
         if (!cardInfo.expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
             newErrors.expiry = 'Fecha inválida (MM/YY)';
         }
-        
+
+        // Validar CVC
         if (!cardInfo.cvc.match(/^\d{3,4}$/)) {
             newErrors.cvc = 'CVC inválido (3-4 dígitos)';
         }
-        
+
+        // Validar nombre
         if (!cardInfo.name.trim()) {
             newErrors.name = 'Nombre del titular requerido';
         }
-        
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
+
         if (!validateCard()) {
             return;
         }
@@ -62,10 +67,10 @@ function SimplePaymentForm({
         }
 
         try {
-            // Simular procesamiento de pago (sin APIs externas)
+            // Simular procesamiento de pago
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // Simular pago exitoso
+
+            // Crear resultado de pago simulado
             const paymentResult = {
                 id: `payment_${Date.now()}`,
                 amount: amount * 100,
@@ -82,25 +87,18 @@ function SimplePaymentForm({
                 }
             };
 
-            // Guardar información completa del pedido en localStorage
-            const orderData = {
-                payment: paymentResult,
-                shipping: shippingInfo,
-                amount: amount,
-                timestamp: new Date().toISOString(),
-                appliedCoupon: appliedCoupon
-            };
-            
-            try {
-                localStorage.setItem('lastOrder', JSON.stringify(orderData));
-                console.log('✅ Pedido guardado localmente:', orderData);
-            } catch (e) {
-                console.warn('No se pudo guardar en localStorage:', e);
-            }
+            // Enviar información por email
+            await sendOrderByEmail({
+                paymentIntent: paymentResult,
+                shippingInfo,
+                amount,
+                appliedCoupon
+            });
 
             onSuccess(paymentResult);
+
         } catch (error) {
-            console.error('Error en pago simulado:', error);
+            console.error('Error procesando pago:', error);
             onError('Error procesando el pago. Por favor intenta de nuevo.');
         } finally {
             setIsProcessing(false);
@@ -110,343 +108,293 @@ function SimplePaymentForm({
         }
     };
 
-    // Formatear número de tarjeta
-    const formatCardNumber = (value) => {
-        const cleaned = value.replace(/\D/g, '');
-        const groups = cleaned.match(/.{1,4}/g);
-        return groups ? groups.join(' ').substr(0, 19) : cleaned;
+    // Función para enviar la orden por email
+    const sendOrderByEmail = async (orderData) => {
+        try {
+            const response = await fetch('/api/send-shipping-info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    shippingInfo: orderData.shippingInfo,
+                    paymentInfo: {
+                        id: orderData.paymentIntent.id,
+                        amount: orderData.amount,
+                        status: orderData.paymentIntent.status,
+                        created: new Date().toISOString()
+                    },
+                    appliedCoupon: orderData.appliedCoupon
+                })
+            });
+
+            if (response.ok) {
+                console.log('✅ Email de orden enviado exitosamente');
+            }
+        } catch (error) {
+            console.warn('Error enviando email de confirmación:', error);
+        }
     };
 
-    // Formatear fecha de expiración
-    const formatExpiry = (value) => {
-        const cleaned = value.replace(/\D/g, '');
-        if (cleaned.length >= 2) {
-            return cleaned.substring(0, 2) + '/' + cleaned.substring(2, 4);
+    const formatCardNumber = (value) => {
+        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        const matches = v.match(/\d{4,16}/g);
+        const match = matches && matches[0] || '';
+        const parts = [];
+        for (let i = 0, len = match.length; i < len; i += 4) {
+            parts.push(match.substring(i, i + 4));
         }
-        return cleaned;
+        if (parts.length) {
+            return parts.join(' ');
+        } else {
+            return v;
+        }
+    };
+
+    const formatExpiry = (value) => {
+        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        if (v.length >= 2) {
+            return v.substring(0, 2) + '/' + v.substring(2, 4);
+        }
+        return v;
     };
 
     return (
-        <div>
-            {/* Sección de cupones */}
-            <div style={{
-                background: '#f8fafc',
-                padding: '20px',
-                borderRadius: '12px',
-                marginBottom: '24px',
-                border: '2px solid #e2e8f0'
-            }}>
-                <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: '700',
-                    color: '#1e293b',
-                    margin: '0 0 16px 0'
-                }}>
-                    🎟️ Código de Cupón (Opcional)
-                </h3>
-                
+        <div className="payment-container" style={{ maxWidth: '500px', margin: '0 auto' }}>
+            <h3>💳 Información de Pago</h3>
+            
+            {/* Cupones */}
+            <div style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px' }}>
+                <h4>🎟️ Código de Cupón (Opcional)</h4>
                 {!appliedCoupon ? (
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                        <div style={{ flex: 1 }}>
-                            <input
-                                type="text"
-                                value={couponCode}
-                                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                                placeholder="INGRESA TU CÓDIGO DE CUPÓN"
-                                disabled={couponLoading}
-                                style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    border: `2px solid ${couponError ? '#dc2626' : '#d1d5db'}`,
-                                    borderRadius: '8px',
-                                    fontSize: '14px',
-                                    fontWeight: '600',
-                                    textTransform: 'uppercase',
-                                    outline: 'none',
-                                    boxSizing: 'border-box'
-                                }}
-                            />
-                            {couponError && (
-                                <span style={{
-                                    color: '#dc2626',
-                                    fontSize: '12px',
-                                    marginTop: '4px',
-                                    display: 'block'
-                                }}>
-                                    {couponError}
-                                </span>
-                            )}
-                        </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <input
+                            type="text"
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value)}
+                            placeholder="Ingresa tu código de cupón"
+                            style={{
+                                flex: 1,
+                                padding: '10px',
+                                border: '1px solid #ddd',
+                                borderRadius: '4px'
+                            }}
+                        />
                         <button
                             type="button"
                             onClick={onApplyCoupon}
-                            disabled={couponLoading || !couponCode.trim()}
+                            disabled={couponLoading}
                             style={{
-                                background: couponLoading ? '#9ca3af' : '#f59e0b',
+                                padding: '10px 20px',
+                                backgroundColor: '#007bff',
                                 color: 'white',
                                 border: 'none',
-                                padding: '12px 20px',
-                                borderRadius: '8px',
-                                fontSize: '14px',
-                                fontWeight: '600',
-                                cursor: couponLoading || !couponCode.trim() ? 'not-allowed' : 'pointer',
-                                whiteSpace: 'nowrap'
+                                borderRadius: '4px',
+                                cursor: 'pointer'
                             }}
                         >
                             {couponLoading ? 'Validando...' : 'Aplicar'}
                         </button>
                     </div>
                 ) : (
-                    <div style={{
-                        background: '#dcfce7',
-                        border: '2px solid #22c55e',
-                        padding: '16px',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                    }}>
-                        <div>
-                            <h4 style={{ margin: '0 0 4px 0', color: '#15803d', fontSize: '16px' }}>
-                                ✅ Cupón Aplicado: {appliedCoupon.code}
-                            </h4>
-                            <p style={{ margin: 0, color: '#166534', fontSize: '14px' }}>
-                                {appliedCoupon.description}
-                            </p>
-                        </div>
+                    <div style={{ backgroundColor: '#d4edda', padding: '10px', borderRadius: '4px' }}>
+                        <p style={{ margin: 0, color: '#155724' }}>
+                            ✅ Cupón "{appliedCoupon.code}" aplicado - {appliedCoupon.description}
+                        </p>
                         <button
                             type="button"
                             onClick={onRemoveCoupon}
                             style={{
-                                background: 'transparent',
-                                color: '#dc2626',
-                                border: '1px solid #dc2626',
-                                padding: '6px 12px',
-                                borderRadius: '6px',
-                                fontSize: '12px',
+                                backgroundColor: 'transparent',
+                                color: '#721c24',
+                                border: 'none',
+                                textDecoration: 'underline',
                                 cursor: 'pointer'
                             }}
                         >
-                            Remover
+                            Remover cupón
                         </button>
                     </div>
                 )}
+                
+                {couponError && (
+                    <p style={{ color: 'red', margin: '5px 0 0 0' }}>{couponError}</p>
+                )}
             </div>
 
-            {/* Formulario de pago */}
             <form onSubmit={handleSubmit}>
-                <h2 style={{
-                    fontSize: '20px',
-                    fontWeight: '700',
-                    color: '#1e293b',
-                    margin: '0 0 20px 0',
-                    borderBottom: '3px solid #fbbf24',
-                    paddingBottom: '8px'
-                }}>
-                    💳 INFORMACIÓN DE PAGO
-                </h2>
-
-                <div style={{ display: 'grid', gap: '16px' }}>
-                    {/* Nombre del titular */}
-                    <div>
-                        <label style={{
-                            display: 'block',
-                            fontSize: '14px',
-                            fontWeight: '600',
-                            color: '#374151',
-                            marginBottom: '6px'
-                        }}>
-                            NOMBRE COMPLETO *
-                        </label>
-                        <input
-                            type="text"
-                            value={cardInfo.name}
-                            onChange={(e) => setCardInfo(prev => ({...prev, name: e.target.value}))}
-                            placeholder=""
-                            style={{
-                                width: '100%',
-                                padding: '12px',
-                                border: `2px solid ${errors.name ? '#dc2626' : '#d1d5db'}`,
-                                borderRadius: '8px',
-                                fontSize: '16px',
-                                outline: 'none',
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                        {errors.name && (
-                            <span style={{ color: '#dc2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>
-                                {errors.name}
-                            </span>
-                        )}
-                    </div>
-
-                    {/* Información de tarjeta */}
-                    <div>
-                        <label style={{
-                            display: 'block',
-                            fontSize: '14px',
-                            fontWeight: '600',
-                            color: '#374151',
-                            marginBottom: '6px'
-                        }}>
-                            INFORMACIÓN DE TARJETA *
-                        </label>
-                        <input
-                            type="text"
-                            value={cardInfo.cardNumber}
-                            onChange={(e) => setCardInfo(prev => ({
-                                ...prev, 
-                                cardNumber: formatCardNumber(e.target.value)
-                            }))}
-                            placeholder=""
-                            maxLength="19"
-                            style={{
-                                width: '100%',
-                                padding: '12px',
-                                border: `2px solid ${errors.cardNumber ? '#dc2626' : '#d1d5db'}`,
-                                borderRadius: '8px',
-                                fontSize: '16px',
-                                outline: 'none',
-                                marginBottom: '8px',
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                        {errors.cardNumber && (
-                            <span style={{ color: '#dc2626', fontSize: '12px', marginBottom: '8px', display: 'block' }}>
-                                {errors.cardNumber}
-                            </span>
-                        )}
-                        
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                            <input
-                                type="text"
-                                value={cardInfo.expiry}
-                                onChange={(e) => setCardInfo(prev => ({
-                                    ...prev, 
-                                    expiry: formatExpiry(e.target.value)
-                                }))}
-                                placeholder="MM / AA"
-                                maxLength="5"
-                                style={{
-                                    padding: '12px',
-                                    border: `2px solid ${errors.expiry ? '#dc2626' : '#d1d5db'}`,
-                                    borderRadius: '8px',
-                                    fontSize: '16px',
-                                    outline: 'none',
-                                    boxSizing: 'border-box'
-                                }}
-                            />
-                            <input
-                                type="text"
-                                value={cardInfo.cvc}
-                                onChange={(e) => setCardInfo(prev => ({
-                                    ...prev, 
-                                    cvc: e.target.value.replace(/\D/g, '').slice(0, 4)
-                                }))}
-                                placeholder="CVC"
-                                maxLength="4"
-                                style={{
-                                    padding: '12px',
-                                    border: `2px solid ${errors.cvc ? '#dc2626' : '#d1d5db'}`,
-                                    borderRadius: '8px',
-                                    fontSize: '16px',
-                                    outline: 'none',
-                                    boxSizing: 'border-box'
-                                }}
-                            />
-                        </div>
-                        {(errors.expiry || errors.cvc) && (
-                            <div style={{ marginTop: '4px' }}>
-                                {errors.expiry && (
-                                    <span style={{ color: '#dc2626', fontSize: '12px', display: 'block' }}>
-                                        {errors.expiry}
-                                    </span>
-                                )}
-                                {errors.cvc && (
-                                    <span style={{ color: '#dc2626', fontSize: '12px', display: 'block' }}>
-                                        {errors.cvc}
-                                    </span>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* CÓDIGO DE CUPÓN (OPCIONAL) */}
-                    <div style={{
-                        background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
-                        color: 'white',
-                        padding: '20px',
-                        borderRadius: '12px',
-                        textAlign: 'center',
-                        border: '3px solid #fbbf24'
-                    }}>
-                        <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔒</div>
-                        <h3 style={{ 
-                            margin: '0 0 8px 0', 
-                            fontSize: '24px', 
-                            fontWeight: '800',
-                            textTransform: 'uppercase'
-                        }}>
-                            TOTAL A PAGAR
-                        </h3>
-                        <p style={{ 
-                            margin: '0', 
-                            fontSize: '32px', 
-                            fontWeight: '800',
-                            color: '#fbbf24'
-                        }}>
-                            ${amount.toFixed(2)}
-                        </p>
-                    </div>
-
-                    {/* Botón de pago */}
-                    <button
-                        type="submit"
-                        disabled={isProcessing}
+                {/* Número de tarjeta */}
+                <div style={{ marginBottom: '15px' }}>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                        Número de Tarjeta *
+                    </label>
+                    <input
+                        type="text"
+                        value={cardInfo.cardNumber}
+                        onChange={(e) => setCardInfo(prev => ({
+                            ...prev,
+                            cardNumber: formatCardNumber(e.target.value)
+                        }))}
+                        placeholder="1234 5678 9012 3456"
+                        maxLength="19"
                         style={{
-                            background: isProcessing 
-                                ? 'linear-gradient(135deg, #6b7280 0%, #9ca3af 100%)'
-                                : 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                            color: 'white',
-                            border: '3px solid #fbbf24',
-                            padding: '20px',
-                            borderRadius: '12px',
-                            fontSize: '18px',
-                            fontWeight: '700',
-                            cursor: isProcessing ? 'not-allowed' : 'pointer',
-                            transition: 'all 0.3s ease',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px'
+                            width: '100%',
+                            padding: '12px',
+                            border: `1px solid ${errors.cardNumber ? 'red' : '#ddd'}`,
+                            borderRadius: '4px',
+                            fontSize: '16px',
+                            boxSizing: 'border-box'
                         }}
-                    >
-                        {isProcessing ? '⏳ Procesando pago...' : `🔒 PAGAR AHORA $${amount.toFixed(2)}`}
-                    </button>
+                    />
+                    {errors.cardNumber && (
+                        <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
+                            {errors.cardNumber}
+                        </p>
+                    )}
                 </div>
 
-                {/* Información de seguridad */}
-                <div style={{
-                    background: '#f0fdf4',
-                    border: '1px solid #22c55e',
-                    padding: '12px',
-                    borderRadius: '8px',
-                    marginTop: '16px',
-                    textAlign: 'center'
-                }}>
-                    <p style={{
-                        margin: 0,
-                        fontSize: '14px',
-                        color: '#15803d',
-                        fontWeight: '500'
-                    }}>
-                        🔒 Tu información está protegida con encriptación SSL de 256 bits
-                    </p>
+                {/* Nombre en la tarjeta */}
+                <div style={{ marginBottom: '15px' }}>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                        Nombre en la Tarjeta *
+                    </label>
+                    <input
+                        type="text"
+                        value={cardInfo.name}
+                        onChange={(e) => setCardInfo(prev => ({
+                            ...prev,
+                            name: e.target.value
+                        }))}
+                        placeholder="NOMBRE APELLIDO"
+                        style={{
+                            width: '100%',
+                            padding: '12px',
+                            border: `1px solid ${errors.name ? 'red' : '#ddd'}`,
+                            borderRadius: '4px',
+                            fontSize: '16px',
+                            boxSizing: 'border-box'
+                        }}
+                    />
+                    {errors.name && (
+                        <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
+                            {errors.name}
+                        </p>
+                    )}
                 </div>
+
+                {/* Fecha y CVC */}
+                <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
+                    <div style={{ flex: 1 }}>
+                        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                            MM/AA *
+                        </label>
+                        <input
+                            type="text"
+                            value={cardInfo.expiry}
+                            onChange={(e) => setCardInfo(prev => ({
+                                ...prev,
+                                expiry: formatExpiry(e.target.value)
+                            }))}
+                            placeholder="MM/AA"
+                            maxLength="5"
+                            style={{
+                                width: '100%',
+                                padding: '12px',
+                                border: `1px solid ${errors.expiry ? 'red' : '#ddd'}`,
+                                borderRadius: '4px',
+                                fontSize: '16px',
+                                boxSizing: 'border-box'
+                            }}
+                        />
+                        {errors.expiry && (
+                            <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
+                                {errors.expiry}
+                            </p>
+                        )}
+                    </div>
+
+                    <div style={{ flex: 1 }}>
+                        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                            CVC *
+                        </label>
+                        <input
+                            type="text"
+                            value={cardInfo.cvc}
+                            onChange={(e) => setCardInfo(prev => ({
+                                ...prev,
+                                cvc: e.target.value.replace(/\D/g, '')
+                            }))}
+                            placeholder="123"
+                            maxLength="4"
+                            style={{
+                                width: '100%',
+                                padding: '12px',
+                                border: `1px solid ${errors.cvc ? 'red' : '#ddd'}`,
+                                borderRadius: '4px',
+                                fontSize: '16px',
+                                boxSizing: 'border-box'
+                            }}
+                        />
+                        {errors.cvc && (
+                            <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
+                                {errors.cvc}
+                            </p>
+                        )}
+                    </div>
+                </div>
+
+                <div style={{ 
+                    marginTop: '20px', 
+                    padding: '15px', 
+                    backgroundColor: '#f8f9fa', 
+                    borderRadius: '8px',
+                    border: '1px solid #dee2e6'
+                }}>
+                    <h4 style={{ margin: '0 0 10px 0' }}>💰 Resumen del Pago</h4>
+                    <p style={{ margin: '5px 0', fontSize: '18px', fontWeight: 'bold' }}>
+                        Total: ${amount.toFixed(2)} USD
+                    </p>
+                    {appliedCoupon && (
+                        <p style={{ margin: '5px 0', color: '#28a745' }}>
+                            Descuento aplicado: -{appliedCoupon.type === 'percentage' ? 
+                                `${appliedCoupon.discount}%` : `$${appliedCoupon.discount}`}
+                        </p>
+                    )}
+                </div>
+
+                <button
+                    type="submit"
+                    disabled={isProcessing}
+                    style={{
+                        width: '100%',
+                        padding: '15px',
+                        backgroundColor: isProcessing ? '#6c757d' : '#28a745',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        cursor: isProcessing ? 'not-allowed' : 'pointer',
+                        marginTop: '20px'
+                    }}
+                >
+                    {isProcessing ? '🔄 Procesando Pago...' : `💳 Pagar $${amount.toFixed(2)}`}
+                </button>
             </form>
+
+            <div style={{ 
+                marginTop: '15px', 
+                fontSize: '12px', 
+                color: '#6c757d', 
+                textAlign: 'center' 
+            }}>
+                🔒 Tu pago está protegido por cifrado SSL
+            </div>
         </div>
     );
 }
 
-// Componente principal exportado
+// Componente principal
 export default function StripeCardForm(props) {
     return <SimplePaymentForm {...props} />;
 }

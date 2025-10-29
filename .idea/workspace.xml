@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Increase product image height on CategoryPage and update workspace configuration">
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Enhance payment processing with Stripe integration and improve form validation">
+      <change afterPath="$PROJECT_DIR$/app/productos/page.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/StripeCardForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/StripeCardForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,7 +139,8 @@
       <workItem from="1760028359196" duration="1222000" />
       <workItem from="1760135104844" duration="2028000" />
       <workItem from="1760146450559" duration="2549000" />
-      <workItem from="1760659415862" duration="2738000" />
+      <workItem from="1760659415862" duration="3191000" />
+      <workItem from="1761695999684" duration="1889000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -285,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760148130506</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="feat: Simplify payment form and enhance local storage handling for order data">
+      <option name="closed" value="true" />
+      <created>1760665482833</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1760665482834</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -324,7 +333,9 @@
     <MESSAGE value="feat: Update email recipient for shipping notifications" />
     <MESSAGE value="feat: Remove placeholder text from shipping information fields" />
     <MESSAGE value="feat: Increase product image height on CategoryPage and update workspace configuration" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Increase product image height on CategoryPage and update workspace configuration" />
+    <MESSAGE value="feat: Simplify payment form and enhance local storage handling for order data" />
+    <MESSAGE value="feat: Enhance payment processing with Stripe integration and improve form validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Enhance payment processing with Stripe integration and improve form validation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
