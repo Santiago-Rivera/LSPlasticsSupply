@@ -4,16 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Implement product listing page with search functionality and Stripe payment integration">
-      <change afterPath="$PROJECT_DIR$/README-RESTAURACION-COMPLETA.md" afterDir="false" />
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Simplify Stripe integration and enhance payment confirmation email">
+      <change afterPath="$PROJECT_DIR$/FUNCIONALIDAD-CORREGIDA.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/start-server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-project.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/StripeCardForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/StripeCardForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectColorInfo">{
@@ -148,7 +149,8 @@
       <workItem from="1760659415862" duration="3191000" />
       <workItem from="1761695999684" duration="2189000" />
       <workItem from="1762272725054" duration="9432000" />
-      <workItem from="1762290022146" duration="2285000" />
+      <workItem from="1762290022146" duration="2768000" />
+      <workItem from="1762294867292" duration="4474000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -310,7 +312,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761698114494</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="feat: Simplify Stripe integration and enhance payment confirmation email">
+      <option name="closed" value="true" />
+      <created>1762294376394</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1762294376394</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,7 +363,8 @@
     <MESSAGE value="feat: Enhance payment processing with Stripe integration and improve form validation" />
     <MESSAGE value="feat: Implement product listing page with search functionality and Stripe integration" />
     <MESSAGE value="feat: Implement product listing page with search functionality and Stripe payment integration" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Implement product listing page with search functionality and Stripe payment integration" />
+    <MESSAGE value="feat: Simplify Stripe integration and enhance payment confirmation email" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Simplify Stripe integration and enhance payment confirmation email" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

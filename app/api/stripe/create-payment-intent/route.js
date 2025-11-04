@@ -2,33 +2,22 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
     try {
-        // Verificar si Stripe está configurado
         if (!process.env.STRIPE_SECRET_KEY) {
-            return NextResponse.json(
-                {
-                    error: 'Stripe not configured',
-                },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: 'Stripe not configured' }, { status: 400 });
         }
 
         const Stripe = (await import('stripe')).default;
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-            apiVersion: '2023-10-16',
-        });
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-        const { amount, currency = 'usd' } = await request.json();
+        const { amount } = await request.json();
 
         if (!amount || amount <= 0) {
-            return NextResponse.json({
-                error: 'Invalid amount'
-            }, { status: 400 });
+            return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
         }
 
-        // Crear Payment Intent real con Stripe
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: Math.round(amount * 100), // Stripe usa centavos
-            currency: currency,
+            amount: Math.round(amount * 100),
+            currency: 'usd',
             automatic_payment_methods: {
                 enabled: true,
             },
@@ -36,15 +25,10 @@ export async function POST(request) {
 
         return NextResponse.json({
             clientSecret: paymentIntent.client_secret,
-            paymentIntentId: paymentIntent.id
         });
 
     } catch (error) {
-        console.error('Error creando Payment Intent:', error);
-        return NextResponse.json({
-            error: 'Failed to create payment intent',
-            details: error.message
-        }, { status: 500 });
+        console.error('Error:', error);
+        return NextResponse.json({ error: 'Failed to create payment intent' }, { status: 500 });
     }
 }
-
