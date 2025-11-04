@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Simplify Stripe integration and enhance payment confirmation email">
-      <change afterPath="$PROJECT_DIR$/FUNCIONALIDAD-CORREGIDA.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/start-server.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test-project.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/StripeCardForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/StripeCardForm.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Simplify Stripe payment form component" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,12 +27,22 @@
     &quot;assignee&quot;: &quot;Santiago-Rivera&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Santiago-Rivera/LSPlasticsSupply.git&quot;,
-    &quot;accountId&quot;: &quot;ed581ba4-07e0-4acf-ac4c-4d41ed961158&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Santiago-Rivera/LSPlasticsSupply.git",
+    "accountId": "ed581ba4-07e0-4acf-ac4c-4d41ed961158"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "Santiago-Rivera",
+    "repository": "LSPlasticsSupply"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
     <option name="showPreview" value="true" />
@@ -56,30 +55,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHELLCHECK.PATH&quot;: &quot;C:\\Users\\santi\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/santi/Downloads/LSPlasticsSupply&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHELLCHECK.PATH": "C:\\Users\\santi\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "e4d1f205",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/santi/Downloads/LSPlasticsSupply",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\santi\Downloads\LSPlasticsSupply\public" />
@@ -304,23 +302,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760665482834</updated>
     </task>
-    <task id="LOCAL-00020" summary="feat: Implement product listing page with search functionality and Stripe payment integration">
+    <task id="LOCAL-00020" summary="feat: Simplify Stripe payment form component">
       <option name="closed" value="true" />
-      <created>1761698114494</created>
+      <created>1762300356803</created>
       <option name="number" value="00020" />
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
-      <updated>1761698114494</updated>
+      <updated>1762300356803</updated>
     </task>
-    <task id="LOCAL-00021" summary="feat: Simplify Stripe integration and enhance payment confirmation email">
-      <option name="closed" value="true" />
-      <created>1762294376394</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1762294376394</updated>
-    </task>
-    <option name="localTasksCounter" value="22" />
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,10 +351,9 @@
     <MESSAGE value="feat: Increase product image height on CategoryPage and update workspace configuration" />
     <MESSAGE value="feat: Simplify payment form and enhance local storage handling for order data" />
     <MESSAGE value="feat: Enhance payment processing with Stripe integration and improve form validation" />
-    <MESSAGE value="feat: Implement product listing page with search functionality and Stripe integration" />
-    <MESSAGE value="feat: Implement product listing page with search functionality and Stripe payment integration" />
-    <MESSAGE value="feat: Simplify Stripe integration and enhance payment confirmation email" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Simplify Stripe integration and enhance payment confirmation email" />
+    <MESSAGE value="feat: Simplify Stripe payment form component structure" />
+    <MESSAGE value="feat: Simplify Stripe payment form component" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Simplify Stripe payment form component" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
