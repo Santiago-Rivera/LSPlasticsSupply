@@ -13,8 +13,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JSX File" />
         <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -44,7 +44,7 @@
   }
 }]]></component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectColorInfo">{
@@ -84,11 +84,11 @@
       <recent name="C:\Users\santi\Downloads\mynextproyect\public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\santi\Downloads\LSPlasticsSupply\app\components" />
       <recent name="C:\Users\santi\Downloads\LSPlasticsSupply\public\images\productos" />
       <recent name="C:\Users\santi\Downloads\LSPlasticsSupply\public" />
       <recent name="C:\Users\santi\Downloads\LSPlasticsSupply\public\images" />
       <recent name="C:\Users\santi\Downloads\mynextproyect\public\images" />
-      <recent name="C:\Users\santi\Downloads\mynextproyect\app\tienda\categorias\computadoras" />
     </key>
   </component>
   <component name="RunManager" selected="npm.Next.js: lado del servidor">
@@ -109,8 +109,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
       </set>
     </attachedChunks>
   </component>
@@ -145,7 +145,10 @@
       <workItem from="1760135104844" duration="2028000" />
       <workItem from="1760146450559" duration="2549000" />
       <workItem from="1760659415862" duration="3191000" />
-      <workItem from="1761695999684" duration="1889000" />
+      <workItem from="1761695999684" duration="2189000" />
+      <workItem from="1762272725054" duration="9432000" />
+      <workItem from="1762290022146" duration="2768000" />
+      <workItem from="1762294867292" duration="4474000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -362,5 +365,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

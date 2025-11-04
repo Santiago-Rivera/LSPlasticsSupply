@@ -61,10 +61,10 @@ export async function POST(request) {
             // Preparar el contenido del email
             const emailOptions = {
                 from: `"LS Plastics Supply" <${process.env.EMAIL_FROM || emailUser}>`,
-                to: 'Lavadoandsonsllc@gmail.com', // Email actualizado
-                subject: `🛒 Nueva Orden - Información de Envío - ${shippingInfo.fullName}`,
-                html: generateEmailHTML(shippingInfo, cartItems, total),
-                text: generateEmailText(shippingInfo, cartItems, total)
+                to: shippingInfo.email, // Enviar al email del cliente
+                subject: `✅ Confirmación de Orden - LS Plastics Supply`,
+                html: generateEmailHTML(shippingInfo, cartItems, total, data.paymentInfo),
+                text: generateEmailText(shippingInfo, cartItems, total, data.paymentInfo)
             };
 
             // Enviar el email
@@ -106,7 +106,7 @@ export async function POST(request) {
 }
 
 // Función para generar el HTML del email
-function generateEmailHTML(shippingInfo, cartItems, total) {
+function generateEmailHTML(shippingInfo, cartItems, total, paymentInfo) {
     const itemsHTML = cartItems.map(item => `
         <tr style="border-bottom: 1px solid #e5e7eb;">
             <td style="padding: 12px; text-align: left;">${item.nombre}</td>
@@ -121,19 +121,59 @@ function generateEmailHTML(shippingInfo, cartItems, total) {
         <html lang="es">
         <head>
             <meta charset="utf-8">
-            <title>Nueva Orden - Información de Envío</title>
+            <title>Confirmación de Orden - LS Plastics Supply</title>
         </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f9fafb;">
             <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 
                 <!-- Header -->
-                <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 30px 20px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 24px; font-weight: bold;">🛒 Nueva Orden Recibida</h1>
-                    <p style="margin: 10px 0 0 0; font-size: 16px;">Información de Envío del Cliente</p>
+                <div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; padding: 30px 20px; text-align: center;">
+                    <h1 style="margin: 0; font-size: 24px; font-weight: bold;">✅ ¡Pago Confirmado!</h1>
+                    <p style="margin: 10px 0 0 0; font-size: 16px;">Gracias por tu compra</p>
                 </div>
 
                 <!-- Información del Cliente -->
                 <div style="padding: 30px 20px;">
+                    <h2 style="color: #1e3a8a; margin: 0 0 20px 0; font-size: 20px; border-bottom: 3px solid #fbbf24; padding-bottom: 10px;">
+                        💳 INFORMACIÓN DE PAGO
+                    </h2>
+                    
+                    <div style="background-color: #d1fae5; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #10b981;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #065f46; width: 40%;">✅ Estado del Pago:</td>
+                                <td style="padding: 8px 0; color: #047857; font-weight: bold; text-transform: uppercase;">PAGADO</td>
+                            </tr>
+                            ${paymentInfo && paymentInfo.id ? `
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">🔐 ID de Transacción:</td>
+                                <td style="padding: 8px 0; color: #047857; font-family: monospace; font-size: 12px;">${paymentInfo.id}</td>
+                            </tr>
+                            ` : ''}
+                            ${paymentInfo && paymentInfo.last4 ? `
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">💳 Tarjeta Utilizada:</td>
+                                <td style="padding: 8px 0; color: #047857;">•••• •••• •••• ${paymentInfo.last4}</td>
+                            </tr>
+                            ` : ''}
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">💰 Monto Pagado:</td>
+                                <td style="padding: 8px 0; color: #047857; font-weight: bold; font-size: 18px;">$${total.toFixed(2)} USD</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">📅 Fecha de Pago:</td>
+                                <td style="padding: 8px 0; color: #047857;">${new Date().toLocaleString('es-ES', { 
+                                    timeZone: 'America/New_York',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}</td>
+                            </tr>
+                        </table>
+                    </div>
+
                     <h2 style="color: #1e3a8a; margin: 0 0 20px 0; font-size: 20px; border-bottom: 3px solid #fbbf24; padding-bottom: 10px;">
                         📍 INFORMACIÓN DE ENVÍO
                     </h2>
@@ -206,19 +246,13 @@ function generateEmailHTML(shippingInfo, cartItems, total) {
                     </div>
 
                     <!-- Información Adicional -->
-                    <div style="margin-top: 30px; padding: 20px; background-color: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b;">
-                        <h3 style="margin: 0 0 10px 0; color: #92400e; font-size: 16px;">ℹ️ Información Importante:</h3>
-                        <p style="margin: 0; color: #92400e; font-size: 14px;">
-                            • El cliente ha completado la información de envío<br>
-                            • Fecha y hora: ${new Date().toLocaleString('es-ES', { 
-                                timeZone: 'America/Bogota',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}<br>
-                            • El cliente procederá al pago a continuación
+                    <div style="margin-top: 30px; padding: 20px; background-color: #dbeafe; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                        <h3 style="margin: 0 0 10px 0; color: #1e40af; font-size: 16px;">ℹ️ Información Importante:</h3>
+                        <p style="margin: 0; color: #1e40af; font-size: 14px;">
+                            • Tu pago ha sido procesado exitosamente<br>
+                            • Recibirás tu pedido en la dirección proporcionada<br>
+                            • Si tienes alguna pregunta, no dudes en contactarnos<br>
+                            • Gracias por confiar en LS Plastics Supply
                         </p>
                     </div>
                 </div>
@@ -226,7 +260,10 @@ function generateEmailHTML(shippingInfo, cartItems, total) {
                 <!-- Footer -->
                 <div style="background-color: #f3f4f6; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
                     <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                        Este email fue generado automáticamente desde el sistema de pedidos de LS Plastics Supply
+                        Este es un correo de confirmación automático de LS Plastics Supply
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 12px;">
+                        Por favor no respondas a este correo
                     </p>
                 </div>
             </div>
@@ -236,13 +273,29 @@ function generateEmailHTML(shippingInfo, cartItems, total) {
 }
 
 // Función para generar versión texto plano del email
-function generateEmailText(shippingInfo, cartItems, total) {
+function generateEmailText(shippingInfo, cartItems, total, paymentInfo) {
     const itemsText = cartItems.map(item =>
         `- ${item.nombre} | Cantidad: ${item.quantity} | Precio: $${item.precio.toFixed(2)} | Total: $${(item.precio * item.quantity).toFixed(2)}`
     ).join('\n');
 
     return `
-NUEVA ORDEN RECIBIDA - LS PLASTICS SUPPLY
+¡PAGO CONFIRMADO! - LS PLASTICS SUPPLY
+
+Gracias por tu compra. Tu orden ha sido procesada exitosamente.
+
+=== INFORMACIÓN DE PAGO ===
+Estado del Pago: PAGADO
+${paymentInfo && paymentInfo.id ? `ID de Transacción: ${paymentInfo.id}` : ''}
+${paymentInfo && paymentInfo.last4 ? `Tarjeta Utilizada: •••• •••• •••• ${paymentInfo.last4}` : ''}
+Monto Pagado: $${total.toFixed(2)} USD
+Fecha de Pago: ${new Date().toLocaleString('es-ES', { 
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+})}
 
 === INFORMACIÓN DE ENVÍO ===
 Nombre Completo: ${shippingInfo.fullName}
@@ -259,20 +312,15 @@ Código Postal: ${shippingInfo.postalCode}
 ${itemsText}
 
 === TOTAL ===
-TOTAL: $${total.toFixed(2)}
+TOTAL PAGADO: $${total.toFixed(2)} USD
 
-=== INFORMACIÓN ADICIONAL ===
-- El cliente ha completado la información de envío
-- Fecha y hora: ${new Date().toLocaleString('es-ES', { 
-    timeZone: 'America/Bogota',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-})}
-- El cliente procederá al pago a continuación
+=== INFORMACIÓN IMPORTANTE ===
+• Tu pago ha sido procesado exitosamente
+• Recibirás tu pedido en la dirección proporcionada
+• Si tienes alguna pregunta, no dudes en contactarnos
+• Gracias por confiar en LS Plastics Supply
 
-Este email fue generado automáticamente desde el sistema de pedidos de LS Plastics Supply.
+Este es un correo de confirmación automático de LS Plastics Supply.
+Por favor no respondas a este correo.
     `.trim();
 }

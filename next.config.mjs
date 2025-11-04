@@ -24,7 +24,7 @@ const nextConfig = {
     },
   },
   // Configuración de webpack para ignorar warnings
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -33,6 +33,26 @@ const nextConfig = {
         tls: false,
       };
     }
+
+    // Evitar problemas con chunks dinámicos
+    if (!dev && !isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            commons: {
+              name: 'commons',
+              chunks: 'all',
+              minChunks: 2,
+            },
+          },
+        },
+      };
+    }
+
     return config;
   },
 };

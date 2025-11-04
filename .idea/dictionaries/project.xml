@@ -2,11 +2,32 @@
   <dictionary name="project">
     <words>
       <w>acerca</w>
+      <w>cantidad</w>
       <w>categorias</w>
       <w>computadoras</w>
+      <w>configurado</w>
+      <w>correo</w>
+      <w>creando</w>
+      <w>crear</w>
+      <w>cupones</w>
+      <w>desarrollo</w>
+      <w>devuelve</w>
+      <w>electrónico</w>
+      <w>estilos</w>
       <w>evitar</w>
+      <w>información</w>
+      <w>inicializar</w>
+      <w>iniciando</w>
       <w>memoizar</w>
       <w>productos</w>
+      <w>recibe</w>
+      <w>requerido</w>
+      <w>seguro</w>
+      <w>servidor</w>
+      <w>teléfono</w>
+      <w>tener</w>
+      <w>validar</w>
+      <w>verificar</w>
     </words>
   </dictionary>
 </component>
