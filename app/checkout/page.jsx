@@ -2,7 +2,12 @@
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../contexts/CartContext';
 import { useState, useEffect } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import StripeCardForm from '../../components/StripeCardForm';
+
+// Inicializar Stripe con la clave pública
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -1239,20 +1244,22 @@ export default function CheckoutPage() {
 
                                 {/* Credit Card Form */}
                                 {!paymentProcessing && (
-                                    <StripeCardForm
-                                        amount={calculateFinalTotal()}
-                                        onSuccess={handlePaymentSuccess}
-                                        onError={handlePaymentError}
-                                        onLoading={setPaymentProcessing}
-                                        shippingInfo={shippingInfo}
-                                        couponCode={couponCode}
-                                        setCouponCode={setCouponCode}
-                                        appliedCoupon={appliedCoupon}
-                                        couponError={couponError}
-                                        couponLoading={couponLoading}
-                                        onApplyCoupon={applyCoupon}
-                                        onRemoveCoupon={removeCoupon}
-                                    />
+                                    <Elements stripe={stripePromise}>
+                                        <StripeCardForm
+                                            amount={calculateFinalTotal()}
+                                            onSuccess={handlePaymentSuccess}
+                                            onError={handlePaymentError}
+                                            onLoading={setPaymentProcessing}
+                                            shippingInfo={shippingInfo}
+                                            couponCode={couponCode}
+                                            setCouponCode={setCouponCode}
+                                            appliedCoupon={appliedCoupon}
+                                            couponError={couponError}
+                                            couponLoading={couponLoading}
+                                            onApplyCoupon={applyCoupon}
+                                            onRemoveCoupon={removeCoupon}
+                                        />
+                                    </Elements>
                                 )}
                             </>
                         )}

@@ -2,11 +2,15 @@
   <dictionary name="project">
     <words>
       <w>acerca</w>
+      <w>cantidad</w>
       <w>categorias</w>
       <w>computadoras</w>
+      <w>devuelve</w>
       <w>evitar</w>
       <w>memoizar</w>
       <w>productos</w>
+      <w>recibe</w>
+      <w>seguro</w>
     </words>
   </dictionary>
 </component>

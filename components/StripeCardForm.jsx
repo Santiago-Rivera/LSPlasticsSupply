@@ -1,13 +1,29 @@
 "use client";
 import { useState } from 'react';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-// Componente de formulario de pago simplificado que evita problemas con Stripe
-function SimplePaymentForm({
+// Estilos para el CardElement de Stripe
+const cardElementOptions = {
+    style: {
+        base: {
+            fontSize: '16px',
+            color: '#424770',
+            '::placeholder': {
+                color: '#aab7c4',
+            },
+            padding: '12px',
+        },
+        invalid: {
+            color: '#9e2146',
+        },
+    },
+};
+
+function StripeCardForm({
     amount,
     onSuccess,
     onError,
     onLoading,
-    shippingInfo,
     couponCode,
     setCouponCode,
     appliedCoupon,
@@ -16,90 +32,72 @@ function SimplePaymentForm({
     onApplyCoupon,
     onRemoveCoupon
 }) {
+    const stripe = useStripe();
+    const elements = useElements();
     const [isProcessing, setIsProcessing] = useState(false);
-    const [cardInfo, setCardInfo] = useState({
-        cardNumber: '',
-        expiry: '',
-        cvc: '',
-        name: ''
-    });
-    const [errors, setErrors] = useState({});
-
-    // Validar tarjeta
-    const validateCard = () => {
-        const newErrors = {};
-
-        // Validar número de tarjeta (formato básico)
-        const cardNumber = cardInfo.cardNumber.replace(/\s/g, '');
-        if (!cardNumber.match(/^\d{13,19}$/)) {
-            newErrors.cardNumber = 'Número de tarjeta inválido';
-        }
-
-        // Validar fecha de expiración
-        if (!cardInfo.expiry.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
-            newErrors.expiry = 'Fecha inválida (MM/YY)';
-        }
-
-        // Validar CVC
-        if (!cardInfo.cvc.match(/^\d{3,4}$/)) {
-            newErrors.cvc = 'CVC inválido (3-4 dígitos)';
-        }
-
-        // Validar nombre
-        if (!cardInfo.name.trim()) {
-            newErrors.name = 'Nombre del titular requerido';
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+    const [cardError, setCardError] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!validateCard()) {
+        if (!stripe || !elements) {
+            return;
+        }
+
+        const cardElement = elements.getElement(CardElement);
+
+        if (!cardElement) {
+            setCardError('Card element not found');
             return;
         }
 
         setIsProcessing(true);
+        setCardError('');
         if (onLoading) {
             onLoading(true);
         }
 
         try {
-            // Simular procesamiento de pago
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // Crear resultado de pago simulado
-            const paymentResult = {
-                id: `payment_${Date.now()}`,
-                amount: amount * 100,
-                currency: 'usd',
-                status: 'succeeded',
-                created: new Date().toISOString(),
-                payment_method: {
-                    card: {
-                        brand: 'visa',
-                        last4: cardInfo.cardNumber.slice(-4),
-                        exp_month: cardInfo.expiry.split('/')[0],
-                        exp_year: '20' + cardInfo.expiry.split('/')[1]
-                    }
-                }
-            };
-
-            // Enviar información por email
-            await sendOrderByEmail({
-                paymentIntent: paymentResult,
-                shippingInfo,
-                amount,
-                appliedCoupon
+            // Crear payment intent en el servidor
+            const response = await fetch('/api/stripe/create-payment-intent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    amount: amount,
+                    currency: 'usd',
+                }),
             });
 
-            onSuccess(paymentResult);
+            const { clientSecret, error } = await response.json();
+
+            if (error) {
+                throw new Error(error);
+            }
+
+            // Confirmar el pago con Stripe
+            const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: cardElement,
+                }
+            });
+
+            if (stripeError) {
+                setCardError(stripeError.message);
+                if (onError) {
+                    onError(stripeError.message);
+                }
+            } else if (paymentIntent.status === 'succeeded') {
+                onSuccess(paymentIntent);
+            }
 
         } catch (error) {
             console.error('Error procesando pago:', error);
-            onError('Error procesando el pago. Por favor intenta de nuevo.');
+            setCardError(error.message || 'Error procesando el pago');
+            if (onError) {
+                onError(error.message || 'Error procesando el pago');
+            }
         } finally {
             setIsProcessing(false);
             if (onLoading) {
@@ -108,61 +106,10 @@ function SimplePaymentForm({
         }
     };
 
-    // Función para enviar la orden por email
-    const sendOrderByEmail = async (orderData) => {
-        try {
-            const response = await fetch('/api/send-shipping-info', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    shippingInfo: orderData.shippingInfo,
-                    paymentInfo: {
-                        id: orderData.paymentIntent.id,
-                        amount: orderData.amount,
-                        status: orderData.paymentIntent.status,
-                        created: new Date().toISOString()
-                    },
-                    appliedCoupon: orderData.appliedCoupon
-                })
-            });
-
-            if (response.ok) {
-                console.log('✅ Email de orden enviado exitosamente');
-            }
-        } catch (error) {
-            console.warn('Error enviando email de confirmación:', error);
-        }
-    };
-
-    const formatCardNumber = (value) => {
-        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-        const matches = v.match(/\d{4,16}/g);
-        const match = matches && matches[0] || '';
-        const parts = [];
-        for (let i = 0, len = match.length; i < len; i += 4) {
-            parts.push(match.substring(i, i + 4));
-        }
-        if (parts.length) {
-            return parts.join(' ');
-        } else {
-            return v;
-        }
-    };
-
-    const formatExpiry = (value) => {
-        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-        if (v.length >= 2) {
-            return v.substring(0, 2) + '/' + v.substring(2, 4);
-        }
-        return v;
-    };
-
     return (
         <div className="payment-container" style={{ maxWidth: '500px', margin: '0 auto' }}>
             <h3>💳 Información de Pago</h3>
-            
+
             {/* Cupones */}
             <div style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px' }}>
                 <h4>🎟️ Código de Cupón (Opcional)</h4>
@@ -216,185 +163,69 @@ function SimplePaymentForm({
                         </button>
                     </div>
                 )}
-                
+
                 {couponError && (
                     <p style={{ color: 'red', margin: '5px 0 0 0' }}>{couponError}</p>
                 )}
             </div>
 
             <form onSubmit={handleSubmit}>
-                {/* Número de tarjeta */}
-                <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-                        Número de Tarjeta *
+                {/* Información de la tarjeta con Stripe Elements */}
+                <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>
+                        Información de la Tarjeta *
                     </label>
-                    <input
-                        type="text"
-                        value={cardInfo.cardNumber}
-                        onChange={(e) => setCardInfo(prev => ({
-                            ...prev,
-                            cardNumber: formatCardNumber(e.target.value)
-                        }))}
-                        placeholder="1234 5678 9012 3456"
-                        maxLength="19"
-                        style={{
-                            width: '100%',
-                            padding: '12px',
-                            border: `1px solid ${errors.cardNumber ? 'red' : '#ddd'}`,
-                            borderRadius: '4px',
-                            fontSize: '16px',
-                            boxSizing: 'border-box'
-                        }}
-                    />
-                    {errors.cardNumber && (
-                        <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
-                            {errors.cardNumber}
-                        </p>
-                    )}
-                </div>
-
-                {/* Nombre en la tarjeta */}
-                <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-                        Nombre en la Tarjeta *
-                    </label>
-                    <input
-                        type="text"
-                        value={cardInfo.name}
-                        onChange={(e) => setCardInfo(prev => ({
-                            ...prev,
-                            name: e.target.value
-                        }))}
-                        placeholder="NOMBRE APELLIDO"
-                        style={{
-                            width: '100%',
-                            padding: '12px',
-                            border: `1px solid ${errors.name ? 'red' : '#ddd'}`,
-                            borderRadius: '4px',
-                            fontSize: '16px',
-                            boxSizing: 'border-box'
-                        }}
-                    />
-                    {errors.name && (
-                        <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
-                            {errors.name}
-                        </p>
-                    )}
-                </div>
-
-                {/* Fecha y CVC */}
-                <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
-                    <div style={{ flex: 1 }}>
-                        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-                            MM/AA *
-                        </label>
-                        <input
-                            type="text"
-                            value={cardInfo.expiry}
-                            onChange={(e) => setCardInfo(prev => ({
-                                ...prev,
-                                expiry: formatExpiry(e.target.value)
-                            }))}
-                            placeholder="MM/AA"
-                            maxLength="5"
-                            style={{
-                                width: '100%',
-                                padding: '12px',
-                                border: `1px solid ${errors.expiry ? 'red' : '#ddd'}`,
-                                borderRadius: '4px',
-                                fontSize: '16px',
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                        {errors.expiry && (
-                            <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
-                                {errors.expiry}
-                            </p>
-                        )}
+                    <div style={{
+                        padding: '12px',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px',
+                        backgroundColor: 'white'
+                    }}>
+                        <CardElement options={cardElementOptions} />
                     </div>
-
-                    <div style={{ flex: 1 }}>
-                        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-                            CVC *
-                        </label>
-                        <input
-                            type="text"
-                            value={cardInfo.cvc}
-                            onChange={(e) => setCardInfo(prev => ({
-                                ...prev,
-                                cvc: e.target.value.replace(/\D/g, '')
-                            }))}
-                            placeholder="123"
-                            maxLength="4"
-                            style={{
-                                width: '100%',
-                                padding: '12px',
-                                border: `1px solid ${errors.cvc ? 'red' : '#ddd'}`,
-                                borderRadius: '4px',
-                                fontSize: '16px',
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                        {errors.cvc && (
-                            <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
-                                {errors.cvc}
-                            </p>
-                        )}
-                    </div>
-                </div>
-
-                <div style={{ 
-                    marginTop: '20px', 
-                    padding: '15px', 
-                    backgroundColor: '#f8f9fa', 
-                    borderRadius: '8px',
-                    border: '1px solid #dee2e6'
-                }}>
-                    <h4 style={{ margin: '0 0 10px 0' }}>💰 Resumen del Pago</h4>
-                    <p style={{ margin: '5px 0', fontSize: '18px', fontWeight: 'bold' }}>
-                        Total: ${amount.toFixed(2)} USD
-                    </p>
-                    {appliedCoupon && (
-                        <p style={{ margin: '5px 0', color: '#28a745' }}>
-                            Descuento aplicado: -{appliedCoupon.type === 'percentage' ? 
-                                `${appliedCoupon.discount}%` : `$${appliedCoupon.discount}`}
+                    {cardError && (
+                        <p style={{ color: 'red', margin: '5px 0 0 0', fontSize: '14px' }}>
+                            {cardError}
                         </p>
                     )}
                 </div>
 
+                {/* Botón de pago */}
                 <button
                     type="submit"
-                    disabled={isProcessing}
+                    disabled={!stripe || isProcessing}
                     style={{
                         width: '100%',
                         padding: '15px',
-                        backgroundColor: isProcessing ? '#6c757d' : '#28a745',
+                        backgroundColor: isProcessing ? '#ccc' : '#28a745',
                         color: 'white',
                         border: 'none',
-                        borderRadius: '4px',
+                        borderRadius: '8px',
                         fontSize: '16px',
                         fontWeight: 'bold',
                         cursor: isProcessing ? 'not-allowed' : 'pointer',
-                        marginTop: '20px'
+                        marginTop: '10px'
                     }}
                 >
-                    {isProcessing ? '🔄 Procesando Pago...' : `💳 Pagar $${amount.toFixed(2)}`}
+                    {isProcessing ? '⏳ Procesando Pago...' : `💳 Pagar $${amount.toFixed(2)}`}
                 </button>
             </form>
 
-            <div style={{ 
-                marginTop: '15px', 
-                fontSize: '12px', 
-                color: '#6c757d', 
-                textAlign: 'center' 
+            {/* Información de seguridad */}
+            <div style={{
+                marginTop: '20px',
+                padding: '15px',
+                backgroundColor: '#f8f9fa',
+                borderRadius: '8px',
+                fontSize: '14px',
+                color: '#6c757d'
             }}>
-                🔒 Tu pago está protegido por cifrado SSL
+                <p style={{ margin: 0, textAlign: 'center' }}>
+                    🔒 Tu información está protegida con encriptación SSL
+                </p>
             </div>
         </div>
     );
 }
 
-// Componente principal
-export default function StripeCardForm(props) {
-    return <SimplePaymentForm {...props} />;
-}
+export default StripeCardForm;
