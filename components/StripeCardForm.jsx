@@ -1,6 +1,5 @@
 "use client";
 import { useState } from 'react';
-
 // Componente de formulario de pago simplificado que evita problemas con Stripe
 function SimplePaymentForm({
     amount,
