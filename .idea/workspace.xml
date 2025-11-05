@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Simplify Stripe payment form component structure and update workspace configuration">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="Fix: Resolve Vercel build error by reconstructing StripeCardForm component and simplifying checkout page" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -325,7 +323,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762300517484</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Fix: Resolve Vercel build error by reconstructing StripeCardForm component and simplifying checkout page">
+      <option name="closed" value="true" />
+      <created>1762301423225</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1762301423225</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,7 +350,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
-    <MESSAGE value="feat: implement code protection system and authentication middleware" />
     <MESSAGE value="feat: update Next.js configuration and enhance payment success page with loading state" />
     <MESSAGE value="feat: refine Next.js configuration and update payment confirmation messaging" />
     <MESSAGE value="feat: simplify useRouter call in PaymentSuccessContent component" />
@@ -369,7 +374,8 @@
     <MESSAGE value="feat: Simplify Stripe payment form component structure" />
     <MESSAGE value="feat: Simplify Stripe payment form component" />
     <MESSAGE value="feat: Simplify Stripe payment form component structure and update workspace configuration" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Simplify Stripe payment form component structure and update workspace configuration" />
+    <MESSAGE value="Fix: Resolve Vercel build error by reconstructing StripeCardForm component and simplifying checkout page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Resolve Vercel build error by reconstructing StripeCardForm component and simplifying checkout page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
