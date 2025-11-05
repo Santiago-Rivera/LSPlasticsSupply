@@ -2,19 +2,17 @@
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../contexts/CartContext';
 import { useState, useEffect } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
 import StripeCardForm from '../../components/StripeCardForm';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function CheckoutPage() {
     const router = useRouter();
     const { cartItems, getCartTotal, clearCart } = useCart();
     const [orderComplete, setOrderComplete] = useState(false);
     const [orderNumber, setOrderNumber] = useState('');
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         if (cartItems.length === 0 && !orderComplete) {
             router.push('/cart');
         }
@@ -38,6 +36,10 @@ export default function CheckoutPage() {
         console.error('Payment error:', error);
         alert('Error en el pago: ' + error);
     };
+
+    if (!mounted) {
+        return <div>Loading...</div>;
+    }
 
     if (orderComplete) {
         return (
@@ -104,7 +106,7 @@ export default function CheckoutPage() {
         <div style={{ minHeight: '100vh', padding: '20px', background: '#f9fafb' }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <h1 style={{ textAlign: 'center', marginBottom: '40px' }}>Checkout</h1>
-
+                
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
                     {/* Resumen del pedido */}
                     <div style={{
@@ -157,13 +159,11 @@ export default function CheckoutPage() {
                         border: '1px solid #e5e7eb'
                     }}>
                         <h2>Información de Pago</h2>
-                        <Elements stripe={stripePromise}>
-                            <StripeCardForm
-                                amount={total}
-                                onSuccess={handlePaymentSuccess}
-                                onError={handlePaymentError}
-                            />
-                        </Elements>
+                        <StripeCardForm
+                            amount={total}
+                            onSuccess={handlePaymentSuccess}
+                            onError={handlePaymentError}
+                        />
                     </div>
                 </div>
             </div>
