@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Simplify Stripe payment form component" />
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="feat: Simplify Stripe payment form component structure and update workspace configuration">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="e4d1f2056e57c6f606e1ce2c444885fcd8f18ef2" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -64,7 +71,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHELLCHECK.PATH": "C:\\Users\\santi\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "e4d1f205",
+    "git-widget-placeholder": "detached",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
     "kotlin-language-version-configured": "true",
@@ -310,7 +317,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762300356803</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="feat: Simplify Stripe payment form component structure and update workspace configuration">
+      <option name="closed" value="true" />
+      <created>1762300517484</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1762300517484</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,7 +368,8 @@
     <MESSAGE value="feat: Enhance payment processing with Stripe integration and improve form validation" />
     <MESSAGE value="feat: Simplify Stripe payment form component structure" />
     <MESSAGE value="feat: Simplify Stripe payment form component" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Simplify Stripe payment form component" />
+    <MESSAGE value="feat: Simplify Stripe payment form component structure and update workspace configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Simplify Stripe payment form component structure and update workspace configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

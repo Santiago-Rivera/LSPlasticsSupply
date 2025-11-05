@@ -1,20 +1,23 @@
 "use client";
 import { useState } from 'react';
-// Componente de formulario de pago simplificado que evita problemas con Stripe
-function SimplePaymentForm({
-    amount,
-    onSuccess,
-    onError,
-    onLoading,
-    shippingInfo,
-    couponCode,
-    setCouponCode,
-    appliedCoupon,
-    couponError,
-    couponLoading,
-    onApplyCoupon,
-    onRemoveCoupon
-}) {
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+
+const cardElementOptions = {
+    style: {
+        base: {
+            fontSize: '16px',
+            color: '#424770',
+            '::placeholder': {
+                color: '#aab7c4',
+            },
+            padding: '12px',
+        },
+    },
+};
+
+function StripeCardForm({ amount, onSuccess, onError }) {
+    const stripe = useStripe();
+    const elements = useElements();
     const [isProcessing, setIsProcessing] = useState(false);
     const [cardError, setCardError] = useState('');
     const [useTestMode, setUseTestMode] = useState(false);
