@@ -3,16 +3,20 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request) {
     try {
+        console.log('📧 API send-shipping-info: Recibiendo solicitud...');
+        
         const data = await request.json();
+        console.log('📝 Datos recibidos:', {
+            shippingInfo: data.shippingInfo?.nombreCompleto || 'No disponible',
+            cartItems: data.cartItems?.length || 0,
+            total: data.total || 0
+        });
 
         // Validar que los datos requeridos estén presentes
         const { shippingInfo, cartItems, total } = data;
 
         if (!shippingInfo || !cartItems || !total) {
-            return NextResponse.json(
-                { error: 'Datos incompletos' },
-                { status: 400 }
-            );
+            console.log('⚠️ Datos incompletos, pero continuando...');
         }
 
         // Verificar si las credenciales de email están configuradas correctamente
@@ -25,25 +29,38 @@ export async function POST(request) {
             emailPass === 'tu-app-password' ||
             emailUser.includes('tu-email')) {
 
-            console.log('⚠️ Credenciales de email no configuradas. Continuando sin enviar email.');
+            console.log('⚠️ Credenciales de email no configuradas. Guardando información localmente.');
 
             // Guardar la información en logs para desarrollo
-            console.log('📝 Información de envío recibida:', {
-                cliente: shippingInfo.fullName,
-                email: shippingInfo.email,
-                total: total,
-                productos: cartItems.length
+            console.log('📝 NUEVA ORDEN RECIBIDA:', {
+                cliente: shippingInfo?.nombreCompleto || 'No especificado',
+                email: shippingInfo?.correoElectronico || 'No especificado',
+                telefono: shippingInfo?.telefono || 'No especificado',
+                direccion: shippingInfo?.direccion || 'No especificado',
+                ciudad: shippingInfo?.ciudad || 'No especificado',
+                total: total || 0,
+                productos: cartItems?.length || 0,
+                fecha: new Date().toLocaleString('es-ES', {
+                    timeZone: 'America/New_York',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
             });
 
             return NextResponse.json({
                 success: true,
                 message: 'Información recibida correctamente',
-                note: 'Email service not configured'
+                note: 'Email service not configured - Information logged locally'
             });
         }
 
         // Si las credenciales están configuradas, intentar enviar el email
         try {
+            console.log('📧 Intentando enviar email con credenciales configuradas...');
+            
             // Configurar el transportador de Nodemailer
             const transporter = nodemailer.createTransporter({
                 host: process.env.EMAIL_HOST || 'smtp.gmail.com',
@@ -61,14 +78,14 @@ export async function POST(request) {
             // Preparar el contenido del email
             const emailOptions = {
                 from: `"LS Plastics Supply" <${process.env.EMAIL_FROM || emailUser}>`,
-                to: shippingInfo.email, // Enviar al email del cliente
-                subject: `✅ Confirmación de Orden - LS Plastics Supply`,
-                html: generateEmailHTML(shippingInfo, cartItems, total, data.paymentInfo),
-                text: generateEmailText(shippingInfo, cartItems, total, data.paymentInfo)
+                to: 'Lavadoandsonsllc@gmail.com',
+                subject: `✅ Nueva Orden - LS Plastics Supply`,
+                html: generateEmailHTML(shippingInfo, cartItems, total),
+                text: generateEmailText(shippingInfo, cartItems, total)
             };
 
             // Enviar el email
-            console.log('📧 Enviando email con Nodemailer...');
+            console.log('📧 Enviando email...');
             const info = await transporter.sendMail(emailOptions);
 
             console.log('✅ Email enviado exitosamente:', info.messageId);
@@ -80,9 +97,17 @@ export async function POST(request) {
             });
 
         } catch (emailError) {
-            console.error('❌ Error enviando email, pero continuando:', emailError);
+            console.error('❌ Error enviando email:', emailError.message);
 
-            // No bloquear el proceso si falla el email
+            // No bloquear el proceso si falla el email - guardar localmente
+            console.log('📝 Guardando información localmente debido a error de email...');
+            console.log('📝 ORDEN (Error de Email):', {
+                cliente: shippingInfo?.nombreCompleto,
+                email: shippingInfo?.correoElectronico,
+                total: total,
+                error: emailError.message
+            });
+
             return NextResponse.json({
                 success: true,
                 message: 'Información recibida (email no disponible)',
@@ -91,89 +116,56 @@ export async function POST(request) {
         }
 
     } catch (error) {
-        console.error('❌ Error en API send-shipping-info:', error);
+        console.error('❌ Error general en API send-shipping-info:', error);
 
-        // Solo devolver error si es un problema crítico de datos
-        return NextResponse.json(
-            {
-                success: true, // Cambiar a true para no bloquear el proceso
-                message: 'Información procesada con advertencias',
-                error: error.message
-            },
-            { status: 200 } // Cambiar a 200 para no bloquear
-        );
+        // Siempre devolver éxito para no bloquear el checkout
+        return NextResponse.json({
+            success: true,
+            message: 'Información procesada con advertencias',
+            error: error.message
+        }, { status: 200 });
     }
 }
 
 // Función para generar el HTML del email
-function generateEmailHTML(shippingInfo, cartItems, total, paymentInfo) {
-    const itemsHTML = cartItems.map(item => `
+function generateEmailHTML(shippingInfo, cartItems, total) {
+    const itemsHTML = cartItems.map(item => {
+        const basePrice = item.precio * item.quantity;
+        const discountedPrice = item.quantity >= 2 ? basePrice * 0.95 : basePrice;
+        const hasDiscount = item.quantity >= 2;
+        
+        return `
         <tr style="border-bottom: 1px solid #e5e7eb;">
             <td style="padding: 12px; text-align: left;">${item.nombre}</td>
             <td style="padding: 12px; text-align: center;">${item.quantity}</td>
             <td style="padding: 12px; text-align: right;">$${item.precio.toFixed(2)}</td>
-            <td style="padding: 12px; text-align: right; font-weight: bold;">$${(item.precio * item.quantity).toFixed(2)}</td>
+            <td style="padding: 12px; text-align: right; font-weight: bold;">
+                ${hasDiscount ? `<span style="text-decoration: line-through; color: #999; font-size: 12px;">$${basePrice.toFixed(2)}</span><br>` : ''}
+                $${discountedPrice.toFixed(2)}
+                ${hasDiscount ? '<br><span style="color: #16a34a; font-size: 10px;">5% descuento</span>' : ''}
+            </td>
         </tr>
-    `).join('');
+        `;
+    }).join('');
 
     return `
         <!DOCTYPE html>
         <html lang="es">
         <head>
             <meta charset="utf-8">
-            <title>Confirmación de Orden - LS Plastics Supply</title>
+            <title>Nueva Orden - LS Plastics Supply</title>
         </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f9fafb;">
             <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 
                 <!-- Header -->
                 <div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; padding: 30px 20px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 24px; font-weight: bold;">✅ ¡Pago Confirmado!</h1>
-                    <p style="margin: 10px 0 0 0; font-size: 16px;">Gracias por tu compra</p>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: bold;">🛍️ Nueva Orden Recibida</h1>
+                    <p style="margin: 10px 0 0 0; font-size: 16px;">LS Plastics Supply</p>
                 </div>
 
                 <!-- Información del Cliente -->
                 <div style="padding: 30px 20px;">
-                    <h2 style="color: #1e3a8a; margin: 0 0 20px 0; font-size: 20px; border-bottom: 3px solid #fbbf24; padding-bottom: 10px;">
-                        💳 INFORMACIÓN DE PAGO
-                    </h2>
-                    
-                    <div style="background-color: #d1fae5; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #10b981;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #065f46; width: 40%;">✅ Estado del Pago:</td>
-                                <td style="padding: 8px 0; color: #047857; font-weight: bold; text-transform: uppercase;">PAGADO</td>
-                            </tr>
-                            ${paymentInfo && paymentInfo.id ? `
-                            <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">🔐 ID de Transacción:</td>
-                                <td style="padding: 8px 0; color: #047857; font-family: monospace; font-size: 12px;">${paymentInfo.id}</td>
-                            </tr>
-                            ` : ''}
-                            ${paymentInfo && paymentInfo.last4 ? `
-                            <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">💳 Tarjeta Utilizada:</td>
-                                <td style="padding: 8px 0; color: #047857;">•••• •••• •••• ${paymentInfo.last4}</td>
-                            </tr>
-                            ` : ''}
-                            <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">💰 Monto Pagado:</td>
-                                <td style="padding: 8px 0; color: #047857; font-weight: bold; font-size: 18px;">$${total.toFixed(2)} USD</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #065f46;">📅 Fecha de Pago:</td>
-                                <td style="padding: 8px 0; color: #047857;">${new Date().toLocaleString('es-ES', { 
-                                    timeZone: 'America/New_York',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}</td>
-                            </tr>
-                        </table>
-                    </div>
-
                     <h2 style="color: #1e3a8a; margin: 0 0 20px 0; font-size: 20px; border-bottom: 3px solid #fbbf24; padding-bottom: 10px;">
                         📍 INFORMACIÓN DE ENVÍO
                     </h2>
@@ -182,41 +174,42 @@ function generateEmailHTML(shippingInfo, cartItems, total, paymentInfo) {
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
                                 <td style="padding: 8px 0; font-weight: bold; color: #374151; width: 40%;">👤 Nombre Completo:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.fullName}</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.nombreCompleto}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px 0; font-weight: bold; color: #374151;">📧 Correo Electrónico:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.email}</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.correoElectronico}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px 0; font-weight: bold; color: #374151;">📱 Teléfono:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.phone}</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.telefono}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #374151;">🏠 Dirección Principal:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.mainStreet}</td>
+                                <td style="padding: 8px 0; font-weight: bold; color: #374151;">🏠 Dirección:</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.direccion}</td>
                             </tr>
-                            ${shippingInfo.secondaryStreet ? `
-                            <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #374151;">🏢 Dirección Secundaria:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.secondaryStreet}</td>
-                            </tr>
-                            ` : ''}
                             <tr>
                                 <td style="padding: 8px 0; font-weight: bold; color: #374151;">🏙️ Ciudad:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.city}</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.ciudad}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #374151;">🗺️ Provincia/Estado:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.province}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px 0; font-weight: bold; color: #374151;">🌎 País:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.country}</td>
+                                <td style="padding: 8px 0; font-weight: bold; color: #374151;">🗺️ Provincia:</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.provincia}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px 0; font-weight: bold; color: #374151;">📫 Código Postal:</td>
-                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.postalCode}</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${shippingInfo.codigoPostal}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #374151;">📅 Fecha de Orden:</td>
+                                <td style="padding: 8px 0; color: #1f2937;">${new Date().toLocaleString('es-ES', { 
+                                    timeZone: 'America/New_York',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}</td>
                             </tr>
                         </table>
                     </div>
@@ -247,12 +240,12 @@ function generateEmailHTML(shippingInfo, cartItems, total, paymentInfo) {
 
                     <!-- Información Adicional -->
                     <div style="margin-top: 30px; padding: 20px; background-color: #dbeafe; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                        <h3 style="margin: 0 0 10px 0; color: #1e40af; font-size: 16px;">ℹ️ Información Importante:</h3>
+                        <h3 style="margin: 0 0 10px 0; color: #1e40af; font-size: 16px;">ℹ️ Información de la Orden:</h3>
                         <p style="margin: 0; color: #1e40af; font-size: 14px;">
-                            • Tu pago ha sido procesado exitosamente<br>
-                            • Recibirás tu pedido en la dirección proporcionada<br>
-                            • Si tienes alguna pregunta, no dudes en contactarnos<br>
-                            • Gracias por confiar en LS Plastics Supply
+                            • Esta orden fue realizada desde la página web<br>
+                            • El cliente completó todos los datos de envío<br>
+                            • Procesar pedido y contactar al cliente para coordinar entrega<br>
+                            • Email del cliente: ${shippingInfo.correoElectronico}
                         </p>
                     </div>
                 </div>
@@ -260,10 +253,7 @@ function generateEmailHTML(shippingInfo, cartItems, total, paymentInfo) {
                 <!-- Footer -->
                 <div style="background-color: #f3f4f6; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
                     <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                        Este es un correo de confirmación automático de LS Plastics Supply
-                    </p>
-                    <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 12px;">
-                        Por favor no respondas a este correo
+                        Este es un correo automático de LS Plastics Supply
                     </p>
                 </div>
             </div>
@@ -273,22 +263,29 @@ function generateEmailHTML(shippingInfo, cartItems, total, paymentInfo) {
 }
 
 // Función para generar versión texto plano del email
-function generateEmailText(shippingInfo, cartItems, total, paymentInfo) {
-    const itemsText = cartItems.map(item =>
-        `- ${item.nombre} | Cantidad: ${item.quantity} | Precio: $${item.precio.toFixed(2)} | Total: $${(item.precio * item.quantity).toFixed(2)}`
-    ).join('\n');
+function generateEmailText(shippingInfo, cartItems, total) {
+    const itemsText = cartItems.map(item => {
+        const basePrice = item.precio * item.quantity;
+        const discountedPrice = item.quantity >= 2 ? basePrice * 0.95 : basePrice;
+        const hasDiscount = item.quantity >= 2;
+        
+        return `- ${item.nombre} | Cantidad: ${item.quantity} | Precio: $${item.precio.toFixed(2)} | Total: $${discountedPrice.toFixed(2)}${hasDiscount ? ' (5% descuento aplicado)' : ''}`;
+    }).join('\n');
 
     return `
-¡PAGO CONFIRMADO! - LS PLASTICS SUPPLY
+NUEVA ORDEN - LS PLASTICS SUPPLY
 
-Gracias por tu compra. Tu orden ha sido procesada exitosamente.
+Una nueva orden ha sido recibida desde la página web.
 
-=== INFORMACIÓN DE PAGO ===
-Estado del Pago: PAGADO
-${paymentInfo && paymentInfo.id ? `ID de Transacción: ${paymentInfo.id}` : ''}
-${paymentInfo && paymentInfo.last4 ? `Tarjeta Utilizada: •••• •••• •••• ${paymentInfo.last4}` : ''}
-Monto Pagado: $${total.toFixed(2)} USD
-Fecha de Pago: ${new Date().toLocaleString('es-ES', { 
+=== INFORMACIÓN DE ENVÍO ===
+Nombre Completo: ${shippingInfo.nombreCompleto}
+Correo Electrónico: ${shippingInfo.correoElectronico}
+Teléfono: ${shippingInfo.telefono}
+Dirección: ${shippingInfo.direccion}
+Ciudad: ${shippingInfo.ciudad}
+Provincia: ${shippingInfo.provincia}
+Código Postal: ${shippingInfo.codigoPostal}
+Fecha de Orden: ${new Date().toLocaleString('es-ES', { 
     timeZone: 'America/New_York',
     year: 'numeric',
     month: 'long',
@@ -297,30 +294,17 @@ Fecha de Pago: ${new Date().toLocaleString('es-ES', {
     minute: '2-digit'
 })}
 
-=== INFORMACIÓN DE ENVÍO ===
-Nombre Completo: ${shippingInfo.fullName}
-Correo Electrónico: ${shippingInfo.email}
-Teléfono: ${shippingInfo.phone}
-Dirección Principal: ${shippingInfo.mainStreet}
-${shippingInfo.secondaryStreet ? `Dirección Secundaria: ${shippingInfo.secondaryStreet}` : ''}
-Ciudad: ${shippingInfo.city}
-Provincia/Estado: ${shippingInfo.province}
-País: ${shippingInfo.country}
-Código Postal: ${shippingInfo.postalCode}
-
 === PRODUCTOS ORDENADOS ===
 ${itemsText}
 
 === TOTAL ===
-TOTAL PAGADO: $${total.toFixed(2)} USD
+TOTAL: $${total.toFixed(2)}
 
-=== INFORMACIÓN IMPORTANTE ===
-• Tu pago ha sido procesado exitosamente
-• Recibirás tu pedido en la dirección proporcionada
-• Si tienes alguna pregunta, no dudes en contactarnos
-• Gracias por confiar en LS Plastics Supply
+=== INSTRUCCIONES ===
+- Procesar pedido y contactar al cliente para coordinar entrega
+- Email del cliente: ${shippingInfo.correoElectronico}
+- Teléfono del cliente: ${shippingInfo.telefono}
 
-Este es un correo de confirmación automático de LS Plastics Supply.
-Por favor no respondas a este correo.
-    `.trim();
+Este es un correo automático de LS Plastics Supply.
+    `;
 }
