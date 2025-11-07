@@ -92,20 +92,6 @@ export function CartProvider({ children }) {
                 try {
                     localStorage.setItem('ls-plastics-cart', JSON.stringify(cartItems));
                     localStorage.setItem('ls-plastics-cart-timestamp', Date.now().toString());
-
-                    // Enviar métricas del carrito al balanceador (opcional)
-                    if (cartItems.length > 0 && sessionId) {
-                        fetch('/api/metrics', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                cartItems: cartItems.length,
-                                cartValue: getCartTotal(),
-                                sessionId: sessionId,
-                                timestamp: Date.now()
-                            })
-                        }).catch(() => {}); // Silently fail si no es crítico
-                    }
                 } catch (error) {
                     console.error('Error guardando carrito:', error);
                 }
@@ -113,7 +99,7 @@ export function CartProvider({ children }) {
         }, 500); // Debounce de 500ms para evitar writes excesivos
 
         return () => clearTimeout(timeoutId);
-    }, [cartItems, sessionId, getCartTotal]);
+    }, [cartItems, sessionId]);
 
     // Agregar producto al carrito (optimizado)
     const addToCart = useCallback((product) => {
@@ -172,7 +158,11 @@ export function CartProvider({ children }) {
     // Limpiar carrito (con logging para métricas)
     const clearCart = useCallback(() => {
         const itemCount = cartItems.length;
-        const totalValue = getCartTotal();
+        const totalValue = cartItems.reduce((total, item) => {
+            const basePrice = item.precio * item.quantity;
+            const discountedPrice = item.quantity >= 2 ? basePrice * 0.95 : basePrice;
+            return total + discountedPrice;
+        }, 0);
 
         setCartItems([]);
 
@@ -184,7 +174,7 @@ export function CartProvider({ children }) {
             localStorage.removeItem('ls-plastics-cart');
             localStorage.removeItem('ls-plastics-cart-timestamp');
         }
-    }, [cartItems, getCartTotal]);
+    }, [cartItems]);
 
     const value = {
         cartItems,
