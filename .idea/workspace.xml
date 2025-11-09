@@ -4,18 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="Fix: Resolve Vercel build error by reconstructing StripeCardForm component and simplifying checkout page">
-      <change afterPath="$PROJECT_DIR$/VERCEL-BUILD-DEFINITIVELY-FIXED.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/test/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fix-checkout-error.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fix-checkout-error.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" />
+    <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="Fix: Update email service to use SendGrid as backup and enhance checkout process with improved error handling">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Cambios]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Cambios_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CHECKOUT_DOCUMENTATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EMAIL_TROUBLESHOOTING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/test-email/route.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/test-email/page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/emailService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/StripeCardForm.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/CartContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/CartContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
@@ -74,7 +76,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectColorInfo">{
@@ -181,7 +183,11 @@
       <workItem from="1762294867292" duration="4474000" />
       <workItem from="1762449509899" duration="654000" />
       <workItem from="1762471443280" duration="327000" />
-      <workItem from="1762478635411" duration="4955000" />
+      <workItem from="1762478635411" duration="5490000" />
+      <workItem from="1762487031578" duration="8000" />
+      <workItem from="1762530294691" duration="4549000" />
+      <workItem from="1762633604435" duration="5260000" />
+      <workItem from="1762708088747" duration="400000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -359,7 +365,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762301423225</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Fix: Simplify checkout process and remove unnecessary dependencies to resolve build issues">
+      <option name="closed" value="true" />
+      <created>1762486682370</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1762486682370</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,8 +392,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
-    <MESSAGE value="feat: update Next.js configuration and enhance payment success page with loading state" />
-    <MESSAGE value="feat: refine Next.js configuration and update payment confirmation messaging" />
     <MESSAGE value="feat: simplify useRouter call in PaymentSuccessContent component" />
     <MESSAGE value="feat: refactor payment processing route and enhance error handling" />
     <MESSAGE value="feat: refactor payment processing routes and enhance error handling" />
@@ -403,7 +415,9 @@
     <MESSAGE value="feat: Simplify Stripe payment form component" />
     <MESSAGE value="feat: Simplify Stripe payment form component structure and update workspace configuration" />
     <MESSAGE value="Fix: Resolve Vercel build error by reconstructing StripeCardForm component and simplifying checkout page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: Resolve Vercel build error by reconstructing StripeCardForm component and simplifying checkout page" />
+    <MESSAGE value="Fix: Simplify checkout process and remove unnecessary dependencies to resolve build issues" />
+    <MESSAGE value="Fix: Update email service to use SendGrid as backup and enhance checkout process with improved error handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: Update email service to use SendGrid as backup and enhance checkout process with improved error handling" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

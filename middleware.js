@@ -86,12 +86,15 @@ export function middleware(request) {
         pathname.startsWith(route)
     );
 
-    // Verificar métodos de modificación
+    // Verificar metodos de modificacion
     const isModificationMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(
         request.method
     );
 
-    if (isProtectedRoute || isModificationMethod) {
+    // No aplicar protección a la página de autenticación para evitar bucles
+    const isAuthPage = pathname.startsWith('/auth/protection');
+
+    if ((isProtectedRoute || isModificationMethod) && !isAuthPage) {
         // Verificar autorización
         const authToken = request.headers.get('x-auth-token');
         const sessionToken = request.cookies.get('ls-auth-session')?.value;
@@ -111,6 +114,6 @@ export const config = {
         '/checkout/:path*',
         '/cart/:path*',
         '/productos/:path*',
-        '/((?!_next/static|_next/image|favicon.ico).*)',
+        '/((?!_next/static|_next/image|favicon.ico|auth/protection).*)',
     ],
 };
