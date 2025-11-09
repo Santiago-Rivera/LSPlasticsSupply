@@ -12,7 +12,7 @@ export async function POST(request) {
         // Si llegamos aquí, significa que el sistema de protección permitió el acceso
         return NextResponse.json({
             success: true,
-            message: '✅ PRUEBA EXITOSA - El sistema de protección está funcionando correctamente',
+            message: 'PRUEBA EXITOSA - El sistema de proteccion esta funcionando correctamente',
             data: {
                 testType: 'Modificación simulada',
                 timestamp: new Date().toISOString(),
@@ -24,7 +24,7 @@ export async function POST(request) {
     } catch (error) {
         return NextResponse.json({
             success: false,
-            message: '❌ Error en la prueba',
+            message: 'Error en la prueba',
             error: error.message
         }, { status: 500 });
     }
@@ -32,7 +32,7 @@ export async function POST(request) {
 
 export async function GET() {
     return NextResponse.json({
-        message: '🧪 Endpoint de Prueba del Sistema de Protección',
+        message: 'Endpoint de Prueba del Sistema de Proteccion',
         status: 'Activo',
         description: 'Esta ruta está protegida y requiere autenticación',
         owner: 'Santiago',
@@ -46,7 +46,7 @@ export async function PUT(request) {
     
     return NextResponse.json({
         success: true,
-        message: '✅ PRUEBA PUT EXITOSA - Modificación autorizada',
+        message: 'PRUEBA PUT EXITOSA - Modificacion autorizada',
         operation: 'UPDATE',
         data: body,
         timestamp: new Date().toISOString()
@@ -57,7 +57,7 @@ export async function DELETE() {
     // Operación de eliminación simulada
     return NextResponse.json({
         success: true,
-        message: '✅ PRUEBA DELETE EXITOSA - Eliminación autorizada',
+        message: 'PRUEBA DELETE EXITOSA - Eliminacion autorizada',
         operation: 'DELETE',
         timestamp: new Date().toISOString()
     });
