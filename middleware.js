@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 
 // Sistema de rate limiting en memoria por IP
+// ADVERTENCIA: Este sistema de rate limiting en memoria no es adecuado para entornos con múltiples instancias (multi-server/serverless)
+// ya que cada instancia tendrá su propio estado, haciendo el rate limiting ineficaz.
+// Para un entorno de producción, considere usar una solución de almacenamiento centralizado como Redis o Memcached.
 const rateLimitMap = new Map();
 
 export function middleware(request) {
@@ -30,6 +33,8 @@ export function middleware(request) {
     const key = `${ip}_${request.nextUrl.pathname}`;
     let windowData = rateLimitMap.get(key);
     
+    // Si la ventana no existe o ha expirado, se crea una nueva.
+    // Esto sobreescribe la entrada antigua si existía, evitando fugas de memoria para claves activas.
     if (!windowData || now > windowData.resetTime) {
         windowData = {
             count: 0,
@@ -60,7 +65,9 @@ export function middleware(request) {
     response.headers.set('X-RateLimit-Reset', windowData.resetTime.toString());
     response.headers.set('X-Instance-ID', process.env.INSTANCE_ID || 'default');
 
-    // Limpiar entradas antiguas del mapa cada cierto tiempo
+    // Limpiar entradas antiguas del mapa cada cierto tiempo para evitar fugas de memoria con claves inactivas.
+    // Se ejecuta de forma probabilística porque el middleware de Next.js no permite procesos en segundo plano (como setInterval).
+    // Esta no es una solución perfecta, pero ayuda a mitigar el crecimiento indefinido del mapa.
     if (Math.random() < 0.01) { // 1% de probabilidad
         for (const [mapKey, data] of rateLimitMap.entries()) {
             if (now > data.resetTime) {
@@ -81,6 +88,21 @@ export function middleware(request) {
         '/edit'
     ];
 
+    // Rutas de API que NO requieren autenticación (públicas)
+    const publicApiRoutes = [
+        '/api/stripe/',
+        '/api/paypal/',
+        '/api/send-shipping-info',
+        '/api/health',
+        '/api/metrics',
+        '/api/images',
+        '/api/test-email',
+        '/api/coupons/'
+    ];
+
+    // Verificar si es una ruta pública de API
+    const isPublicApi = publicApiRoutes.some(route => pathname.startsWith(route));
+
     // Verificar si es una ruta protegida
     const isProtectedRoute = protectedRoutes.some(route =>
         pathname.startsWith(route)
@@ -94,7 +116,8 @@ export function middleware(request) {
     // No aplicar protección a la página de autenticación para evitar bucles
     const isAuthPage = pathname.startsWith('/auth/protection');
 
-    if ((isProtectedRoute || isModificationMethod) && !isAuthPage) {
+    // Solo aplicar protección si NO es una API pública
+    if ((isProtectedRoute || isModificationMethod) && !isAuthPage && !isPublicApi) {
         // Verificar autorización
         const authToken = request.headers.get('x-auth-token');
         const sessionToken = request.cookies.get('ls-auth-session')?.value;

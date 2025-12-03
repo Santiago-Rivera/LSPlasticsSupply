@@ -5,26 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b85766d6-d443-47ea-b3cb-f992ae935c4d" name="Cambios" comment="Fix: Update email service to use SendGrid as backup and enhance checkout process with improved error handling">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Cambios]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Cambios_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CHECKOUT_DOCUMENTATION.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/EMAIL_TROUBLESHOOTING.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/test-email/route.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/test-email/page.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/emailService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Cambios]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Cambios_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/send-shipping-info/route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/stripe/create-payment-intent/route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/checkout/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/checkout/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contexts/CartContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/CartContext.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -75,6 +73,9 @@
     &quot;repository&quot;: &quot;LSPlasticsSupply&quot;
   }
 }</component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
     <option name="showPreview" value="true" />
@@ -94,18 +95,24 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHELLCHECK.PATH&quot;: &quot;C:\\Users\\santi\\AppData\\Roaming\\JetBrains\\IntelliJIdea2025.2\\plugins\\Shell Script\\shellcheck.exe&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHELLCHECK.PATH&quot;: &quot;/home/santiago/.local/share/JetBrains/IntelliJIdea2025.2/Shell Script/shellcheck&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;detached&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.19.1&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.19.130&quot;,
     &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
     &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/santi/Downloads/LSPlasticsSupply&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/santiago/Descargas/LSPlasticsSupply&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.Next.js: lado del servidor.executor&quot;: &quot;Run&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -141,8 +148,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
       </set>
     </attachedChunks>
   </component>
@@ -188,6 +195,11 @@
       <workItem from="1762530294691" duration="4549000" />
       <workItem from="1762633604435" duration="5260000" />
       <workItem from="1762708088747" duration="400000" />
+      <workItem from="1764625220080" duration="3155000" />
+      <workItem from="1764782770683" duration="30000" />
+      <workItem from="1764782832698" duration="2974000" />
+      <workItem from="1764785848766" duration="1307000" />
+      <workItem from="1764787182004" duration="4455000" />
     </task>
     <task id="LOCAL-00001" summary="feat: implement code protection system and authentication middleware">
       <option name="closed" value="true" />
@@ -419,6 +431,10 @@
     <MESSAGE value="Fix: Update email service to use SendGrid as backup and enhance checkout process with improved error handling" />
     <option name="LAST_COMMIT_MESSAGE" value="Fix: Update email service to use SendGrid as backup and enhance checkout process with improved error handling" />
   </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -433,5 +449,13 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

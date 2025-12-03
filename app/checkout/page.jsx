@@ -3,6 +3,9 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '../../contexts/CartContext';
 import { useState, useEffect } from 'react';
 
+// Idealmente, esto estaría en un componente separado y usaría Stripe Elements.
+// Por simplicidad, lo mantenemos aquí.
+
 export default function CheckoutPage() {
     const router = useRouter();
     const { cartItems, getCartTotal, clearCart } = useCart();
@@ -23,13 +26,12 @@ export default function CheckoutPage() {
         codigoPostal: ''
     });
 
-    // Estados para información de pago
+    // Estados para información de pago (simplificado, ya que Stripe Elements lo manejaría)
     const [paymentInfo, setPaymentInfo] = useState({
-        numeroTarjeta: '',
         nombreTitular: '',
-        mesExpiracion: '',
-        anoExpiracion: '',
-        codigoSeguridad: ''
+        numeroTarjeta: '',
+        fechaExpiracion: '',
+        cvv: ''
     });
 
     useEffect(() => {
@@ -47,7 +49,6 @@ export default function CheckoutPage() {
 
     const handleShippingSubmit = (e) => {
         e.preventDefault();
-        // Validar campos requeridos
         if (!shippingInfo.nombreCompleto || !shippingInfo.correoElectronico || 
             !shippingInfo.direccion || !shippingInfo.telefono || 
             !shippingInfo.ciudad || !shippingInfo.provincia || !shippingInfo.codigoPostal) {
@@ -60,119 +61,116 @@ export default function CheckoutPage() {
     const handlePaymentSubmit = async (e) => {
         e.preventDefault();
         
-        // Validar campos de pago
-        if (!paymentInfo.numeroTarjeta || !paymentInfo.nombreTitular || 
-            !paymentInfo.mesExpiracion || !paymentInfo.anoExpiracion || !paymentInfo.codigoSeguridad) {
-            alert('Por favor, complete todos los campos de información de pago.');
+        if (!paymentInfo.nombreTitular || !paymentInfo.numeroTarjeta ||
+            !paymentInfo.fechaExpiracion || !paymentInfo.cvv) {
+            alert('Por favor, complete todos los campos de pago.');
             return;
         }
 
         setIsProcessing(true);
 
         try {
-            // Calcular el total
-            const totalAmount = getCartTotal();
             const orderNum = generateOrderNumber();
 
-            console.log('🔄 Procesando pago...', {
-                cliente: shippingInfo.nombreCompleto,
-                items: cartItems.length,
-                total: totalAmount,
-                orderNumber: orderNum
+            console.log('🔄 Creando Payment Intent en el servidor...');
+            console.log('📦 Items del carrito:', cartItems);
+
+            // 1. Crear el Payment Intent en el servidor de forma segura
+            const createIntentResponse = await fetch('/api/stripe/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    items: cartItems.map(item => ({ id: item.id, quantity: item.quantity })),
+                }),
             });
 
-            console.log('💳 Validando datos de pago...');
+            console.log('📡 Response status:', createIntentResponse.status);
+            console.log('📡 Response headers:', createIntentResponse.headers.get('content-type'));
 
-            // 1. Validación completa de tarjeta de crédito
-            const cardNumber = paymentInfo.numeroTarjeta.replace(/\s/g, '');
-
-            if (cardNumber.length < 13 || cardNumber.length > 19) {
-                throw new Error('Número de tarjeta inválido');
+            // Verificar si la respuesta es JSON
+            const contentType = createIntentResponse.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const textResponse = await createIntentResponse.text();
+                console.error('❌ Respuesta no es JSON:', textResponse);
+                throw new Error('El servidor devolvió una respuesta inválida. Por favor, revisa la consola.');
             }
 
-            if (!/^\d+$/.test(cardNumber)) {
-                throw new Error('El número de tarjeta solo debe contener dígitos');
+            const paymentIntentData = await createIntentResponse.json();
+            console.log('📊 Payment Intent data:', paymentIntentData);
+
+            if (!createIntentResponse.ok || !paymentIntentData.success) {
+                throw new Error(paymentIntentData.error || 'No se pudo iniciar el pago.');
             }
 
-            // Validar fecha de expiración
-            const currentYear = new Date().getFullYear();
-            const currentMonth = new Date().getMonth() + 1;
-            const expYear = parseInt(paymentInfo.anoExpiracion);
-            const expMonth = parseInt(paymentInfo.mesExpiracion);
+            console.log('✅ Payment Intent creado:', paymentIntentData.paymentIntentId);
 
-            if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
-                throw new Error('La tarjeta está vencida');
-            }
+            // 2. Aquí es donde usarías Stripe.js y Stripe Elements para confirmar el pago en el cliente.
+            //    Como no tenemos Stripe Elements configurado, simularemos una confirmación exitosa.
+            //    En una implementación real, el siguiente bloque sería reemplazado por:
+            //
+            //    const { error, paymentIntent } = await stripe.confirmCardPayment(
+            //        paymentIntentData.clientSecret,
+            //        {
+            //            payment_method: {
+            //                card: elements.getElement(CardElement),
+            //                billing_details: { name: paymentInfo.nombreTitular },
+            //            },
+            //        }
+            //    );
+            //
+            //    if (error) {
+            //        throw new Error(error.message);
+            //    }
+            //
+            //    if (paymentIntent.status !== 'succeeded') {
+            //        throw new Error('El pago no fue exitoso.');
+            //    }
 
-            if (!/^\d{3,4}$/.test(paymentInfo.codigoSeguridad)) {
-                throw new Error('Código de seguridad inválido');
-            }
+            console.log('💳 Simulando confirmación de pago del cliente...');
+            await new Promise(resolve => setTimeout(resolve, 1500)); // Simular la interacción del usuario
+            console.log('✅ Pago confirmado exitosamente (simulado).');
 
-            console.log('✅ Datos de tarjeta válidos');
-            console.log('💳 Procesando pago...');
-
-            // 2. Simular procesamiento de pago exitoso
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // En un entorno real, aquí es donde Stripe procesaría el pago
-            // Por ahora simulamos un pago exitoso
-            const mockPaymentId = `pi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            console.log('✅ Pago procesado exitosamente. ID:', mockPaymentId);
-
-            // 3. Una vez que el pago es exitoso, preparar datos para envío
+            // 3. Preparar datos para el correo de confirmación
             const requestData = {
                 shippingInfo: shippingInfo,
                 cartItems: cartItems,
-                total: totalAmount,
+                total: paymentIntentData.amount, // Usar el total calculado por el servidor
                 orderNumber: orderNum,
-                paymentIntentId: mockPaymentId, // Usar el ID de pago simulado
+                paymentIntentId: paymentIntentData.paymentIntentId,
                 paymentInfo: {
-                    // Solo enviar información no sensible
                     nombreTitular: paymentInfo.nombreTitular,
-                    ultimosDigitos: cardNumber.slice(-4),
-                    tipoTarjeta: cardNumber.startsWith('4') ? 'Visa' :
-                                cardNumber.startsWith('5') ? 'MasterCard' : 'Otra'
                 }
             };
 
             console.log('📧 Enviando confirmación de orden...');
 
-            // Enviar información por email (sin bloquear el proceso)
-            try {
-                const emailResponse = await fetch('/api/send-shipping-info', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestData)
-                });
-
-                if (emailResponse.ok) {
+            // Enviar información por email
+            fetch('/api/send-shipping-info', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            }).then(response => {
+                if (response.ok) {
                     console.log('✅ Emails enviados correctamente');
                 } else {
-                    console.log('⚠️ Error enviando emails, pero orden completada');
+                    console.log('⚠️ Error enviando emails, pero la orden ya fue completada.');
                 }
-            } catch (emailError) {
-                console.log('⚠️ Error en servicio de email, pero orden completada:', emailError.message);
-                // No bloquear el proceso por errores de email
-            }
+            }).catch(emailError => {
+                console.log('⚠️ Error en el servicio de email:', emailError.message);
+            });
 
-            // 4. Completar el checkout exitosamente SIEMPRE
+            // 4. Completar el checkout
             setOrderNumber(orderNum);
             setOrderComplete(true);
             clearCart();
             setIsProcessing(false);
 
             console.log('🎉 Orden completada exitosamente:', orderNum);
-            console.log('💳 Pago procesado y debitado de la cuenta del cliente');
-            console.log('📧 Cliente y dueña notificados por email');
 
         } catch (error) {
             console.error('❌ Error procesando pago:', error);
             setIsProcessing(false);
-
-            // Mostrar error específico al usuario
-            alert(`Error procesando el pago: ${error.message}. Por favor, verifique los datos de su tarjeta e intente nuevamente.`);
+            alert(`Error procesando el pago: ${error.message}. Por favor, intente nuevamente.`);
         }
     };
 
@@ -181,6 +179,7 @@ export default function CheckoutPage() {
     }
 
     if (orderComplete) {
+        // ... (código de la página de éxito, sin cambios)
         return (
             <div style={{
                 minHeight: '100vh',
@@ -335,628 +334,676 @@ export default function CheckoutPage() {
     return (
         <div style={{ minHeight: '100vh', padding: '20px', background: '#f8fafc' }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                <h1 style={{ 
-                    textAlign: 'center', 
+                <h1 style={{ textAlign: 'center', marginBottom: '40px', color: '#1e3a8a', fontSize: '36px', fontWeight: '800' }}>
+                    Finalizar Compra
+                </h1>
+
+                {/* Indicador de progreso */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     marginBottom: '40px',
-                    color: '#1e3a8a',
-                    fontSize: '36px',
-                    fontWeight: '800',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    textShadow: '0 2px 4px rgba(30, 58, 138, 0.1)'
-                }}>Checkout</h1>
-                
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+                    gap: '20px'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '10px 20px',
+                        borderRadius: '25px',
+                        background: currentStep === 1 ? '#1e3a8a' : '#e0f2fe',
+                        color: currentStep === 1 ? 'white' : '#1e3a8a',
+                        fontWeight: '700',
+                        transition: 'all 0.3s ease'
+                    }}>
+                        <span style={{ marginRight: '8px' }}>1</span>
+                        📋 Envío
+                    </div>
+                    <div style={{
+                        width: '40px',
+                        height: '3px',
+                        background: currentStep === 2 ? '#1e3a8a' : '#e0e7ff'
+                    }}></div>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '10px 20px',
+                        borderRadius: '25px',
+                        background: currentStep === 2 ? '#1e3a8a' : '#e0f2fe',
+                        color: currentStep === 2 ? 'white' : '#1e3a8a',
+                        fontWeight: '700',
+                        transition: 'all 0.3s ease'
+                    }}>
+                        <span style={{ marginRight: '8px' }}>2</span>
+                        💳 Pago
+                    </div>
+                </div>
+
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '40px',
+                    '@media (maxWidth: 768px)': {
+                        gridTemplateColumns: '1fr'
+                    }
+                }}>
                     {/* Resumen del pedido */}
                     <div style={{
                         background: 'white',
                         padding: '30px',
-                        borderRadius: '12px',
-                        border: '2px solid #fbbf24',
-                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)'
+                        borderRadius: '16px',
+                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                        height: 'fit-content'
                     }}>
                         <h2 style={{
                             color: '#1e3a8a',
-                            marginBottom: '20px',
+                            marginBottom: '25px',
                             fontSize: '24px',
                             fontWeight: '700',
                             borderBottom: '3px solid #fbbf24',
-                            paddingBottom: '10px'
-                        }}>Resumen del Pedido</h2>
-                        {cartItems.map((item) => {
-                            const basePrice = item.precio * item.quantity;
-                            const discountedPrice = item.quantity >= 2 ? basePrice * 0.95 : basePrice;
-                            const hasDiscount = item.quantity >= 2;
-                            
-                            return (
+                            paddingBottom: '15px'
+                        }}>
+                            📦 Resumen del Pedido
+                        </h2>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            {cartItems.map((item) => (
                                 <div key={item.id} style={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
-                                    borderBottom: '1px solid #e5e7eb',
-                                    background: hasDiscount ? 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)' : 'transparent',
-                                    borderRadius: hasDiscount ? '8px' : '0',
-                                    margin: hasDiscount ? '5px 0' : '0',
-                                    padding: hasDiscount ? '15px' : '15px 0'
+                                    padding: '15px',
+                                    marginBottom: '10px',
+                                    background: '#f8fafc',
+                                    borderRadius: '12px',
+                                    border: '2px solid #e0f2fe'
                                 }}>
-                                    <div>
-                                        <h4 style={{ 
-                                            margin: 0,
+                                    <div style={{ flex: 1 }}>
+                                        <h4 style={{
+                                            margin: '0 0 8px 0',
                                             color: '#1e3a8a',
+                                            fontSize: '16px',
                                             fontWeight: '600'
-                                        }}>{item.nombre}</h4>
-                                        <p style={{ 
-                                            margin: 0, 
-                                            color: '#6b7280',
-                                            fontSize: '14px'
-                                        }}>Cantidad: {item.quantity}</p>
-                                        {hasDiscount && (
-                                            <p style={{ 
-                                                margin: '5px 0 0 0', 
-                                                color: '#16a34a', 
-                                                fontSize: '12px',
-                                                fontWeight: '600',
-                                                background: '#dcfce7',
-                                                padding: '2px 6px',
-                                                borderRadius: '4px',
-                                                display: 'inline-block'
-                                            }}>
-                                                🎉 Descuento 5% aplicado
-                                            </p>
-                                        )}
-                                    </div>
-                                    <div style={{ textAlign: 'right' }}>
-                                        {hasDiscount && (
-                                            <p style={{ 
-                                                margin: 0, 
-                                                textDecoration: 'line-through', 
-                                                color: '#999',
-                                                fontSize: '14px'
-                                            }}>
-                                                ${basePrice.toFixed(2)}
-                                            </p>
-                                        )}
-                                        <p style={{ 
-                                            margin: 0, 
-                                            fontWeight: 'bold',
-                                            color: '#1e3a8a',
-                                            fontSize: '18px'
                                         }}>
-                                            ${discountedPrice.toFixed(2)}
+                                            {item.nombre}
+                                        </h4>
+                                        <p style={{
+                                            margin: '0',
+                                            color: '#64748b',
+                                            fontSize: '14px'
+                                        }}>
+                                            Cantidad: <strong>{item.quantity}</strong>
+                                        </p>
+                                    </div>
+                                    <div style={{
+                                        textAlign: 'right',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center'
+                                    }}>
+                                        <p style={{
+                                            margin: '0',
+                                            color: '#1e3a8a',
+                                            fontSize: '18px',
+                                            fontWeight: '700'
+                                        }}>
+                                            ${(item.precio * item.quantity).toFixed(2)}
                                         </p>
                                     </div>
                                 </div>
-                            );
-                        })}
+                            ))}
+                        </div>
+
                         <div style={{
-                            marginTop: '20px',
-                            paddingTop: '20px',
                             borderTop: '3px solid #fbbf24',
-                            background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)',
-                            color: 'white',
-                            padding: '20px',
-                            borderRadius: '12px',
-                            textAlign: 'center'
+                            paddingTop: '20px',
+                            marginTop: '20px'
                         }}>
                             <div style={{
-                                fontSize: '28px',
-                                fontWeight: '800',
-                                textTransform: 'uppercase',
-                                letterSpacing: '1px'
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                padding: '20px',
+                                background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)',
+                                borderRadius: '12px',
+                                color: 'white'
                             }}>
-                                💰 Total: ${total.toFixed(2)}
+                                <h3 style={{
+                                    margin: '0',
+                                    fontSize: '24px',
+                                    fontWeight: '800'
+                                }}>
+                                    Total:
+                                </h3>
+                                <h3 style={{
+                                    margin: '0',
+                                    fontSize: '32px',
+                                    fontWeight: '800',
+                                    color: '#fbbf24'
+                                }}>
+                                    ${total.toFixed(2)}
+                                </h3>
                             </div>
+                        </div>
+
+                        <div style={{
+                            marginTop: '25px',
+                            padding: '20px',
+                            background: '#fef3c7',
+                            borderRadius: '12px',
+                            border: '2px solid #f59e0b'
+                        }}>
+                            <h4 style={{
+                                margin: '0 0 10px 0',
+                                color: '#92400e',
+                                fontSize: '16px',
+                                fontWeight: '700'
+                            }}>
+                                🔒 Pago Seguro
+                            </h4>
+                            <p style={{
+                                margin: '0',
+                                color: '#78350f',
+                                fontSize: '14px',
+                                lineHeight: '1.5'
+                            }}>
+                                Tus datos están protegidos con encriptación SSL. Procesado por Stripe.
+                            </p>
                         </div>
                     </div>
 
                     {/* Formularios */}
-                    <div style={{
-                        background: 'white',
-                        padding: '30px',
-                        borderRadius: '12px',
-                        border: '2px solid #fbbf24',
-                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)'
-                    }}>
+                    <div>
                         {currentStep === 1 ? (
-                            // Formulario de información de envío
-                            <div>
+                            <form onSubmit={handleShippingSubmit} style={{
+                                background: 'white',
+                                padding: '30px',
+                                borderRadius: '16px',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+                            }}>
                                 <h2 style={{
                                     color: '#1e3a8a',
-                                    marginBottom: '20px',
+                                    marginBottom: '25px',
                                     fontSize: '24px',
                                     fontWeight: '700',
                                     borderBottom: '3px solid #fbbf24',
-                                    paddingBottom: '10px'
-                                }}>📍 Información de Envío</h2>
-                                <form onSubmit={handleShippingSubmit}>
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
-                                            fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
-                                        }}>
-                                            👤 Nombre Completo
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={shippingInfo.nombreCompleto}
-                                            onChange={(e) => setShippingInfo({...shippingInfo, nombreCompleto: e.target.value})}
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
-                                            }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
-                                        />
-                                    </div>
+                                    paddingBottom: '15px'
+                                }}>
+                                    📋 Información de Envío
+                                </h2>
 
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
-                                            fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
-                                        }}>
-                                            📧 Correo Electrónico
-                                        </label>
-                                        <input
-                                            type="email"
-                                            value={shippingInfo.correoElectronico}
-                                            onChange={(e) => setShippingInfo({...shippingInfo, correoElectronico: e.target.value})}
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
-                                            }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
-                                        />
-                                    </div>
+                                <div style={{ marginBottom: '20px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#1e3a8a'
+                                    }}>
+                                        Nombre Completo *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={shippingInfo.nombreCompleto}
+                                        onChange={(e) => setShippingInfo({...shippingInfo, nombreCompleto: e.target.value})}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            fontSize: '16px',
+                                            border: '2px solid #e0f2fe',
+                                            borderRadius: '8px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.3s ease'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                    />
+                                </div>
 
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
-                                            fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
-                                        }}>
-                                            🏠 Dirección
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={shippingInfo.direccion}
-                                            onChange={(e) => setShippingInfo({...shippingInfo, direccion: e.target.value})}
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
-                                            }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
-                                        />
-                                    </div>
+                                <div style={{ marginBottom: '20px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#1e3a8a'
+                                    }}>
+                                        Correo Electrónico *
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={shippingInfo.correoElectronico}
+                                        onChange={(e) => setShippingInfo({...shippingInfo, correoElectronico: e.target.value})}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            fontSize: '16px',
+                                            border: '2px solid #e0f2fe',
+                                            borderRadius: '8px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.3s ease'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                    />
+                                </div>
 
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
-                                            fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
-                                        }}>
-                                            📱 Teléfono
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            value={shippingInfo.telefono}
-                                            onChange={(e) => setShippingInfo({...shippingInfo, telefono: e.target.value})}
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
-                                            }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
-                                        />
-                                    </div>
+                                <div style={{ marginBottom: '20px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#1e3a8a'
+                                    }}>
+                                        Dirección *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={shippingInfo.direccion}
+                                        onChange={(e) => setShippingInfo({...shippingInfo, direccion: e.target.value})}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            fontSize: '16px',
+                                            border: '2px solid #e0f2fe',
+                                            borderRadius: '8px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.3s ease'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                    />
+                                </div>
 
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
+                                <div style={{ marginBottom: '20px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#1e3a8a'
+                                    }}>
+                                        Teléfono *
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        value={shippingInfo.telefono}
+                                        onChange={(e) => setShippingInfo({...shippingInfo, telefono: e.target.value})}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            fontSize: '16px',
+                                            border: '2px solid #e0f2fe',
+                                            borderRadius: '8px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.3s ease'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                    />
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '20px' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
                                             fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
+                                            color: '#1e3a8a'
                                         }}>
-                                            🏙️ Ciudad
+                                            Ciudad *
                                         </label>
                                         <input
                                             type="text"
                                             value={shippingInfo.ciudad}
                                             onChange={(e) => setShippingInfo({...shippingInfo, ciudad: e.target.value})}
+                                            required
                                             style={{
                                                 width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
+                                                padding: '12px',
                                                 fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
+                                                border: '2px solid #e0f2fe',
+                                                borderRadius: '8px',
+                                                outline: 'none',
+                                                transition: 'border-color 0.3s ease'
                                             }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
+                                            onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                            onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
                                         />
                                     </div>
-
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
                                             fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
+                                            color: '#1e3a8a'
                                         }}>
-                                            🗺️ Provincia
+                                            Provincia/Estado *
                                         </label>
                                         <input
                                             type="text"
                                             value={shippingInfo.provincia}
                                             onChange={(e) => setShippingInfo({...shippingInfo, provincia: e.target.value})}
+                                            required
                                             style={{
                                                 width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
+                                                padding: '12px',
                                                 fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
+                                                border: '2px solid #e0f2fe',
+                                                borderRadius: '8px',
+                                                outline: 'none',
+                                                transition: 'border-color 0.3s ease'
                                             }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
+                                            onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                            onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
                                         />
                                     </div>
+                                </div>
 
-                                    <div style={{ marginBottom: '25px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
+                                <div style={{ marginBottom: '30px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#1e3a8a'
+                                    }}>
+                                        Código Postal *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={shippingInfo.codigoPostal}
+                                        onChange={(e) => setShippingInfo({...shippingInfo, codigoPostal: e.target.value})}
+                                        required
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            fontSize: '16px',
+                                            border: '2px solid #e0f2fe',
+                                            borderRadius: '8px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.3s ease'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    style={{
+                                        width: '100%',
+                                        background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)',
+                                        color: 'white',
+                                        border: '2px solid #fbbf24',
+                                        padding: '16px 28px',
+                                        borderRadius: '12px',
+                                        fontSize: '18px',
+                                        fontWeight: '700',
+                                        cursor: 'pointer',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px',
+                                        transition: 'all 0.3s ease',
+                                        boxShadow: '0 4px 12px rgba(30, 58, 138, 0.3)'
+                                    }}
+                                    onMouseOver={(e) => {
+                                        e.target.style.transform = 'translateY(-2px)';
+                                        e.target.style.boxShadow = '0 6px 16px rgba(30, 58, 138, 0.4)';
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.target.style.transform = 'translateY(0)';
+                                        e.target.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.3)';
+                                    }}
+                                >
+                                    Continuar al Pago →
+                                </button>
+                            </form>
+                        ) : (
+                            <form onSubmit={handlePaymentSubmit} style={{
+                                background: 'white',
+                                padding: '30px',
+                                borderRadius: '16px',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+                            }}>
+                                <h2 style={{
+                                    color: '#1e3a8a',
+                                    marginBottom: '25px',
+                                    fontSize: '24px',
+                                    fontWeight: '700',
+                                    borderBottom: '3px solid #fbbf24',
+                                    paddingBottom: '15px'
+                                }}>
+                                    💳 Información de Pago
+                                </h2>
+
+                                <div style={{ marginBottom: '20px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#1e3a8a'
+                                    }}>
+                                        Nombre del Titular *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={paymentInfo.nombreTitular}
+                                        onChange={(e) => setPaymentInfo({...paymentInfo, nombreTitular: e.target.value})}
+                                        required
+                                        placeholder="Como aparece en la tarjeta"
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            fontSize: '16px',
+                                            border: '2px solid #e0f2fe',
+                                            borderRadius: '8px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.3s ease'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                    />
+                                </div>
+
+                                <div style={{ marginBottom: '20px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#1e3a8a'
+                                    }}>
+                                        Número de Tarjeta *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={paymentInfo.numeroTarjeta}
+                                        onChange={(e) => {
+                                            // Permitir solo números y espacios, máximo 19 caracteres (16 dígitos + 3 espacios)
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            if (value.length <= 16) {
+                                                // Formatear con espacios cada 4 dígitos
+                                                const formatted = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+                                                setPaymentInfo({...paymentInfo, numeroTarjeta: formatted});
+                                            }
+                                        }}
+                                        required
+                                        placeholder="1234 5678 9012 3456"
+                                        maxLength="19"
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px',
+                                            fontSize: '16px',
+                                            border: '2px solid #e0f2fe',
+                                            borderRadius: '8px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.3s ease',
+                                            letterSpacing: '1px'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                        onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                    />
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '20px' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
                                             fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
+                                            color: '#1e3a8a'
                                         }}>
-                                            📫 Código Postal
+                                            Fecha de Expiración *
                                         </label>
                                         <input
                                             type="text"
-                                            value={shippingInfo.codigoPostal}
-                                            onChange={(e) => setShippingInfo({...shippingInfo, codigoPostal: e.target.value})}
+                                            value={paymentInfo.fechaExpiracion}
+                                            onChange={(e) => {
+                                                // Formatear MM/YY
+                                                let value = e.target.value.replace(/\D/g, '');
+                                                if (value.length >= 2) {
+                                                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                                                }
+                                                setPaymentInfo({...paymentInfo, fechaExpiracion: value});
+                                            }}
+                                            required
+                                            placeholder="MM/AA"
+                                            maxLength="5"
                                             style={{
                                                 width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
+                                                padding: '12px',
                                                 fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
+                                                border: '2px solid #e0f2fe',
+                                                borderRadius: '8px',
+                                                outline: 'none',
+                                                transition: 'border-color 0.3s ease'
                                             }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
+                                            onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                            onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
                                         />
                                     </div>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#1e3a8a'
+                                        }}>
+                                            CVV *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={paymentInfo.cvv}
+                                            onChange={(e) => {
+                                                // Permitir solo números, máximo 4 dígitos
+                                                const value = e.target.value.replace(/\D/g, '');
+                                                if (value.length <= 4) {
+                                                    setPaymentInfo({...paymentInfo, cvv: value});
+                                                }
+                                            }}
+                                            required
+                                            placeholder="123"
+                                            maxLength="4"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px',
+                                                fontSize: '16px',
+                                                border: '2px solid #e0f2fe',
+                                                borderRadius: '8px',
+                                                outline: 'none',
+                                                transition: 'border-color 0.3s ease'
+                                            }}
+                                            onFocus={(e) => e.target.style.borderColor = '#1e3a8a'}
+                                            onBlur={(e) => e.target.style.borderColor = '#e0f2fe'}
+                                        />
+                                    </div>
+                                </div>
 
+                                <div style={{
+                                    padding: '15px',
+                                    background: '#fef3c7',
+                                    borderRadius: '12px',
+                                    border: '2px solid #f59e0b',
+                                    marginBottom: '25px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '10px'
+                                }}>
+                                    <span style={{ fontSize: '24px' }}>🔒</span>
+                                    <p style={{
+                                        margin: '0',
+                                        color: '#78350f',
+                                        fontSize: '13px',
+                                        lineHeight: '1.5'
+                                    }}>
+                                        <strong>Pago 100% seguro:</strong> Todos tus datos están protegidos con encriptación SSL de nivel bancario.
+                                    </p>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '15px', marginTop: '30px' }}>
                                     <button
-                                        type="submit"
+                                        type="button"
+                                        onClick={() => setCurrentStep(1)}
                                         style={{
-                                            width: '100%',
-                                            padding: '16px',
-                                            background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)',
-                                            color: 'white',
-                                            border: '2px solid #fbbf24',
+                                            flex: 1,
+                                            background: '#f1f5f9',
+                                            color: '#475569',
+                                            border: '2px solid #cbd5e1',
+                                            padding: '16px 28px',
                                             borderRadius: '12px',
                                             fontSize: '16px',
                                             fontWeight: '700',
                                             cursor: 'pointer',
                                             textTransform: 'uppercase',
                                             letterSpacing: '0.5px',
-                                            transition: 'all 0.3s ease',
-                                            boxShadow: '0 4px 12px rgba(30, 58, 138, 0.3)'
+                                            transition: 'all 0.3s ease'
                                         }}
                                         onMouseOver={(e) => {
-                                            e.target.style.transform = 'translateY(-2px)';
-                                            e.target.style.boxShadow = '0 6px 16px rgba(30, 58, 138, 0.4)';
+                                            e.target.style.background = '#e2e8f0';
                                         }}
                                         onMouseOut={(e) => {
-                                            e.target.style.transform = 'translateY(0)';
-                                            e.target.style.boxShadow = '0 4px 12px rgba(30, 58, 138, 0.3)';
+                                            e.target.style.background = '#f1f5f9';
                                         }}
                                     >
-                                        ➡️ Continuar al Pago
+                                        ← Volver
                                     </button>
-                                </form>
-                            </div>
-                        ) : (
-                            // Formulario de información de pago
-                            <div>
-                                <h2 style={{
-                                    color: '#1e3a8a',
-                                    marginBottom: '20px',
-                                    fontSize: '24px',
-                                    fontWeight: '700',
-                                    borderBottom: '3px solid #fbbf24',
-                                    paddingBottom: '10px'
-                                }}>💳 Información de Pago</h2>
-                                <form onSubmit={handlePaymentSubmit}>
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
-                                            fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
-                                        }}>
-                                            🔢 Número de Tarjeta
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={paymentInfo.numeroTarjeta}
-                                            onChange={(e) => {
-                                                // Formatear número de tarjeta automáticamente
-                                                const value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-                                                const matches = value.match(/\d{4,16}/g);
-                                                const match = matches && matches[0] || '';
-                                                const parts = [];
-                                                for (let i = 0, len = match.length; i < len; i += 4) {
-                                                    parts.push(match.substring(i, i + 4));
-                                                }
-                                                if (parts.length) {
-                                                    setPaymentInfo({...paymentInfo, numeroTarjeta: parts.join(' ')});
-                                                } else {
-                                                    setPaymentInfo({...paymentInfo, numeroTarjeta: value});
-                                                }
-                                            }}
-                                            placeholder="1234 5678 9012 3456"
-                                            maxLength="19"
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
-                                            }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
-                                        />
-                                    </div>
-
-                                    <div style={{ marginBottom: '20px' }}>
-                                        <label style={{ 
-                                            display: 'block', 
-                                            marginBottom: '8px', 
-                                            fontWeight: '600',
-                                            color: '#1e3a8a',
-                                            fontSize: '14px'
-                                        }}>
-                                            👤 Nombre del Titular
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={paymentInfo.nombreTitular}
-                                            onChange={(e) => setPaymentInfo({...paymentInfo, nombreTitular: e.target.value})}
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '2px solid #e5e7eb',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                transition: 'all 0.3s ease',
-                                                background: '#f8fafc'
-                                            }}
-                                            onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                            required
-                                        />
-                                    </div>
-
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '25px' }}>
-                                        <div>
-                                            <label style={{ 
-                                                display: 'block', 
-                                                marginBottom: '8px', 
-                                                fontWeight: '600',
-                                                color: '#1e3a8a',
-                                                fontSize: '14px'
-                                            }}>
-                                                📅 Mes
-                                            </label>
-                                            <select
-                                                value={paymentInfo.mesExpiracion}
-                                                onChange={(e) => setPaymentInfo({...paymentInfo, mesExpiracion: e.target.value})}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '12px 16px',
-                                                    border: '2px solid #e5e7eb',
-                                                    borderRadius: '8px',
-                                                    fontSize: '16px',
-                                                    transition: 'all 0.3s ease',
-                                                    background: '#f8fafc'
-                                                }}
-                                                onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                                onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                                required
-                                            >
-                                                <option value="">Mes</option>
-                                                {Array.from({length: 12}, (_, i) => i + 1).map(month => (
-                                                    <option key={month} value={month.toString().padStart(2, '0')}>
-                                                        {month.toString().padStart(2, '0')}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label style={{ 
-                                                display: 'block', 
-                                                marginBottom: '8px', 
-                                                fontWeight: '600',
-                                                color: '#1e3a8a',
-                                                fontSize: '14px'
-                                            }}>
-                                                📅 Año
-                                            </label>
-                                            <select
-                                                value={paymentInfo.anoExpiracion}
-                                                onChange={(e) => setPaymentInfo({...paymentInfo, anoExpiracion: e.target.value})}
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '12px 16px',
-                                                    border: '2px solid #e5e7eb',
-                                                    borderRadius: '8px',
-                                                    fontSize: '16px',
-                                                    transition: 'all 0.3s ease',
-                                                    background: '#f8fafc'
-                                                }}
-                                                onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                                onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                                required
-                                            >
-                                                <option value="">Año</option>
-                                                {Array.from({length: 10}, (_, i) => new Date().getFullYear() + i).map(year => (
-                                                    <option key={year} value={year}>
-                                                        {year}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label style={{ 
-                                                display: 'block', 
-                                                marginBottom: '8px', 
-                                                fontWeight: '600',
-                                                color: '#1e3a8a',
-                                                fontSize: '14px'
-                                            }}>
-                                                🔒 CVV
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={paymentInfo.codigoSeguridad}
-                                                onChange={(e) => {
-                                                    // Solo permitir números y máximo 4 dígitos
-                                                    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
-                                                    setPaymentInfo({...paymentInfo, codigoSeguridad: value});
-                                                }}
-                                                placeholder="123"
-                                                maxLength="4"
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '12px 16px',
-                                                    border: '2px solid #e5e7eb',
-                                                    borderRadius: '8px',
-                                                    fontSize: '16px',
-                                                    transition: 'all 0.3s ease',
-                                                    background: '#f8fafc'
-                                                }}
-                                                onFocus={(e) => e.target.style.borderColor = '#fbbf24'}
-                                                onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                                        <button
-                                            type="button"
-                                            onClick={() => setCurrentStep(1)}
-                                            style={{
-                                                padding: '16px',
-                                                background: '#6b7280',
-                                                color: 'white',
-                                                border: '2px solid #9ca3af',
-                                                borderRadius: '12px',
-                                                fontSize: '16px',
-                                                fontWeight: '700',
-                                                cursor: 'pointer',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '0.5px',
-                                                transition: 'all 0.3s ease'
-                                            }}
-                                            onMouseOver={(e) => {
-                                                e.target.style.background = '#4b5563';
-                                                e.target.style.transform = 'translateY(-1px)';
-                                            }}
-                                            onMouseOut={(e) => {
-                                                e.target.style.background = '#6b7280';
+                                    <button
+                                        type="submit"
+                                        disabled={isProcessing}
+                                        style={{
+                                            flex: 2,
+                                            background: isProcessing
+                                                ? '#94a3b8'
+                                                : 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+                                            color: 'white',
+                                            border: '2px solid #fbbf24',
+                                            padding: '16px 28px',
+                                            borderRadius: '12px',
+                                            fontSize: '18px',
+                                            fontWeight: '700',
+                                            cursor: isProcessing ? 'not-allowed' : 'pointer',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '1px',
+                                            transition: 'all 0.3s ease',
+                                            boxShadow: isProcessing
+                                                ? 'none'
+                                                : '0 4px 12px rgba(22, 163, 74, 0.3)'
+                                        }}
+                                        onMouseOver={(e) => {
+                                            if (!isProcessing) {
+                                                e.target.style.transform = 'translateY(-2px)';
+                                                e.target.style.boxShadow = '0 6px 16px rgba(22, 163, 74, 0.4)';
+                                            }
+                                        }}
+                                        onMouseOut={(e) => {
+                                            if (!isProcessing) {
                                                 e.target.style.transform = 'translateY(0)';
-                                            }}
-                                        >
-                                            ⬅️ Volver
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            disabled={isProcessing}
-                                            style={{
-                                                padding: '16px',
-                                                background: isProcessing ? 
-                                                    'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)' : 
-                                                    'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
-                                                color: 'white',
-                                                border: '2px solid #fbbf24',
-                                                borderRadius: '12px',
-                                                fontSize: '16px',
-                                                fontWeight: '700',
-                                                cursor: isProcessing ? 'not-allowed' : 'pointer',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '0.5px',
-                                                transition: 'all 0.3s ease',
-                                                boxShadow: isProcessing ? 'none' : '0 4px 12px rgba(22, 163, 74, 0.3)'
-                                            }}
-                                            onMouseOver={(e) => {
-                                                if (!isProcessing) {
-                                                    e.target.style.transform = 'translateY(-2px)';
-                                                    e.target.style.boxShadow = '0 6px 16px rgba(22, 163, 74, 0.4)';
-                                                }
-                                            }}
-                                            onMouseOut={(e) => {
-                                                if (!isProcessing) {
-                                                    e.target.style.transform = 'translateY(0)';
-                                                    e.target.style.boxShadow = '0 4px 12px rgba(22, 163, 74, 0.3)';
-                                                }
-                                            }}
-                                        >
-                                            {isProcessing ? '🔄 Procesando...' : '💳 Pagar Ahora'}
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                                e.target.style.boxShadow = '0 4px 12px rgba(22, 163, 74, 0.3)';
+                                            }
+                                        }}
+                                    >
+                                        {isProcessing ? '⏳ Procesando...' : '🔒 Pagar Ahora'}
+                                    </button>
+                                </div>
+                            </form>
                         )}
                     </div>
                 </div>

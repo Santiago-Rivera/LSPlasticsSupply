@@ -2,32 +2,36 @@ import Navbar from '../components/Navbar'
 import { CartProvider } from '../contexts/CartContext'
 import CartModal from '../components/CartModal'
 import '../styles/responsive.css'
+import { Inter } from 'next/font/google' // Importar la fuente Inter de next/font/google
+
+const inter = Inter({ subsets: ['latin'] }) // Configurar la fuente Inter
 
 export const metadata = {
-    title: 'L&S Plastics - Premium Packaging Supplies',
+    title: {
+        default: 'L&S Plastics - Premium Packaging Supplies',
+        template: '%s | L&S Plastics', // Plantilla para títulos dinámicos
+    },
     description: 'Your trusted source for quality plastic supplies, containers, and packaging solutions',
     keywords: ['packaging', 'plastic supplies', 'food containers', 'L&S Plastics', 'premium quality'],
     icons: {
         icon: '/L&S.jpg',
         shortcut: '/L&S.jpg',
         apple: '/L&S.jpg',
-    }
+    },
+    // Configuración del viewport y theme-color a través de metadata
+    viewport: {
+        width: 'device-width',
+        initialScale: 1.0,
+        userScalable: 'yes',
+    },
+    themeColor: '#1e3a8a',
 }
 
 export default function RootLayout({ children }) {
     return (
         <html lang="es">
-            <head>
-                <title>L&S Plastics - Premium Packaging Supplies</title>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-                <meta name="theme-color" content="#1e3a8a" />
-            </head>
-            <body style={{
-                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+            {/* El contenido del <head> ahora se gestiona automáticamente por Next.js a través del objeto metadata */}
+            <body className={inter.className} style={{ // Aplicar la clase de la fuente al body
                 margin: 0,
                 padding: 0,
                 boxSizing: 'border-box',
